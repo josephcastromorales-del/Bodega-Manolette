@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bodega Manolette</title>
+    <link rel="icon" href="https://manolette.com.co/wp-content/uploads/2025/04/Diseno-sin-titulo-1-100x100.webp" sizes="32x32">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <button class="menu-toggle" id="menuToggle">☰</button>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- MODAL PASSWORD -->
+<div id="modalPassword" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>🔒 Contraseña requerida</h3>
+            <button class="modal-close" onclick="closePasswordModal()">×</button>
+        </div>
+        <div class="form-group">
+            <input type="password" id="passwordInput" placeholder="Ingrese contraseña" onkeypress="if(event.key==='Enter') checkPassword()">
+        </div>
+        <button class="btn-submit" onclick="checkPassword()">Entrar</button>
+        <p id="passwordError" style="color: #f44336; margin-top: 10px; display: none; text-align: center;">❌ Contraseña incorrecta</p>
+    </div>
+</div>
+
+<div class="app">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <h1>📦 Bodega Manolette</h1>
+
+        <div class="search-box">
+            <input type="text" id="buscador" placeholder="🔍 Buscar producto...">
+        </div>
+
+        <div class="sort-controls">
+            <label>📊 Ordenar por:</label>
+            <select id="sortBy">
+                <option value="fecha">Más recientes</option>
+                <option value="nombre">Nombre A-Z</option>
+                <option value="cantidad">Mayor cantidad</option>
+                <option value="prioridad">Prioridad</option>
+            </select>
+        </div>
+
+        <select id="filtroEstado">
+            <option value="">📦 Todos los estados</option>
+            <option value="llegaron">✅ Llegaron</option>
+            <option value="espera">⏳ En espera</option>
+            <option value="listos">🎁 Listos</option>
+            <option value="enviados">🚚 Enviados</option>
+        </select>
+
+        <select id="filtroPiso">
+            <option value="">🏢 Todos los pisos</option>
+            <option value="piso1">Piso 1</option>
+            <option value="piso2">Piso 2</option>
+        </select>
+
+        <ul class="menu-list">
+            <li class="menu-item active" data-target="dashboard">📊 Dashboard</li>
+            <li class="menu-item" data-target="llegaron">✅ Llegaron</li>
+            <li class="menu-item" data-target="espera">⏳ En espera</li>
+            <li class="menu-item" data-target="listos">🎁 Listos</li>
+            <li class="menu-item" data-target="enviados">🚚 Enviados</li>
+            <li class="menu-item" data-target="agregar">➕ Agregar</li>
+            <li class="menu-item" data-target="historial">📋 Historial</li>
+        </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- DASHBOARD -->
+        <section id="dashboard" class="content-section active">
+            <div class="section-header">
+                <h2>📊 Dashboard</h2>
+            </div>
+            <div class="stats-grid" id="statsGrid"></div>
+            <div id="alertasContainer"></div>
+        </section>
+
+        <!-- LLEGARON -->
+        <section id="llegaron" class="content-section">
+            <div class="section-header">
+                <h2>✅ Productos que llegaron</h2>
+                <span class="badge" id="badgeLlegaron">0</span>
+            </div>
+            <div class="cards-grid" id="cardsLlegaron"></div>
+        </section>
+
+        <!-- ESPERA -->
+        <section id="espera" class="content-section">
+            <div class="section-header">
+                <h2>⏳ Productos en espera</h2>
+                <span class="badge" id="badgeEspera">0</span>
+            </div>
+            <div class="cards-grid" id="cardsEspera"></div>
+        </section>
+
+        <!-- LISTOS -->
+        <section id="listos" class="content-section">
+            <div class="section-header">
+                <h2>🎁 Productos listos</h2>
+                <span class="badge" id="badgeListos">0</span>
+            </div>
+            <div class="cards-grid" id="cardsListos"></div>
+        </section>
+
+        <!-- ENVIADOS -->
+        <section id="enviados" class="content-section">
+            <div class="section-header">
+                <h2>🚚 Productos enviados</h2>
+                <span class="badge" id="badgeEnviados">0</span>
+            </div>
+            <div class="cards-grid" id="cardsEnviados"></div>
+        </section>
+
+        <!-- AGREGAR -->
+        <section id="agregar" class="content-section">
+            <div class="section-header">
+                <h2>➕ Agregar producto</h2>
+            </div>
+            <div class="form-container">
+                <form id="productForm">
+                    <div class="form-group">
+                        <label>Producto</label>
+                        <input id="nombre" placeholder="Ej: Anchetas Premium" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Quien lo agrega</label>
+                        <input id="quien" placeholder="Nombre de quien recibe" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Estado inicial</label>
+                        <select id="estado">
+                            <option value="llegaron">✅ Llegó</option>
+                            <option value="espera">⏳ En espera</option>
+                            <option value="listos">🎁 Listo</option>
+                            <option value="enviados">🚚 Enviado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ubicación</label>
+                        <select id="piso">
+                            <option value="piso1">Piso 1</option>
+                            <option value="piso2">Piso 2</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Cantidad</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input id="cantidad" type="number" placeholder="0" required style="flex: 2;">
+                            <select id="tipoCantidad" style="flex: 1;">
+                                <option value="kg">Kilos</option>
+                                <option value="cajas">Cajas</option>
+                                <option value="unidades">Unidades</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-submit">✨ Agregar producto</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- HISTORIAL -->
+        <section id="historial" class="content-section">
+            <div class="section-header">
+                <h2>📋 Historial de movimientos</h2>
+                <button class="btn btn-danger" onclick="clearHistorial()">🗑️ Limpiar</button>
+            </div>
+            <ul class="historial-list" id="historialList"></ul>
+        </section>
+
+    </main>
+</div>
+
+<!-- Al final de tu <body>, en tu index.html -->
+<script type="module" src="script.js"></script>
+</body>
+</html>
