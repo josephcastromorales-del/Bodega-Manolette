@@ -1,236 +1,171 @@
-// CONFIGURACIÓN FIREBASE
 const firebaseConfig = {
-    apiKey: "AIzaSyAE5pMe0loRrtKbKirQlG9H1rSBaoF4viQ",
-    authDomain: "sistemaempresa-8b933.firebaseapp.com",
-    projectId: "sistemaempresa-8b933",
-    storageBucket: "sistemaempresa-8b933.firebasestorage.app",
-    messagingSenderId: "992528113878",
-    appId: "1:992528113878:web:324dc4f0ed9d49fcad6977",
-    measurementId: "G-5RWR0JW8Y4"
+  apiKey: "AIzaSyAE5pMe0loRrtKbKirQlG9H1rSBaoF4viQ",
+  authDomain: "sistemaempresa-8b933.firebaseapp.com",
+  projectId: "sistemaempresa-8b933",
+  storageBucket: "sistemaempresa-8b933.firebasestorage.app",
+  messagingSenderId: "992528113878",
+  appId: "1:992528113878:web:324dc4f0ed9d49fcad6977",
+  measurementId: "G-5RWR0JW8Y4"
 };
 
+// Inicializar Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-const auth = firebase.auth();
 
-/* ESTADO GLOBAL */
+const PASSWORD = "123";
+
+/* ELEMENTOS */
+const menuItems = document.querySelectorAll(".menu-item");
+const contents = document.querySelectorAll(".content");
+const modalPassword = document.getElementById("modalPassword");
+const passwordInput = document.getElementById("passwordInput");
+const passwordBtn = document.getElementById("passwordBtn");
+const passwordError = document.getElementById("passwordError");
+const btnAtras = document.getElementById("btnAtras");
+
+const buscador = document.getElementById("buscador");
+const filtroEstado = document.getElementById("filtroEstado");
+const filtroPiso = document.getElementById("filtroPiso");
+
+const productForm = document.getElementById("productForm");
+const historialList = document.getElementById("historial");
+const horaInput = document.getElementById("hora");
+
+/* DATA */
 let productos = [];
 let historial = [];
-let currentUser = null;
-let userRole = 'empleado'; // Por defecto
 
-/* --- SISTEMA DE AUTENTICACIÓN --- */
-
-// Cambiar entre Login y Registro
-function toggleAuth(showRegister) {
-    document.getElementById("loginFormContainer").style.display = showRegister ? "none" : "block";
-    document.getElementById("registerFormContainer").style.display = showRegister ? "block" : "none";
-    document.getElementById("authError").style.display = "none";
-}
-
-// Escuchar cambios de sesión
-auth.onAuthStateChanged(async (user) => {
-    if (user) {
-        currentUser = user;
-        
-        // Obtener Rol del Usuario desde la base de datos
-        const roleSnap = await db.ref(`usuarios/${user.uid}/rol`).once('value');
-        userRole = roleSnap.val() || 'empleado';
-
-        // UI según el Rol
-        const isOwner = (userRole === 'dueño');
-        document.getElementById("userDisplay").innerText = `${user.email} (${userRole.toUpperCase()})`;
-        document.querySelectorAll(".owner-only").forEach(el => el.style.display = isOwner ? "block" : "none");
-        document.getElementById("quien").value = user.email.split('@')[0];
-
-        // Cambiar pantalla
-        document.getElementById("loginScreen").style.display = "none";
-        document.getElementById("appInterface").style.display = "block";
-        
-        initData();
-    } else {
-        document.getElementById("loginScreen").style.display = "flex";
-        document.getElementById("appInterface").style.display = "none";
-    }
+/* ESCUCHAR CAMBIOS EN TIEMPO REAL */
+db.ref("productos").on("value", (snapshot) => {
+    const data = snapshot.val();
+    productos = data ? Object.keys(data).map(key => ({ id: key, ...data[key] })) : [];
+    render();
 });
 
-// LOGIN
-document.getElementById("loginForm").onsubmit = async (e) => {
-    e.preventDefault();
-    const email = document.getElementById("loginEmail").value;
-    const pass = document.getElementById("loginPass").value;
-    const btn = document.getElementById("btnLogin");
-    const errorEl = document.getElementById("authError");
+db.ref("historial").limitToFirst(20).on("value", (snapshot) => {
+    const data = snapshot.val();
+    historial = data ? Object.values(data).reverse() : [];
+    renderHistorial();
+});
 
-    btn.innerText = "Cargando...";
-    errorEl.style.display = "none";
-
-    try {
-        await auth.signInWithEmailAndPassword(email, pass);
-    } catch (error) {
-        errorEl.innerText = "Error: Acceso denegado. Revisa tus datos.";
-        errorEl.style.display = "block";
-        btn.innerText = "Entrar";
-    }
-};
-
-// REGISTRO
-document.getElementById("registerForm").onsubmit = async (e) => {
-    e.preventDefault();
-    const email = document.getElementById("regEmail").value;
-    const pass = document.getElementById("regPass").value;
-    const rol = document.getElementById("regRol").value;
-    const btn = document.getElementById("btnReg");
-    const errorEl = document.getElementById("authError");
-
-    if (pass.length < 6) {
-        errorEl.innerText = "La contraseña debe tener al menos 6 caracteres";
-        errorEl.style.display = "block";
-        return;
-    }
-
-    btn.innerText = "Creando cuenta...";
-    errorEl.style.display = "none";
-
-    try {
-        const result = await auth.createUserWithEmailAndPassword(email, pass);
-        // Guardar el rol en la base de datos
-        await db.ref(`usuarios/${result.user.uid}`).set({
-            email: email,
-            rol: rol
-        });
-        showToast("Cuenta creada exitosamente");
-    } catch (error) {
-        errorEl.innerText = "Error al registrar: " + error.message;
-        errorEl.style.display = "block";
-        btn.innerText = "Registrarse";
-    }
-};
-
-function logout() {
-    auth.signOut();
-}
-
-/* --- GESTIÓN DE DATOS --- */
-
-function initData() {
-    db.ref("productos").on("value", (snapshot) => {
-        const data = snapshot.val();
-        productos = data ? Object.keys(data).map(key => ({ id: key, ...data[key] })) : [];
-        render();
-    });
-
-    db.ref("historial").limitToLast(30).on("value", (snapshot) => {
-        const data = snapshot.val();
-        historial = data ? Object.values(data).reverse() : [];
-        renderHistorial();
-    });
-}
-
-function render() {
-    const filters = {
-        busqueda: document.getElementById("buscador").value.toLowerCase(),
-        piso: document.getElementById("filtroPiso").value
+/* MENU */
+menuItems.forEach(item => {
+    item.onclick = () => {
+        if (item.dataset.target === "agregar") {
+            modalPassword.style.display = "flex";
+            return;
+        }
+        cambiarSeccion(item.dataset.target);
     };
+});
 
-    ["llegaron", "espera", "listos"].forEach(est => {
-        document.getElementById(`estado-${est}`).innerHTML = "";
-        document.getElementById(`count-${est}`).innerText = "0";
-    });
+function cambiarSeccion(id) {
+    menuItems.forEach(i => i.classList.remove("active"));
+    contents.forEach(c => c.classList.remove("active"));
 
-    const counts = { llegaron: 0, espera: 0, listos: 0 };
-    const isOwner = (userRole === 'dueño');
+    document.querySelector(`[data-target="${id}"]`)?.classList.add("active");
+    document.getElementById(id).classList.add("active");
+}
 
-    productos.forEach(p => {
-        if (filters.busqueda && !p.nombre.toLowerCase().includes(filters.busqueda)) return;
-        if (filters.piso && p.piso !== filters.piso) return;
+/* PASSWORD */
+passwordBtn.onclick = () => {
+    if (passwordInput.value === PASSWORD) {
+        modalPassword.style.display = "none";
+        passwordError.style.display = "none";
+        passwordInput.value = "";
+        cambiarSeccion("agregar");
+    } else {
+        passwordError.style.display = "block";
+    }
+};
 
-        counts[p.estado]++;
+btnAtras.onclick = () => {
+    modalPassword.style.display = "none";
+};
+
+/* RENDER */
+function render() {
+    document.querySelectorAll(".cards").forEach(c => c.innerHTML = "");
+
+    let lista = [...productos];
+
+    if (buscador.value)
+        lista = lista.filter(p => p.nombre.toLowerCase().includes(buscador.value.toLowerCase()));
+    if (filtroEstado.value)
+        lista = lista.filter(p => p.estado === filtroEstado.value);
+    if (filtroPiso.value)
+        lista = lista.filter(p => p.piso === filtroPiso.value);
+
+    lista.forEach(p => {
         const card = document.createElement("div");
         card.className = "card";
         card.innerHTML = `
-            <b>${p.nombre}</b>
-            <div style="font-size: 0.85rem; margin-bottom: 8px;">
-                📦 ${p.cantidad} ${p.tipoCantidad} | 📍 ${p.piso}
-            </div>
-            <small>${p.quien} • ${p.hora}</small>
+            <b>${p.nombre}</b><br>
+            ${p.cantidad} ${p.tipoCantidad}<br>
+            ${p.piso}<br>
+            <small>${p.quien} - ${p.hora}</small>
             <div class="actions">
-                <button onclick="cambiarEstado('${p.id}','llegaron')">🆕</button>
-                <button onclick="cambiarEstado('${p.id}','espera')">⏳</button>
-                <button onclick="cambiarEstado('${p.id}','listos')">✅</button>
-                ${isOwner ? `<button class="danger" onclick="borrarProducto('${p.id}')">🗑</button>` : ''}
+                <button onclick="cambiar('${p.id}','llegaron')">Llegó</button>
+                <button onclick="cambiar('${p.id}','espera')">Espera</button>
+                <button onclick="cambiar('${p.id}','listos')">Listo</button>
+                <button class="danger" onclick="borrar('${p.id}')">🗑</button>
             </div>
         `;
-        document.getElementById(`estado-${p.estado}`).appendChild(card);
-    });
-
-    Object.keys(counts).forEach(est => {
-        document.getElementById(`count-${est}`).innerText = counts[est];
+        const container = document.getElementById(`estado-${p.estado}`);
+        if(container) container.appendChild(card);
     });
 }
 
 function renderHistorial() {
-    document.getElementById("historial").innerHTML = historial.map(h => `
-        <li class="historial-item">
-            <span><b>${h.accion}:</b> ${h.nombre}</span>
-            <small>${h.hora}</small>
-        </li>
-    `).join("");
+    historialList.innerHTML = historial
+        .map(h => `<li>${h.hora} — ${h.accion}: <b>${h.nombre}</b></li>`)
+        .join("");
 }
 
-/* --- ACCIONES --- */
-
-function showToast(msg) {
-    const t = document.getElementById("toast");
-    t.innerText = msg; t.style.display = "block";
-    setTimeout(() => t.style.display = "none", 3000);
+/* ACCIONES FIREBASE */
+function log(accion, nombre) {
+    db.ref("historial").push({
+        accion,
+        nombre,
+        hora: new Date().toLocaleString()
+    });
 }
 
-async function cambiarEstado(id, nuevoEstado) {
+function cambiar(id, estado) {
+    db.ref(`productos/${id}`).update({ estado: estado });
     const p = productos.find(x => x.id === id);
-    if (!p) return;
-    await db.ref(`productos/${id}`).update({ estado: nuevoEstado });
-    db.ref("historial").push({ accion: `Movió a ${nuevoEstado}`, nombre: p.nombre, hora: new Date().toLocaleString() });
-    showToast("Estado actualizado");
+    if (p) log("Cambio estado", p.nombre);
 }
 
-async function borrarProducto(id) {
-    if (userRole !== 'dueño') return;
+function borrar(id) {
     const p = productos.find(x => x.id === id);
-    if (confirm(`¿Eliminar ${p.nombre}?`)) {
-        await db.ref(`productos/${id}`).remove();
-        db.ref("historial").push({ accion: "Eliminado", nombre: p.nombre, hora: new Date().toLocaleString() });
-        showToast("Producto eliminado");
+    if (p) {
+        log("Eliminado", p.nombre);
+        db.ref(`productos/${id}`).remove();
     }
 }
 
-document.getElementById("productForm").onsubmit = async (e) => {
+/* AGREGAR */
+productForm.onsubmit = e => {
     e.preventDefault();
-    const nuevo = {
+    const ahora = new Date().toLocaleString();
+    
+    const nuevoProducto = {
         nombre: document.getElementById("nombre").value,
         quien: document.getElementById("quien").value,
-        hora: new Date().toLocaleString(),
+        hora: ahora,
         estado: document.getElementById("estado").value,
         piso: document.getElementById("piso").value,
         tipoCantidad: document.getElementById("tipoCantidad").value,
         cantidad: document.getElementById("cantidad").value
     };
-    await db.ref("productos").push(nuevo);
-    db.ref("historial").push({ accion: "Agregado", nombre: nuevo.nombre, hora: nuevo.hora });
-    showToast("Guardado");
-    e.target.reset();
-    showSection('dashboardView');
+
+    db.ref("productos").push(nuevoProducto);
+    log("Agregado", nuevoProducto.nombre);
+    
+    productForm.reset();
+    cambiarSeccion("llegaron");
 };
 
-function showSection(id) {
-    document.querySelectorAll(".content-section").forEach(s => s.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
-}
-
-function toggleVisibility(id) {
-    const input = document.getElementById(id);
-    input.type = input.type === "password" ? "text" : "password";
-}
-
-document.getElementById("buscador").oninput = render;
-document.getElementById("filtroPiso").onchange = render;
+/* FILTROS */
+buscador.oninput = filtroEstado.onchange = filtroPiso.onchange = render;

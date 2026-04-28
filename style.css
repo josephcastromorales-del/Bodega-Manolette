@@ -1,289 +1,298 @@
-:root {
-    --primary: #2563eb;
-    --primary-hover: #1d4ed8;
-    --bg-app: #f1f5f9;
-    --bg-card: #ffffff;
-    --text-main: #1e293b;
-    --text-muted: #64748b;
-    --success: #22c55e;
-    --warning: #f59e0b;
-    --danger: #ef4444;
-    --border: #e2e8f0;
-    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --radius: 12px;
-}
-
+/* =====================
+   RESET & BASE
+===================== */
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-family: Arial, sans-serif;
 }
 
 body {
-    background-color: var(--bg-app);
-    color: var(--text-main);
-    line-height: 1.5;
+    margin: 0;
+    background: #f4f6f8;
+    font-family: 'Roboto';
+    background: linear-gradient(#e2e2e2, #f5f5f5);
 }
 
-/* PANTALLA DE LOGIN */
-#loginScreen {
+.app {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 20px;
+    height: 100vh;
 }
 
-.login-box {
-    background: var(--bg-card);
-    padding: 2.5rem;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    width: 100%;
-    max-width: 400px;
+/* =====================
+   MENU
+===================== */
+.container-menu {
+    width: 260px;
+    background: #1e1e2f;
+    color: white;
+    padding: 15px;
+}
+
+.container-menu h2 {
     text-align: center;
 }
 
-.login-box h2 {
-    margin-bottom: 0.5rem;
-    font-size: 1.5rem;
-    color: var(--primary);
+#filtroEstado, #filtroPiso, #buscador {
+    border: 1px solid transparent;
+    border-radius: 10px;
+    padding: 5px;
+    font-weight: bold;
+    color: #666666;
+    font-size: 15px;
+    font-family: Verdana;
 }
 
-.login-box p {
-    color: var(--text-muted);
-    margin-bottom: 2rem;
-    font-size: 0.9rem;
+.container-menu input,
+.container-menu select {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 6px;
 }
 
-/* APP LAYOUT */
-#appInterface {
-    display: none; /* Se activa al loguear */
-    min-height: 100vh;
+.container-menu ul {
+    list-style: none;
+    padding: 0;
 }
 
-.main-layout {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    min-height: 100vh;
+.menu-item {
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 6px;
 }
 
-@media (max-width: 768px) {
-    .main-layout {
-        grid-template-columns: 1fr;
-    }
+.menu-item:hover,
+.menu-item.active {
+    background: #3f51b5;
 }
 
-/* SIDEBAR */
-aside.sidebar {
-    background: var(--bg-card);
-    border-right: 1px solid var(--border);
-    padding: 2rem;
+/* =====================
+   CONTENT
+===================== */
+.container-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.content {
+    display: none;
+}
+
+.content.active {
+    display: block;
+}
+
+#agregar {
+    text-align: center;
+    justify-content: center;
+}
+
+/* =====================
+   FORM
+===================== */
+form {
+    max-width: 300px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-}
-
-.sidebar h1 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--primary);
-    display: flex;
-    align-items: center;
     gap: 10px;
 }
 
-.sidebar h1::before {
-    content: '📦';
+#productForm {
+    background-color: #1e1e2f;
+    padding: 20px;
+    border-radius: 10px;
 }
 
-.nav-menu {
-    list-style: none;
-    margin-top: 1rem;
-}
-
-.nav-item {
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    color: var(--text-muted);
-    transition: all 0.2s;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-}
-
-.nav-item:hover {
-    background: var(--bg-app);
-    color: var(--primary);
-}
-
-.nav-item.active {
-    background: var(--primary);
-    color: white;
-}
-
-/* INPUTS Y BOTONES */
-input, select {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    font-size: 0.95rem;
-    transition: border-color 0.2s;
-    background: #f8fafc;
-}
-
-input:focus, select:focus {
-    outline: none;
-    border-color: var(--primary);
-    background: #ffffff;
-}
-
-button {
-    width: 100%;
-    padding: 0.75rem 1rem;
+#productForm input,
+#productForm select {
+    padding: 6px;
+    border-radius: 5px;
     border: none;
-    border-radius: 8px;
-    background: var(--primary);
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    transition: filter 0.2s;
+    background-color: #3f51b5;
+    color: #f4f6f8;
 }
 
-button:hover {
-    filter: brightness(1.1);
+#productForm input::placeholder {
+    color: #f4f6f8;
+}
+
+#productForm button {
+    padding: 8px;
+    font-weight: bold;
+    background-color: rgb(0, 221, 0);
+    color: #1e1e2f;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* =====================
+   BUTTONS
+===================== */
+button {
+    padding: 5px 8px;
+    cursor: pointer;
 }
 
 button.danger {
-    background: var(--danger);
-}
-
-/* TABLERO DE COLUMNAS (KANBAN STYLE) */
-.dashboard {
-    padding: 2rem;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    overflow-x: auto;
-}
-
-@media (max-width: 1100px) {
-    .dashboard {
-        grid-template-columns: 1fr;
-    }
-}
-
-.column {
-    background: #eef2f6;
-    border-radius: var(--radius);
-    padding: 1.25rem;
-    min-height: 500px;
-}
-
-.column h2 {
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--text-muted);
-    margin-bottom: 1.25rem;
-    display: flex;
-    justify-content: space-between;
-}
-
-/* TARJETAS DE PRODUCTO */
-.card {
-    background: var(--bg-card);
-    border-radius: 10px;
-    padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    margin-bottom: 1rem;
-    border-left: 4px solid var(--primary);
-    transition: transform 0.2s;
-}
-
-.card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow);
-}
-
-.card b {
-    display: block;
-    font-size: 1.05rem;
-    margin-bottom: 0.5rem;
-}
-
-.card small {
-    color: var(--text-muted);
-}
-
-.card .actions {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 5px;
-    margin-top: 1rem;
-}
-
-.card .actions button {
-    padding: 5px;
-    font-size: 0.75rem;
-    background: #f1f5f9;
-    color: var(--text-main);
-}
-
-.card .actions button:hover {
-    background: var(--primary);
+    background: #c62828;
     color: white;
+    border: none;
 }
 
-.card .actions button.danger:hover {
-    background: var(--danger);
+.btn-atras {
+    background: rgb(212, 0, 0);
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 6px;
+    text-align: center;
+    margin-top: -100px;
+    margin-left: -14px;
+
 }
 
-/* HISTORIAL Y OTROS */
-.content-section {
+/* =====================
+   CARDS
+===================== */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
+    gap: 15px;
+}
+
+.card {
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 0 6px rgba(0,0,0,.1);
+}
+
+.actions {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+/* =====================
+   MODAL PASSWORD
+===================== */
+#modalPassword {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.6);
     display: none;
-    padding: 2rem;
-    max-width: 800px;
-    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
 }
 
-.content-section.active {
-    display: block;
+.modal-box {
+    background: #1e1e2f;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    width: 280px;
+    height: 235px;
+    align-content: center;
 }
 
-.historial-list {
+.modal-box input {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #1e1e2f;
+    border-radius: 5px;
+}
+
+.modal-box> button {
+    padding: 8px;
+    background: #3f51b5;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.box-ac {
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+#historialView ul{
+    background-color: #1e1e2f;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#historialView li {
+    background-color: #3f51b5;
+    box-shadow: 0 0 6px rgba(0,0,0,.1);
+    color: #e2e2e2;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
     list-style: none;
 }
 
-.historial-item {
-    background: white;
-    padding: 1rem;
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.9rem;
-}
-
-.password-container {
+/* ===== PRODUCTOS ===== */
+.producto-card {
     position: relative;
-    margin-bottom: 1rem;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 6px rgba(0,0,0,.1);
 }
 
-.password-container input {
-    margin-bottom: 0 !important;
-    padding-right: 40px;
-}
-
-.toggle-password {
+.producto-contador {
     position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 8px;
+    right: 10px;
+    background: #3f51b5;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.producto-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.producto-actions button {
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
+    border: none;
+    border-radius: 50%;
     cursor: pointer;
-    font-size: 1.2rem;
-    color: var(--text-muted);
+}
+
+.producto-actions .plus {
+    background: #4caf50;
+    color: white;
+}
+
+.producto-actions .minus {
+    background: #c62828;
+    color: white;
+}
+
+#modalNuevoProducto {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
