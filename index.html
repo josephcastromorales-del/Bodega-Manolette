@@ -8,18 +8,19 @@
 </head>
 <body>
 
-    <!-- PANTALLA DE ACCESO (LOGIN / REGISTRO) -->
     <div id="loginScreen">
         <div class="login-box">
             <img src="manolette-imagen.png" alt="Logo" style="width: 100px; margin-bottom: 1rem;">
             
-            <!-- FORMULARIO LOGIN -->
             <div id="loginFormContainer">
                 <h2>Iniciar Sesión</h2>
                 <p>Ingresa tus credenciales</p>
                 <form id="loginForm">
                     <input type="email" id="loginEmail" placeholder="Correo electrónico" required style="margin-bottom: 1rem;">
-                    <input type="password" id="loginPass" placeholder="Contraseña" required style="margin-bottom: 1rem;">
+                    <div class="password-container">
+                        <input type="password" id="loginPass" placeholder="Contraseña" required>
+                        <span class="toggle-password" onclick="toggleVisibility('loginPass')">👁️</span>
+                    </div>
                     <button type="submit" id="btnLogin">Entrar</button>
                 </form>
                 <p style="margin-top: 1.5rem; font-size: 0.85rem;">
@@ -27,13 +28,15 @@
                 </p>
             </div>
 
-            <!-- FORMULARIO REGISTRO -->
             <div id="registerFormContainer" style="display: none;">
                 <h2>Crear Cuenta</h2>
                 <p>Regístrate en el sistema</p>
                 <form id="registerForm">
                     <input type="email" id="regEmail" placeholder="Correo electrónico" required style="margin-bottom: 1rem;">
-                    <input type="password" id="regPass" placeholder="Contraseña (mín. 6 caracteres)" required style="margin-bottom: 1rem;">
+                    <div class="password-container">
+                        <input type="password" id="regPass" placeholder="Contraseña (mín. 6 caracteres)" required>
+                        <span class="toggle-password" onclick="toggleVisibility('regPass')">👁️</span>
+                    </div>
                     <select id="regRol" style="margin-bottom: 1.5rem;">
                         <option value="empleado">Rol: Empleado</option>
                         <option value="dueño">Rol: Dueño (Administrador)</option>
@@ -49,7 +52,6 @@
         </div>
     </div>
 
-    <!-- INTERFAZ DE LA APP -->
     <div id="appInterface">
         <div class="main-layout">
             <aside class="sidebar">
@@ -57,13 +59,11 @@
                     <img src="manolette-imagen.png" alt="Logo" style="width: 40px; height: 40px; object-fit: contain;">
                     <h1 style="font-size: 1.1rem;">Manolette <span style="color: var(--text-muted); font-weight: 400;">Bodega</span></h1>
                 </div>
-                
                 <nav class="nav-menu">
                     <div class="nav-item active" onclick="showSection('dashboardView')">📦 Inventario</div>
                     <div class="nav-item owner-only" onclick="showSection('addView')" style="display: none;">➕ Agregar Producto</div>
                     <div class="nav-item" onclick="showSection('historyView')">🕒 Historial</div>
                 </nav>
-
                 <div style="margin-top: auto; padding-top: 2rem;">
                     <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;" id="userDisplay"></p>
                     <button class="danger" onclick="logout()">Cerrar Sesión</button>

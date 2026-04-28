@@ -227,5 +227,10 @@ function showSection(id) {
     document.getElementById(id).classList.add("active");
 }
 
+function toggleVisibility(id) {
+    const input = document.getElementById(id);
+    input.type = input.type === "password" ? "text" : "password";
+}
+
 document.getElementById("buscador").oninput = render;
 document.getElementById("filtroPiso").onchange = render;
