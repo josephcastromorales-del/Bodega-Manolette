@@ -2,109 +2,133 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Bodega</title>
+    <title>Bodega Pro | Acceso</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- MODAL PASSWORD -->
-<div id="modalPassword">
-    <div class="modal-box">
-        <div class="box-ac">
-            <button id="btnAtras" class="btn-atras">← Atrás</button>
-            <h3>Contraseña</h3>
+    <div id="loginScreen">
+        <div class="login-box">
+            <img src="manolette-imagen.png" alt="Logo" style="width: 100px; margin-bottom: 1rem;">
+            
+            <div id="loginFormContainer">
+                <h2>Iniciar Sesión</h2>
+                <p>Ingresa tus credenciales</p>
+                <form id="loginForm">
+                    <input type="email" id="loginEmail" placeholder="Correo electrónico" required style="margin-bottom: 1rem;">
+                    <div class="password-container">
+                        <input type="password" id="loginPass" placeholder="Contraseña" required>
+                        <span class="toggle-password" onclick="toggleVisibility('loginPass')">👁️</span>
+                    </div>
+                    <button type="submit" id="btnLogin">Entrar</button>
+                </form>
+                <p style="margin-top: 1.5rem; font-size: 0.85rem;">
+                    ¿No tienes cuenta? <a href="#" onclick="toggleAuth(true)">Regístrate aquí</a>
+                </p>
+            </div>
+
+            <div id="registerFormContainer" style="display: none;">
+                <h2>Crear Cuenta</h2>
+                <p>Regístrate en el sistema</p>
+                <form id="registerForm">
+                    <input type="email" id="regEmail" placeholder="Correo electrónico" required style="margin-bottom: 1rem;">
+                    <div class="password-container">
+                        <input type="password" id="regPass" placeholder="Contraseña (mín. 6 caracteres)" required>
+                        <span class="toggle-password" onclick="toggleVisibility('regPass')">👁️</span>
+                    </div>
+                    <select id="regRol" style="margin-bottom: 1.5rem;">
+                        <option value="empleado">Rol: Empleado</option>
+                        <option value="dueño">Rol: Dueño (Administrador)</option>
+                    </select>
+                    <button type="submit" id="btnReg" style="background: var(--success);">Registrarse</button>
+                </form>
+                <p style="margin-top: 1.5rem; font-size: 0.85rem;">
+                    ¿Ya tienes cuenta? <a href="#" onclick="toggleAuth(false)">Inicia sesión</a>
+                </p>
+            </div>
+
+            <p id="authError" style="color: var(--danger); margin-top: 1rem; display: none; font-size: 0.85rem;"></p>
         </div>
-        <input type="password" id="passwordInput" placeholder="Ingrese contraseña">
-        <button id="passwordBtn">Entrar</button>
-        <p id="passwordError">Incorrecta</p>
     </div>
-</div>
 
-<div class="app">
+    <div id="appInterface">
+        <div class="main-layout">
+            <aside class="sidebar">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
+                    <img src="manolette-imagen.png" alt="Logo" style="width: 40px; height: 40px; object-fit: contain;">
+                    <h1 style="font-size: 1.1rem;">Manolette <span style="color: var(--text-muted); font-weight: 400;">Bodega</span></h1>
+                </div>
+                <nav class="nav-menu">
+                    <div class="nav-item active" onclick="showSection('dashboardView')">📦 Inventario</div>
+                    <div class="nav-item owner-only" onclick="showSection('addView')" style="display: none;">➕ Agregar Producto</div>
+                    <div class="nav-item" onclick="showSection('historyView')">🕒 Historial</div>
+                </nav>
+                <div style="margin-top: auto; padding-top: 2rem;">
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;" id="userDisplay"></p>
+                    <button class="danger" onclick="logout()">Cerrar Sesión</button>
+                </div>
+            </aside>
 
-    <!-- MENU -->
-    <aside class="container-menu">
-        <h2>Bodega</h2>
+            <main class="main-content">
+                <section id="dashboardView" class="content-section active">
+                    <header style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                        <h2>Estado del Inventario</h2>
+                        <div style="display: flex; gap: 10px; flex-grow: 1; max-width: 600px;">
+                            <input type="text" id="buscador" placeholder="Buscar por nombre...">
+                            <select id="filtroPiso" style="max-width: 150px;">
+                                <option value="">Todos los Pisos</option>
+                                <option value="piso1">Piso 1</option>
+                                <option value="piso2">Piso 2</option>
+                            </select>
+                        </div>
+                    </header>
+                    <div class="dashboard">
+                        <div class="column">
+                            <h2>Llegaron <span id="count-llegaron">0</span></h2>
+                            <div id="estado-llegaron" class="cards-container"></div>
+                        </div>
+                        <div class="column">
+                            <h2>En Espera <span id="count-espera">0</span></h2>
+                            <div id="estado-espera" class="cards-container"></div>
+                        </div>
+                        <div class="column">
+                            <h2>Listos <span id="count-listos">0</span></h2>
+                            <div id="estado-listos" class="cards-container"></div>
+                        </div>
+                    </div>
+                </section>
 
-        <input type="text" id="buscador" placeholder="Buscar producto">
+                <section id="addView" class="content-section">
+                    <div style="background: white; padding: 2.5rem; border-radius: var(--radius); box-shadow: var(--shadow);">
+                        <h2 style="margin-bottom: 1.5rem;">Nuevo Ingreso</h2>
+                        <form id="productForm">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                                <div><label>Nombre del Producto</label><input id="nombre" required></div>
+                                <div><label>Registrado por</label><input id="quien" readonly></div>
+                                <div><label>Estado Inicial</label><select id="estado"><option value="llegaron">Llegaron</option><option value="espera">Espera</option><option value="listos">Listos</option></select></div>
+                                <div><label>Piso</label><select id="piso"><option value="piso1">Piso 1</option><option value="piso2">Piso 2</option></select></div>
+                                <div><label>Unidad</label><select id="tipoCantidad"><option value="kg">Kilos</option><option value="caja">Cajas</option></select></div>
+                                <div><label>Cantidad</label><input id="cantidad" type="number" required></div>
+                            </div>
+                            <button style="margin-top: 2rem;">Guardar Producto</button>
+                        </form>
+                    </div>
+                </section>
 
-        <select id="filtroEstado">
-            <option value="">Todos</option>
-            <option value="llegaron">Llegaron</option>
-            <option value="espera">Espera</option>
-            <option value="listos">Listos</option>
-        </select>
+                <section id="historyView" class="content-section">
+                    <h2 style="margin-bottom: 1.5rem;">Actividad Reciente</h2>
+                    <ul id="historial" class="historial-list"></ul>
+                </section>
+            </main>
+        </div>
+    </div>
 
-        <select id="filtroPiso">
-            <option value="">Todos</option>
-            <option value="piso1">Piso 1</option>
-            <option value="piso2">Piso 2</option>
-        </select>
+    <div id="toast">Operación exitosa</div>
 
-        <ul>
-            <li class="menu-item active" data-target="llegaron">Llegaron</li>
-            <li class="menu-item" data-target="espera">En espera</li>
-            <li class="menu-item" data-target="listos">Listos</li>
-            <li class="menu-item" data-target="agregar">Agregar</li>
-            <li class="menu-item" data-target="historialView">Historial</li>
-        </ul>
-    </aside>
-
-    <!-- CONTENIDO -->
-    <main class="container-content">
-
-        <section id="llegaron" class="content active">
-            <h2>Llegaron</h2>
-            <div class="cards" id="estado-llegaron"></div>
-        </section>
-
-        <section id="espera" class="content">
-            <h2>En espera</h2>
-            <div class="cards" id="estado-espera"></div>
-        </section>
-
-        <section id="listos" class="content">
-            <h2>Listos</h2>
-            <div class="cards" id="estado-listos"></div>
-        </section>
-
-        <section id="agregar" class="content">
-            <h2>Agregar producto</h2>
-            <form id="productForm">
-                <input id="nombre" placeholder="Producto" required>
-                <input id="quien" placeholder="Quién lo agrega" required>
-                <input id="hora" disabled>
-
-                <select id="estado">
-                    <option value="llegaron">Llegaron</option>
-                    <option value="espera">Espera</option>
-                    <option value="listos">Listos</option>
-                </select>
-
-                <select id="piso">
-                    <option value="piso1">Piso 1</option>
-                    <option value="piso2">Piso 2</option>
-                </select>
-
-                <select id="tipoCantidad">
-                    <option value="kg">Kilos</option>
-                    <option value="caja">Cajas</option>
-                </select>
-
-                <input id="cantidad" type="number" placeholder="Cantidad" required>
-                <button>Agregar</button>
-            </form>
-        </section>
-
-        <section id="historialView" class="content">
-            <h2>Historial</h2>
-            <ul id="historial"></ul>
-        </section>
-
-    </main>
-</div>
-
-<script src="script.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
