@@ -2,133 +2,248 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Bodega Pro | Acceso</title>
+    <title>Manolette | Sistema de Bodega</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div id="loginScreen">
-        <div class="login-box">
-            <img src="manolette-imagen.png" alt="Logo" style="width: 100px; margin-bottom: 1rem;">
-            
-            <div id="loginFormContainer">
-                <h2>Iniciar Sesión</h2>
-                <p>Ingresa tus credenciales</p>
-                <form id="loginForm">
-                    <input type="email" id="loginEmail" placeholder="Correo electrónico" required style="margin-bottom: 1rem;">
+<!-- ═══════════ LOGIN ═══════════ -->
+<div id="loginScreen">
+    <div class="login-box">
+        <img src="manolette-imagen.png" alt="Manolette" class="login-logo">
+
+        <!-- LOGIN FORM -->
+        <div id="loginFormContainer">
+            <h2>Bienvenido</h2>
+            <p>Ingresa tus credenciales para acceder</p>
+            <form id="loginForm">
+                <div class="input-group">
+                    <label>Correo electrónico</label>
+                    <input type="email" id="loginEmail" placeholder="tu@correo.com" required>
+                </div>
+                <div class="input-group">
+                    <label>Contraseña</label>
                     <div class="password-container">
-                        <input type="password" id="loginPass" placeholder="Contraseña" required>
+                        <input type="password" id="loginPass" placeholder="••••••••" required>
                         <span class="toggle-password" onclick="toggleVisibility('loginPass')">👁️</span>
                     </div>
-                    <button type="submit" id="btnLogin">Entrar</button>
-                </form>
-                <p style="margin-top: 1.5rem; font-size: 0.85rem;">
-                    ¿No tienes cuenta? <a href="#" onclick="toggleAuth(true)">Regístrate aquí</a>
-                </p>
-            </div>
+                </div>
+                <button type="submit" id="btnLogin" style="margin-top: 0.5rem;">Iniciar Sesión</button>
+            </form>
+            <p style="margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-muted);">
+                ¿No tienes cuenta? <a href="#" onclick="toggleAuth(true)" style="color: var(--green-light); font-weight: 600;">Regístrate aquí</a>
+            </p>
+        </div>
 
-            <div id="registerFormContainer" style="display: none;">
-                <h2>Crear Cuenta</h2>
-                <p>Regístrate en el sistema</p>
-                <form id="registerForm">
-                    <input type="email" id="regEmail" placeholder="Correo electrónico" required style="margin-bottom: 1rem;">
+        <!-- REGISTER FORM -->
+        <div id="registerFormContainer" style="display: none;">
+            <h2>Crear Cuenta</h2>
+            <p>Regístrate en el sistema de bodega</p>
+            <form id="registerForm">
+                <div class="input-group">
+                    <label>Correo electrónico</label>
+                    <input type="email" id="regEmail" placeholder="tu@correo.com" required>
+                </div>
+                <div class="input-group">
+                    <label>Contraseña</label>
                     <div class="password-container">
-                        <input type="password" id="regPass" placeholder="Contraseña (mín. 6 caracteres)" required>
+                        <input type="password" id="regPass" placeholder="Mínimo 6 caracteres" required>
                         <span class="toggle-password" onclick="toggleVisibility('regPass')">👁️</span>
                     </div>
-                    <select id="regRol" style="margin-bottom: 1.5rem;">
-                        <option value="empleado">Rol: Empleado</option>
-                        <option value="dueño">Rol: Dueño (Administrador)</option>
+                </div>
+                <div class="input-group">
+                    <label>Rol</label>
+                    <select id="regRol">
+                        <option value="empleado">Empleado</option>
+                        <option value="dueño">Dueño (Administrador)</option>
                     </select>
-                    <button type="submit" id="btnReg" style="background: var(--success);">Registrarse</button>
-                </form>
-                <p style="margin-top: 1.5rem; font-size: 0.85rem;">
-                    ¿Ya tienes cuenta? <a href="#" onclick="toggleAuth(false)">Inicia sesión</a>
-                </p>
+                </div>
+                <button type="submit" id="btnReg" class="btn-gold" style="margin-top: 0.5rem;">Crear Cuenta</button>
+            </form>
+            <p style="margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-muted);">
+                ¿Ya tienes cuenta? <a href="#" onclick="toggleAuth(false)" style="color: var(--green-light); font-weight: 600;">Inicia sesión</a>
+            </p>
+        </div>
+
+        <p id="authError" style="color: var(--danger); margin-top: 1rem; display: none; font-size: 0.85rem; background: var(--danger-light); padding: 0.75rem 1rem; border-radius: 8px;"></p>
+    </div>
+</div>
+
+<!-- ═══════════ APP ═══════════ -->
+<div id="appInterface">
+    <div class="main-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <img src="manolette-imagen.png" alt="Manolette" class="sidebar-logo">
+
+            <div class="nav-label">Gestión</div>
+            <div class="nav-item active" onclick="showSection('dashboardView')">
+                <span>📦</span> Inventario
+            </div>
+            <div class="nav-item owner-only" onclick="showSection('addView')" style="display:none;">
+                <span>➕</span> Nuevo Ingreso
             </div>
 
-            <p id="authError" style="color: var(--danger); margin-top: 1rem; display: none; font-size: 0.85rem;"></p>
-        </div>
-    </div>
+            <div class="sidebar-divider"></div>
 
-    <div id="appInterface">
-        <div class="main-layout">
-            <aside class="sidebar">
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
-                    <img src="manolette-imagen.png" alt="Logo" style="width: 40px; height: 40px; object-fit: contain;">
-                    <h1 style="font-size: 1.1rem;">Manolette <span style="color: var(--text-muted); font-weight: 400;">Bodega</span></h1>
-                </div>
-                <nav class="nav-menu">
-                    <div class="nav-item active" onclick="showSection('dashboardView')">📦 Inventario</div>
-                    <div class="nav-item owner-only" onclick="showSection('addView')" style="display: none;">➕ Agregar Producto</div>
-                    <div class="nav-item" onclick="showSection('historyView')">🕒 Historial</div>
-                </nav>
-                <div style="margin-top: auto; padding-top: 2rem;">
-                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;" id="userDisplay"></p>
-                    <button class="danger" onclick="logout()">Cerrar Sesión</button>
-                </div>
-            </aside>
+            <div class="nav-label">Reportes</div>
+            <div class="nav-item" onclick="showSection('historyView')">
+                <span>🕒</span> Historial
+            </div>
 
-            <main class="main-content">
-                <section id="dashboardView" class="content-section active">
-                    <header style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-                        <h2>Estado del Inventario</h2>
-                        <div style="display: flex; gap: 10px; flex-grow: 1; max-width: 600px;">
-                            <input type="text" id="buscador" placeholder="Buscar por nombre...">
-                            <select id="filtroPiso" style="max-width: 150px;">
-                                <option value="">Todos los Pisos</option>
-                                <option value="piso1">Piso 1</option>
-                                <option value="piso2">Piso 2</option>
-                            </select>
-                        </div>
-                    </header>
-                    <div class="dashboard">
-                        <div class="column">
-                            <h2>Llegaron <span id="count-llegaron">0</span></h2>
-                            <div id="estado-llegaron" class="cards-container"></div>
-                        </div>
-                        <div class="column">
-                            <h2>En Espera <span id="count-espera">0</span></h2>
-                            <div id="estado-espera" class="cards-container"></div>
-                        </div>
-                        <div class="column">
-                            <h2>Listos <span id="count-listos">0</span></h2>
-                            <div id="estado-listos" class="cards-container"></div>
+            <div class="sidebar-footer">
+                <div class="user-badge">
+                    <div class="user-badge-email" id="userEmail"></div>
+                    <div class="user-badge-role" id="userRole"></div>
+                </div>
+                <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="main-content">
+
+            <!-- INVENTARIO -->
+            <section id="dashboardView" class="content-section active">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Inventario</h2>
+                        <p class="page-subtitle">Estado actual de productos en bodega</p>
+                    </div>
+                    <div class="search-bar">
+                        <input type="text" id="buscador" placeholder="🔍  Buscar producto...">
+                        <select id="filtroPiso" style="max-width: 140px;">
+                            <option value="">Todos los pisos</option>
+                            <option value="piso1">Piso 1</option>
+                            <option value="piso2">Piso 2</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- STATS -->
+                <div class="stats-bar">
+                    <div class="stat-card">
+                        <div class="stat-icon gold">📥</div>
+                        <div>
+                            <div class="stat-num" id="count-llegaron">0</div>
+                            <div class="stat-label">Llegaron</div>
                         </div>
                     </div>
-                </section>
+                    <div class="stat-card">
+                        <div class="stat-icon olive">⏳</div>
+                        <div>
+                            <div class="stat-num" id="count-espera">0</div>
+                            <div class="stat-label">En Espera</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">✅</div>
+                        <div>
+                            <div class="stat-num" id="count-listos">0</div>
+                            <div class="stat-label">Listos</div>
+                        </div>
+                    </div>
+                </div>
 
-                <section id="addView" class="content-section">
-                    <div style="background: white; padding: 2.5rem; border-radius: var(--radius); box-shadow: var(--shadow);">
-                        <h2 style="margin-bottom: 1.5rem;">Nuevo Ingreso</h2>
-                        <form id="productForm">
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                                <div><label>Nombre del Producto</label><input id="nombre" required></div>
-                                <div><label>Registrado por</label><input id="quien" readonly></div>
-                                <div><label>Estado Inicial</label><select id="estado"><option value="llegaron">Llegaron</option><option value="espera">Espera</option><option value="listos">Listos</option></select></div>
-                                <div><label>Piso</label><select id="piso"><option value="piso1">Piso 1</option><option value="piso2">Piso 2</option></select></div>
-                                <div><label>Unidad</label><select id="tipoCantidad"><option value="kg">Kilos</option><option value="caja">Cajas</option></select></div>
-                                <div><label>Cantidad</label><input id="cantidad" type="number" required></div>
+                <!-- KANBAN -->
+                <div class="dashboard">
+                    <div class="column column-llegaron">
+                        <div class="column-header">
+                            <span class="column-title">📥 Llegaron</span>
+                            <span class="column-badge" id="badge-llegaron">0</span>
+                        </div>
+                        <div id="estado-llegaron" class="cards-container"></div>
+                    </div>
+                    <div class="column column-espera">
+                        <div class="column-header">
+                            <span class="column-title">⏳ En Espera</span>
+                            <span class="column-badge" id="badge-espera">0</span>
+                        </div>
+                        <div id="estado-espera" class="cards-container"></div>
+                    </div>
+                    <div class="column column-listos">
+                        <div class="column-header">
+                            <span class="column-title">✅ Listos</span>
+                            <span class="column-badge" id="badge-listos">0</span>
+                        </div>
+                        <div id="estado-listos" class="cards-container"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- NUEVO INGRESO -->
+            <section id="addView" class="content-section">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Nuevo Ingreso</h2>
+                        <p class="page-subtitle">Registra un nuevo producto en el sistema</p>
+                    </div>
+                </div>
+                <div class="form-card">
+                    <form id="productForm">
+                        <div class="form-grid">
+                            <div class="form-field">
+                                <label>Nombre del Producto</label>
+                                <input id="nombre" placeholder="Ej: Aguacate Hass" required>
                             </div>
-                            <button style="margin-top: 2rem;">Guardar Producto</button>
-                        </form>
+                            <div class="form-field">
+                                <label>Registrado por</label>
+                                <input id="quien" readonly>
+                            </div>
+                            <div class="form-field">
+                                <label>Estado Inicial</label>
+                                <select id="estado">
+                                    <option value="llegaron">Llegaron</option>
+                                    <option value="espera">En Espera</option>
+                                    <option value="listos">Listos</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>Piso</label>
+                                <select id="piso">
+                                    <option value="piso1">Piso 1</option>
+                                    <option value="piso2">Piso 2</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>Unidad de Medida</label>
+                                <select id="tipoCantidad">
+                                    <option value="kg">Kilogramos (kg)</option>
+                                    <option value="caja">Cajas</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label>Cantidad</label>
+                                <input id="cantidad" type="number" min="0" placeholder="0" required>
+                            </div>
+                        </div>
+                        <button type="submit" style="margin-top: 2rem; max-width: 250px;">Guardar Producto</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- HISTORIAL -->
+            <section id="historyView" class="content-section">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Historial</h2>
+                        <p class="page-subtitle">Últimas 30 actividades registradas</p>
                     </div>
-                </section>
+                </div>
+                <ul id="historial" class="historial-list"></ul>
+            </section>
 
-                <section id="historyView" class="content-section">
-                    <h2 style="margin-bottom: 1.5rem;">Actividad Reciente</h2>
-                    <ul id="historial" class="historial-list"></ul>
-                </section>
-            </main>
-        </div>
+        </main>
     </div>
+</div>
 
-    <div id="toast">Operación exitosa</div>
+<div id="toast"></div>
 
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    <script src="script.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
