@@ -13,25 +13,33 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const auth = firebase.auth();
 
-// CONFIGURACIÓN DE ROLES (Cambia esto por el correo del dueño)
-const OWNER_EMAIL = "dueño@empresa.com"; 
-
 /* ESTADO GLOBAL */
 let productos = [];
 let historial = [];
 let currentUser = null;
-let isOwner = false;
+let userRole = 'empleado'; // Por defecto
 
 /* --- SISTEMA DE AUTENTICACIÓN --- */
 
+// Cambiar entre Login y Registro
+function toggleAuth(showRegister) {
+    document.getElementById("loginFormContainer").style.display = showRegister ? "none" : "block";
+    document.getElementById("registerFormContainer").style.display = showRegister ? "block" : "none";
+    document.getElementById("authError").style.display = "none";
+}
+
 // Escuchar cambios de sesión
-auth.onAuthStateChanged(user => {
+auth.onAuthStateChanged(async (user) => {
     if (user) {
         currentUser = user;
-        isOwner = (user.email === OWNER_EMAIL);
         
-        // UI Roles
-        document.getElementById("userDisplay").innerText = `Usuario: ${user.email} (${isOwner ? 'Dueño' : 'Empleado'})`;
+        // Obtener Rol del Usuario desde la base de datos
+        const roleSnap = await db.ref(`usuarios/${user.uid}/rol`).once('value');
+        userRole = roleSnap.val() || 'empleado';
+
+        // UI según el Rol
+        const isOwner = (userRole === 'dueño');
+        document.getElementById("userDisplay").innerText = `${user.email} (${userRole.toUpperCase()})`;
         document.querySelectorAll(".owner-only").forEach(el => el.style.display = isOwner ? "block" : "none");
         document.getElementById("quien").value = user.email.split('@')[0];
 
@@ -46,27 +54,59 @@ auth.onAuthStateChanged(user => {
     }
 });
 
-// Login
+// LOGIN
 document.getElementById("loginForm").onsubmit = async (e) => {
     e.preventDefault();
     const email = document.getElementById("loginEmail").value;
     const pass = document.getElementById("loginPass").value;
     const btn = document.getElementById("btnLogin");
-    const errorEl = document.getElementById("loginError");
+    const errorEl = document.getElementById("authError");
 
-    btn.innerText = "Entrando...";
+    btn.innerText = "Cargando...";
     errorEl.style.display = "none";
 
     try {
         await auth.signInWithEmailAndPassword(email, pass);
     } catch (error) {
-        errorEl.innerText = "Error: Correo o contraseña inválidos";
+        errorEl.innerText = "Error: Acceso denegado. Revisa tus datos.";
         errorEl.style.display = "block";
-        btn.innerText = "Entrar al Sistema";
+        btn.innerText = "Entrar";
     }
 };
 
-// Logout
+// REGISTRO
+document.getElementById("registerForm").onsubmit = async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("regEmail").value;
+    const pass = document.getElementById("regPass").value;
+    const rol = document.getElementById("regRol").value;
+    const btn = document.getElementById("btnReg");
+    const errorEl = document.getElementById("authError");
+
+    if (pass.length < 6) {
+        errorEl.innerText = "La contraseña debe tener al menos 6 caracteres";
+        errorEl.style.display = "block";
+        return;
+    }
+
+    btn.innerText = "Creando cuenta...";
+    errorEl.style.display = "none";
+
+    try {
+        const result = await auth.createUserWithEmailAndPassword(email, pass);
+        // Guardar el rol en la base de datos
+        await db.ref(`usuarios/${result.user.uid}`).set({
+            email: email,
+            rol: rol
+        });
+        showToast("Cuenta creada exitosamente");
+    } catch (error) {
+        errorEl.innerText = "Error al registrar: " + error.message;
+        errorEl.style.display = "block";
+        btn.innerText = "Registrarse";
+    }
+};
+
 function logout() {
     auth.signOut();
 }
@@ -87,29 +127,25 @@ function initData() {
     });
 }
 
-/* --- RENDERIZADO --- */
-
 function render() {
     const filters = {
         busqueda: document.getElementById("buscador").value.toLowerCase(),
         piso: document.getElementById("filtroPiso").value
     };
 
-    // Limpiar contenedores
     ["llegaron", "espera", "listos"].forEach(est => {
         document.getElementById(`estado-${est}`).innerHTML = "";
         document.getElementById(`count-${est}`).innerText = "0";
     });
 
     const counts = { llegaron: 0, espera: 0, listos: 0 };
+    const isOwner = (userRole === 'dueño');
 
     productos.forEach(p => {
-        // Filtros
         if (filters.busqueda && !p.nombre.toLowerCase().includes(filters.busqueda)) return;
         if (filters.piso && p.piso !== filters.piso) return;
 
         counts[p.estado]++;
-
         const card = document.createElement("div");
         card.className = "card";
         card.innerHTML = `
@@ -117,27 +153,24 @@ function render() {
             <div style="font-size: 0.85rem; margin-bottom: 8px;">
                 📦 ${p.cantidad} ${p.tipoCantidad} | 📍 ${p.piso}
             </div>
-            <small>Por: ${p.quien} • ${p.hora}</small>
-            
+            <small>${p.quien} • ${p.hora}</small>
             <div class="actions">
-                <button title="Mover a Llegaron" onclick="cambiarEstado('${p.id}','llegaron')">🆕</button>
-                <button title="Mover a Espera" onclick="cambiarEstado('${p.id}','espera')">⏳</button>
-                <button title="Mover a Listo" onclick="cambiarEstado('${p.id}','listos')">✅</button>
-                ${isOwner ? `<button title="Borrar" class="danger" onclick="borrarProducto('${p.id}')">🗑</button>` : ''}
+                <button onclick="cambiarEstado('${p.id}','llegaron')">🆕</button>
+                <button onclick="cambiarEstado('${p.id}','espera')">⏳</button>
+                <button onclick="cambiarEstado('${p.id}','listos')">✅</button>
+                ${isOwner ? `<button class="danger" onclick="borrarProducto('${p.id}')">🗑</button>` : ''}
             </div>
         `;
         document.getElementById(`estado-${p.estado}`).appendChild(card);
     });
 
-    // Actualizar contadores
     Object.keys(counts).forEach(est => {
         document.getElementById(`count-${est}`).innerText = counts[est];
     });
 }
 
 function renderHistorial() {
-    const list = document.getElementById("historial");
-    list.innerHTML = historial.map(h => `
+    document.getElementById("historial").innerHTML = historial.map(h => `
         <li class="historial-item">
             <span><b>${h.accion}:</b> ${h.nombre}</span>
             <small>${h.hora}</small>
@@ -149,53 +182,30 @@ function renderHistorial() {
 
 function showToast(msg) {
     const t = document.getElementById("toast");
-    t.innerText = msg;
-    t.style.display = "block";
+    t.innerText = msg; t.style.display = "block";
     setTimeout(() => t.style.display = "none", 3000);
-}
-
-function logAccion(accion, nombre) {
-    db.ref("historial").push({
-        accion,
-        nombre,
-        hora: new Date().toLocaleString(),
-        user: currentUser.email
-    });
 }
 
 async function cambiarEstado(id, nuevoEstado) {
     const p = productos.find(x => x.id === id);
     if (!p) return;
-    
-    try {
-        await db.ref(`productos/${id}`).update({ estado: nuevoEstado });
-        logAccion(`Cambió a ${nuevoEstado}`, p.nombre);
-        showToast("Estado actualizado");
-    } catch (e) {
-        showToast("Error al actualizar");
-    }
+    await db.ref(`productos/${id}`).update({ estado: nuevoEstado });
+    db.ref("historial").push({ accion: `Movió a ${nuevoEstado}`, nombre: p.nombre, hora: new Date().toLocaleString() });
+    showToast("Estado actualizado");
 }
 
 async function borrarProducto(id) {
-    if (!isOwner) return showToast("No tienes permiso");
+    if (userRole !== 'dueño') return;
     const p = productos.find(x => x.id === id);
-    if (!p) return;
-
-    if (confirm(`¿Seguro que quieres eliminar ${p.nombre}?`)) {
-        try {
-            await db.ref(`productos/${id}`).remove();
-            logAccion("Eliminado", p.nombre);
-            showToast("Producto eliminado");
-        } catch (e) {
-            showToast("Error al eliminar");
-        }
+    if (confirm(`¿Eliminar ${p.nombre}?`)) {
+        await db.ref(`productos/${id}`).remove();
+        db.ref("historial").push({ accion: "Eliminado", nombre: p.nombre, hora: new Date().toLocaleString() });
+        showToast("Producto eliminado");
     }
 }
 
 document.getElementById("productForm").onsubmit = async (e) => {
     e.preventDefault();
-    if (!isOwner) return showToast("Solo el dueño puede agregar");
-
     const nuevo = {
         nombre: document.getElementById("nombre").value,
         quien: document.getElementById("quien").value,
@@ -205,29 +215,16 @@ document.getElementById("productForm").onsubmit = async (e) => {
         tipoCantidad: document.getElementById("tipoCantidad").value,
         cantidad: document.getElementById("cantidad").value
     };
-
-    try {
-        await db.ref("productos").push(nuevo);
-        logAccion("Agregado", nuevo.nombre);
-        showToast("Producto guardado");
-        e.target.reset();
-        showSection('dashboardView');
-    } catch (error) {
-        showToast("Error al guardar");
-    }
+    await db.ref("productos").push(nuevo);
+    db.ref("historial").push({ accion: "Agregado", nombre: nuevo.nombre, hora: nuevo.hora });
+    showToast("Guardado");
+    e.target.reset();
+    showSection('dashboardView');
 };
 
-/* --- NAVEGACIÓN --- */
 function showSection(id) {
     document.querySelectorAll(".content-section").forEach(s => s.classList.remove("active"));
-    document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
-    
     document.getElementById(id).classList.add("active");
-    // Marcar item del menú (esto es una simplificación)
-    const items = document.querySelectorAll(".nav-item");
-    if(id === 'dashboardView') items[0].classList.add("active");
-    if(id === 'addView') items[1].classList.add("active");
-    if(id === 'historyView') items[2].classList.add("active");
 }
 
 document.getElementById("buscador").oninput = render;
