@@ -1,0 +1,2277 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manolette — Plataforma Empresarial</title>
+    <link rel="icon" type="image/png" href="manolette-2.png">
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Oswald:wght@400;600&family=Pacifico&family=Montserrat:wght@400;600;700&family=Raleway:wght@400;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ═══════════════════════════════════════════════
+     OFFLINE BANNER
+═══════════════════════════════════════════════ -->
+    <div id="offline-banner" class="offline-banner" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <line x1="1" y1="1" x2="23" y2="23" />
+            <path
+                d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39M10.71 5.05A16 16 0 0 1 22.56 9M1.42 9a15.91 15.91 0 0 1 4.7-2.88M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01" />
+        </svg>
+        Sin conexión a internet — los cambios se sincronizarán al reconectar
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+     APP SHELL
+═══════════════════════════════════════════════ -->
+    <div id="appInterface" style="display:none">
+
+        <!-- ── SIDEBAR ── -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="manolette-imagen.png" alt="Manolette" class="sidebar-logo-banner">
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <!-- Principal -->
+                <div class="nav-section-label">Principal</div>
+
+                <button class="nav-item" id="nav-dashboard">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect width="7" height="9" x="3" y="3" rx="1" />
+                        <rect width="7" height="5" x="14" y="3" rx="1" />
+                        <rect width="7" height="9" x="14" y="12" rx="1" />
+                        <rect width="7" height="5" x="3" y="16" rx="1" />
+                    </svg>
+                    Dashboard
+                </button>
+
+                <button class="nav-item" id="nav-contratos">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect width="16" height="20" x="4" y="2" rx="2" />
+                        <path d="M8 10h8M8 14h8M8 6h4" />
+                    </svg>
+                    Contratos
+                </button>
+
+                <button class="nav-item" id="nav-ordenes">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                        <line x1="12" y1="22.08" x2="12" y2="12" />
+                    </svg>
+                    Órdenes
+                </button>
+
+                <!-- Gestión -->
+                <div class="nav-section-label">Gestión</div>
+
+                <button class="nav-item" id="nav-inventario">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 5H2v7l6.29 6.29c.94.94 2.48.94 3.42 0l3.58-3.58c.94-.94.94-2.48 0-3.42L9 5Z" />
+                        <path d="M6 9.01V9" />
+                        <path d="m15 5 6.3 6.3a2.4 2.4 0 0 1 0 3.4L17 19" />
+                    </svg>
+                    Inventario
+                </button>
+
+                <button class="nav-item" id="nav-proveedores">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                    Proveedores
+                </button>
+
+                <button class="nav-item" id="nav-clientes">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                    Clientes
+                </button>
+
+                <button class="nav-item" id="nav-empleados">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                    Empleados
+                </button>
+
+                <!-- Finanzas -->
+                <div class="nav-section-label">Finanzas</div>
+
+                <button class="nav-item" id="nav-gastos">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="1" x2="12" y2="23" />
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                    </svg>
+                    Gastos
+                </button>
+
+                <button class="nav-item" id="nav-cotizaciones">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <path d="M14 2v6h6" />
+                        <line x1="16" y1="13" x2="8" y2="13" />
+                        <line x1="16" y1="17" x2="8" y2="17" />
+                        <polyline points="10 9 9 9 8 9" />
+                    </svg>
+                    Cotizaciones
+                </button>
+
+                <!-- Inteligencia -->
+                <div class="nav-section-label">Inteligencia</div>
+
+                <button class="nav-item" id="nav-productoDia">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                    </svg>
+                    Producto del Día
+                </button>
+
+                <button class="nav-item" id="nav-gemini">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 3c-1 2.5-3.5 4-3.5 4S11 8.5 12 12c1-3.5 3.5-5 3.5-5S13 5.5 12 3z" />
+                        <path d="M12 12c-1 2.5-3.5 4-3.5 4S11 17.5 12 21c1-3.5 3.5-5 3.5-5S13 14.5 12 12z" />
+                        <path d="M3 12c2.5-1 4-3.5 4-3.5S8.5 11 12 12c-3.5 1-5 3.5-5 3.5S5.5 13 3 12z" />
+                        <path d="M21 12c-2.5-1-4-3.5-4-3.5S15.5 11 12 12c3.5 1 5 3.5 5 3.5S18.5 13 21 12z" />
+                    </svg>
+                    Asistente IA
+                </button>
+
+                <button class="nav-item" id="nav-analiticas">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10" />
+                        <line x1="12" y1="20" x2="12" y2="4" />
+                        <line x1="6" y1="20" x2="6" y2="14" />
+                    </svg>
+                    Analíticas
+                </button>
+
+                <button class="nav-item" id="nav-prompts">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                    </svg>
+                    Image Master Prompt IA
+                </button>
+
+                <button class="nav-item" id="nav-diseno">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="13.5" cy="6.5" r="2.5" />
+                        <circle cx="19" cy="17" r="2.5" />
+                        <circle cx="6.5" cy="17.5" r="2.5" />
+                        <path d="M13.5 9a6.5 6.5 0 0 1 0 13H6.5a6.5 6.5 0 0 1 0-13h7z" />
+                    </svg>
+                    Diseño IA
+                </button>
+
+                <!-- Herramientas -->
+                <div class="nav-section-label">Herramientas</div>
+
+                <button class="nav-item" id="nav-calendario">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect width="18" height="18" x="3" y="4" rx="2" />
+                        <path d="M16 2v4M8 2v4M3 10h18" />
+                        <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01" />
+                    </svg>
+                    Calendario
+                </button>
+
+                <button class="nav-item" id="nav-reportes">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 3v18h18" />
+                        <path d="m19 9-5 5-4-4-3 3" />
+                    </svg>
+                    Reportes
+                </button>
+
+                <button class="nav-item" id="nav-notas">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                        <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                    Notas
+                </button>
+
+                <button class="nav-item" id="nav-bitacora">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                    </svg>
+                    Bitácora
+                </button>
+
+                <!-- Sistema (solo dueño) -->
+                <div class="nav-section-label" data-role="owner">Sistema</div>
+
+                <button class="nav-item" id="nav-config" data-role="owner">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+                        <circle cx="12" cy="12" r="3" />
+                    </svg>
+                    Configuración
+                </button>
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar" id="user-avatar">?</div>
+                    <div class="user-details">
+                        <div class="user-email" id="user-email">—</div>
+                        <div class="user-role" id="user-role">—</div>
+                    </div>
+                </div>
+                <button class="btn-logout" onclick="logout()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    Cerrar sesión
+                </button>
+            </div>
+        </aside>
+
+        <!-- Overlay sidebar móvil -->
+        <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+        <!-- ── MAIN ── -->
+        <div class="main-content">
+
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="hamburger" onclick="toggleSidebar()" aria-label="Menú">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22"
+                            height="22">
+                            <line x1="4" y1="6" x2="20" y2="6" />
+                            <line x1="4" y1="12" x2="20" y2="12" />
+                            <line x1="4" y1="18" x2="20" y2="18" />
+                        </svg>
+                    </button>
+                    <h1 class="page-title" id="page-title">Dashboard</h1>
+                </div>
+                <div class="topbar-right">
+                    <!-- Notificaciones -->
+                    <div style="position:relative">
+                        <button id="notif-btn" class="notif-btn" onclick="toggleNotifDropdown()" aria-label="Alertas">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18"
+                                height="18">
+                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                            </svg>
+                            <span id="notif-badge" class="notif-badge" style="display:none">0</span>
+                        </button>
+                        <div id="notif-dropdown" class="notif-dropdown">
+                            <div class="notif-dropdown-header">
+                                <span>Alertas</span>
+                                <div style="display:flex;gap:.5rem;align-items:center">
+                                    <button class="btn btn-ghost btn-xs" onclick="borrarTodasNotificaciones()" 
+                                        style="font-size:10px;padding:2px 6px;color:var(--text-tertiary)">Borrar todas</button>
+                                    <button class="btn btn-ghost btn-sm" onclick="_closeNotifDropdown()"
+                                        style="padding:.2rem .4rem"><svg viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" width="14" height="14">
+                                            <path d="M18 6 6 18M6 6l12 12" />
+                                        </svg></button>
+                                </div>
+                            </div>
+                            <div id="notif-list" class="notif-list"></div>
+                        </div>
+                    </div>
+                    <span class="badge badge-blue" id="topbar-role-badge">—</span>
+                </div>
+            </header>
+
+            <!-- CONTENT AREA -->
+            <main class="content-area">
+
+                <!-- ═══════════════════════════════════════
+                 DASHBOARD
+            ═══════════════════════════════════════ -->
+                <div id="dashboardSection" class="section active">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Dashboard</h2>
+                            <p class="section-subtitle">Vista general de operaciones en tiempo real</p>
+                        </div>
+                    </div>
+
+                    <!-- Alertas urgentes -->
+                    <div id="deadline-alerts"></div>
+                    <div id="orden-alerts"></div>
+
+                    <!-- KPIs -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-label">Contratos Activos</span>
+                                <div class="kpi-icon blue">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        width="20" height="20">
+                                        <rect width="16" height="20" x="4" y="2" rx="2" />
+                                        <path d="M8 10h8M8 14h8M8 6h4" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="kpi-value" id="kpi-contratos">—</div>
+                            <div class="kpi-sub">En curso</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-label">Órdenes en Proceso</span>
+                                <div class="kpi-icon amber">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        width="20" height="20">
+                                        <path
+                                            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="kpi-value" id="kpi-ordenes">—</div>
+                            <div class="kpi-sub">Sin despachar aún</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-label">Pendientes Recepción</span>
+                                <div class="kpi-icon purple">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        width="20" height="20">
+                                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="kpi-value" id="kpi-pendientes">—</div>
+                            <div class="kpi-sub">Estado: Recibido</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-label">Enviados este mes</span>
+                                <div class="kpi-icon green">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        width="20" height="20">
+                                        <path d="M5 12h14M12 5l7 7-7 7" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="kpi-value" id="kpi-enviados">—</div>
+                            <div class="kpi-sub" id="kpi-enviados-trend">Despachos completados</div>
+                        </div>
+                    </div>
+
+                    <!-- Gráficas + Actividad -->
+                    <div class="dashboard-grid">
+                        <div class="chart-card card">
+                            <div class="card-header">
+                                <h3>Pipeline de Órdenes</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-wrapper"><canvas id="pipeline-chart"></canvas></div>
+                            </div>
+                        </div>
+                        <div class="chart-card card">
+                            <div class="card-header">
+                                <h3>Enviadas — últimos 6 meses</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-wrapper"><canvas id="monthly-chart"></canvas></div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Actividad Reciente</h3>
+                            </div>
+                            <div class="card-body" style="padding:0">
+                                <div id="activity-feed" style="padding:0 1.25rem"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── SECCIÓN: MASTER PROMPT ── -->
+                <section id="promptsSection" class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Image Master Prompt IA</h2>
+                        <p class="section-subtitle">Ingeniería de Prompts de nivel experto para generación de imágenes</p>
+                    </div>
+
+                    <div class="prompt-master-grid">
+                        <div class="prompt-sidebar">
+                            <div class="config-section" style="border:none;background:rgba(255,255,255,0.02);border-radius:var(--r-xl);padding:1.5rem">
+                                <h3 style="font-size:var(--fz-md);margin-bottom:1rem;color:var(--accent)">Estratega de Prompts</h3>
+                                <p style="font-size:var(--fz-xs);color:var(--text-tertiary);line-height:1.5;margin-bottom:1.5rem">
+                                    Describe tu idea de forma simple. Nuestro agente la transformará en un prompt técnico optimizado para Midjourney, Flux o DALL-E.
+                                </p>
+                                <textarea id="prompt-raw-input" class="form-input" style="height:120px;resize:none;margin-bottom:1rem" placeholder="Ej: Un gato detective en un callejón lluvioso de neón..."></textarea>
+                                <button class="btn btn-primary" style="width:100%" onclick="generateMasterPrompt()">
+                                    <span>Ingeniería de Prompt</span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="prompt-main">
+                            <div id="prompt-result-container" style="display:none">
+                                <div class="prompt-result-card">
+                                    <div class="prompt-result-header">
+                                        <span class="badge">PROMPT OPTIMIZADO</span>
+                                        <button class="btn-icon" onclick="copyToClipboard('prompt-final-text')">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                                        </button>
+                                    </div>
+                                    <div id="prompt-final-text" class="prompt-text"></div>
+                                    <div class="prompt-breakdown">
+                                        <h4>Análisis del Artista</h4>
+                                        <div id="prompt-analysis" class="prompt-analysis-content"></div>
+                                    </div>
+                                    <div id="prompt-questions-container" style="margin-top:24px; display:none; padding:1.25rem; background:rgba(var(--accent-rgb), 0.05); border-radius:var(--r-md); border:1px solid var(--accent-border)">
+                                        <h4 style="font-size:var(--fz-xs);color:var(--accent);margin-bottom:12px;text-transform:uppercase;display:flex;align-items:center;gap:8px">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                            Preguntas del Agente
+                                        </h4>
+                                        <div id="prompt-questions" class="chip-grid"></div>
+                                    </div>
+                                    <div id="prompt-refinements-container" style="margin-top:24px; display:none;">
+                                        <h4 style="font-size:var(--fz-xs);color:var(--accent);margin-bottom:12px;text-transform:uppercase">Variaciones de Estilo</h4>
+                                        <div id="prompt-chips" class="chip-grid"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="prompt-welcome" class="dprop-hint" style="height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column">
+                                <div style="font-size:3rem;margin-bottom:1rem;opacity:0.5">🧠</div>
+                                <p>Ingresa una idea básica para comenzar la ingeniería de prompts</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ═══════════════════════════════════════
+                 CONTRATOS
+            ═══════════════════════════════════════ -->
+                <div id="contratosSection" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Contratos</h2>
+                            <p class="section-subtitle">Gestión de contratos con Cafam y otros clientes</p>
+                        </div>
+                        <button class="btn btn-primary" data-role="supervisor" onclick="nuevoContrato()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                height="16">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                            Nuevo Contrato
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <input class="form-input" type="text"
+                                placeholder="Buscar contrato, cliente o responsable..." style="max-width:340px"
+                                oninput="filtrarContratos(this.value)">
+                        </div>
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Número</th>
+                                        <th>Cliente</th>
+                                        <th>Inicio</th>
+                                        <th>Fecha Límite</th>
+                                        <th>Estado</th>
+                                        <th>Responsable</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="contratos-tbody">
+                                    <tr>
+                                        <td colspan="7" style="text-align:center;padding:2.5rem;color:var(--text-sm)">
+                                            Cargando contratos...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════
+                 ÓRDENES — KANBAN
+            ═══════════════════════════════════════ -->
+                <div id="ordenesSection" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Órdenes</h2>
+                            <p class="section-subtitle">Pipeline de empaque y despacho — arrastra para mover</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="nuevaOrden()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                height="16">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                            Nueva Orden
+                        </button>
+                    </div>
+
+                    <div class="filters-bar">
+                        <select class="form-select" id="filtro-contrato-orden" style="max-width:280px"
+                            onchange="filtrarOrdenesContrato(this.value)">
+                            <option value="">Todos los contratos</option>
+                        </select>
+                    </div>
+
+                    <div class="kanban-board">
+                        <!-- Recibido -->
+                        <div class="kanban-column">
+                            <div class="kanban-col-header">
+                                <div class="kanban-col-title"><span class="dot dot-blue"></span> Recibido</div>
+                                <span class="badge badge-blue" id="kanban-count-recibido">0</span>
+                            </div>
+                            <div class="kanban-cards" id="kanban-cards-recibido" ondragover="handleDragOver(event)"
+                                ondragenter="handleDragEnter(event)" ondragleave="handleDragLeave(event)"
+                                ondrop="handleDrop(event,'recibido')"></div>
+                        </div>
+                        <!-- En Empaque -->
+                        <div class="kanban-column">
+                            <div class="kanban-col-header">
+                                <div class="kanban-col-title"><span class="dot dot-amber"></span> En Empaque</div>
+                                <span class="badge badge-amber" id="kanban-count-empaque">0</span>
+                            </div>
+                            <div class="kanban-cards" id="kanban-cards-empaque" ondragover="handleDragOver(event)"
+                                ondragenter="handleDragEnter(event)" ondragleave="handleDragLeave(event)"
+                                ondrop="handleDrop(event,'empaque')"></div>
+                        </div>
+                        <!-- Control Calidad -->
+                        <div class="kanban-column">
+                            <div class="kanban-col-header">
+                                <div class="kanban-col-title"><span class="dot dot-purple"></span> Control Calidad</div>
+                                <span class="badge badge-purple" id="kanban-count-calidad">0</span>
+                            </div>
+                            <div class="kanban-cards" id="kanban-cards-calidad" ondragover="handleDragOver(event)"
+                                ondragenter="handleDragEnter(event)" ondragleave="handleDragLeave(event)"
+                                ondrop="handleDrop(event,'calidad')"></div>
+                        </div>
+                        <!-- Listo -->
+                        <div class="kanban-column">
+                            <div class="kanban-col-header">
+                                <div class="kanban-col-title"><span class="dot dot-green"></span> Listo</div>
+                                <span class="badge badge-green" id="kanban-count-listo">0</span>
+                            </div>
+                            <div class="kanban-cards" id="kanban-cards-listo" ondragover="handleDragOver(event)"
+                                ondragenter="handleDragEnter(event)" ondragleave="handleDragLeave(event)"
+                                ondrop="handleDrop(event,'listo')"></div>
+                        </div>
+                        <!-- Enviado -->
+                        <div class="kanban-column">
+                            <div class="kanban-col-header">
+                                <div class="kanban-col-title"><span class="dot dot-gray"></span> Enviado</div>
+                                <span class="badge badge-gray" id="kanban-count-enviado">0</span>
+                            </div>
+                            <div class="kanban-cards" id="kanban-cards-enviado" ondragover="handleDragOver(event)"
+                                ondragenter="handleDragEnter(event)" ondragleave="handleDragLeave(event)"
+                                ondrop="handleDrop(event,'enviado')"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════
+                 INVENTARIO
+            ═══════════════════════════════════════ -->
+                <div id="inventarioSection" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Inventario</h2>
+                            <p class="section-subtitle">Stock de productos y movimientos</p>
+                        </div>
+                        <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
+                            <input class="form-input" type="text" placeholder="Buscar producto..."
+                                style="max-width:240px" oninput="buscarInventario(this.value)">
+                            <button class="btn btn-primary" onclick="nuevoItem()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                    height="16">
+                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                                Agregar Producto
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>SKU</th>
+                                    <th>Categoría</th>
+                                    <th>Stock Actual</th>
+                                    <th>Stock Mínimo</th>
+                                    <th>Ubicación</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventario-tbody">
+                                <tr>
+                                    <td colspan="7" style="text-align:center;padding:2.5rem;color:var(--text-sm)">
+                                        Cargando inventario...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════
+                 PROVEEDORES
+            ═══════════════════════════════════════ -->
+                <div id="proveedoresSection" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Proveedores</h2>
+                            <p class="section-subtitle">Directorio de contactos — <span id="prov-count">0</span>
+                                registrados</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="nuevoProveedor()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                height="16">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                            Nuevo Proveedor
+                        </button>
+                    </div>
+
+                    <div class="filters-bar">
+                        <input class="form-input" type="text" placeholder="Buscar por nombre, ciudad o producto..."
+                            style="max-width:300px" oninput="buscarProveedores(this.value)">
+                        <select class="form-select" id="filtro-prov-categoria" style="max-width:220px"
+                            onchange="filtrarProvCategoria(this.value)">
+                            <option value="">Todas las categorías</option>
+                        </select>
+                    </div>
+
+                    <div class="proveedores-grid" id="proveedores-grid">
+                        <div style="grid-column:1/-1;padding:2.5rem;text-align:center;color:var(--text-sm)">Cargando
+                            proveedores...</div>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════
+                 CLIENTES
+            ═══════════════════════════════════════ -->
+                <div id="clientesSection" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Clientes</h2>
+                            <p class="section-subtitle">Directorio de clientes y prospectos — <span
+                                    id="clientes-count">0</span> registrados</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="nuevoCliente()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                height="16">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                            Nuevo Cliente
+                        </button>
+                    </div>
+                    <div class="filters-bar">
+                        <input class="form-input" id="buscar-cliente" type="text"
+                            placeholder="Buscar por nombre o empresa..." style="max-width:300px"
+                            oninput="renderClientes()">
+                    </div>
+                    <div class="proveedores-grid" id="clientes-grid"></div>
+                </div>
+
+                <!-- ═══════════════════════════════════════
+                 EMPLEADOS
+            ═══════════════════════════════════════ -->
+                <div id="empleadosSection" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Empleados</h2>
+                            <p class="section-subtitle">Directorio del equipo — <span id="empleados-count">0</span>
+                                miembros</p>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Usuario</th>
+                                    <th>Rol</th>
+                                    <th>Ultimo Acceso</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="empleados-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════
+                 GASTOS
+            ═══════════════════════════════════════ -->
+                <div id="gastosSection" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Gastos</h2>
+                            <p class="section-subtitle">Registro operativo — <span id="gastos-count">0</span> registros
+                            </p>
+                        </div>
+                        <button class="btn btn-primary" onclick="nuevoGasto()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                height="16">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                            Nuevo Gasto
+                        </button>
+                    </div>
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-label">Gastos del Mes</div>
+                            <div class="kpi-value" id="gastos-total-mes">$0</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-label">Gastos Totales</div>
+                            <div class="kpi-value" id="gastos-total-general">$0</div>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Concepto</th>
+                                    <th>Categoria</th>
+                                    <th>Monto</th>
+                                    <th>Responsable</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="gastos-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════
+                 COTIZACIONES
+            ═══════════════════════════════════════ -->
+                <div id="cotizacionesSection" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Cotizaciones</h2>
+                            <p class="section-subtitle">Presupuestos a clientes — <span id="cotizaciones-count">0</span>
+                                generados</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="nuevaCotizacion()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                height="16">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                            Nueva Cotizacion
+                        </button>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Numero</th>
+                                    <th>Cliente</th>
+                                    <th>Fecha</th>
+                                    <th>Total</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cotizaciones-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════
+                 PRODUCTO DEL DÍA
+            ═══════════════════════════════════════ -->
+                <div id="productoDiaSection" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Producto del Dia</h2>
+                            <p class="section-subtitle">ANTIGRAVITY analiza tus datos reales y elige el producto con mayor
+                                potencial hoy</p>
+                        </div>
+                    </div>
+
+                    <div class="pd-how-works">
+                        <div class="pd-criteria-title">¿Cómo elige ANTIGRAVITY el ganador?</div>
+                        <div class="pd-criteria-grid">
+                            <div class="pd-criteria-item"><span class="pd-criteria-icon"><svg viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="1.75" width="18" height="18">
+                                        <path d="M3 3v18h18" />
+                                        <path d="m19 9-5 5-4-4-3 3" />
+                                    </svg></span>
+                                <div><strong>Mas ordenes</strong><br><small>Ultimos 90 dias</small></div>
+                            </div>
+                            <div class="pd-criteria-item"><span class="pd-criteria-icon"><svg viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="1.75" width="18" height="18">
+                                        <path
+                                            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                                    </svg></span>
+                                <div><strong>Mayor volumen</strong><br><small>Unidades despachadas</small></div>
+                            </div>
+                            <div class="pd-criteria-item"><span class="pd-criteria-icon"><svg viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="1.75" width="18" height="18">
+                                        <path
+                                            d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2" />
+                                    </svg></span>
+                                <div><strong>Consistencia</strong><br><small>Pedidos frecuentes</small></div>
+                            </div>
+                            <div class="pd-criteria-item"><span class="pd-criteria-icon"><svg viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="1.75" width="18" height="18">
+                                        <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
+                                    </svg></span>
+                                <div><strong>Alta prioridad</strong><br><small>Urgentes frecuentes</small></div>
+                            </div>
+                            <div class="pd-criteria-item"><span class="pd-criteria-icon"><svg viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="1.75" width="18" height="18">
+                                        <path d="M20 6 9 17l-5-5" />
+                                    </svg></span>
+                                <div><strong>Stock saludable</strong><br><small>Sin agotarse</small></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="producto-dia-container"></div>
+                </div>
+
+                <!-- ═══════════════════════════════════════
+                 ASISTENTE IA (GEMINI)
+            ═══════════════════════════════════════ -->
+                <div id="geminiSection" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Asistente IA</h2>
+                            <p class="section-subtitle">Consultas de negocio, proveedores y gestión con ANTIGRAVITY</p>
+                        </div>
+                        <button class="btn btn-secondary" id="gemini-clear">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14"
+                                height="14">
+                                <path
+                                    d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                            </svg>
+                            Limpiar chat
+                        </button>
+                    </div>
+
+                    <div class="chat-container">
+                        <div class="chat-messages" id="gemini-messages">
+                            <div id="gemini-welcome" class="ai-welcome">
+                                <div class="ai-welcome-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M12 3c-1 2.5-3.5 4-3.5 4S11 8.5 12 12c1-3.5 3.5-5 3.5-5S13 5.5 12 3z" />
+                                        <path
+                                            d="M12 12c-1 2.5-3.5 4-3.5 4S11 17.5 12 21c1-3.5 3.5-5 3.5-5S13 14.5 12 12z" />
+                                        <path
+                                            d="M3 12c2.5-1 4-3.5 4-3.5S8.5 11 12 12c-3.5 1-5 3.5-5 3.5S5.5 13 3 12z" />
+                                        <path
+                                            d="M21 12c-2.5-1-4-3.5-4-3.5S15.5 11 12 12c3.5 1 5 3.5 5 3.5S18.5 13 21 12z" />
+                                    </svg>
+                                </div>
+                                <h3>Asistente ANTIGRAVITY — Manolette</h3>
+                                <p>Pregúntame sobre proveedores, contratos, inventario o cualquier consulta de negocio.
+                                </p>
+                                <div class="chat-suggestions">
+                                    <button class="chat-suggestion"
+                                        data-query="Busca proveedores de termos al por mayor en Bogota Colombia, necesito precios y contactos">Proveedores
+                                        de termos en Bogota</button>
+                                    <button class="chat-suggestion"
+                                        data-query="Busca distribuidores de regalos corporativos en Medellin con precios al por mayor">Regalos
+                                        corporativos Medellin</button>
+                                    <button class="chat-suggestion"
+                                        data-query="Cuantos contratos activos tenemos y cual es su estado?">Ver
+                                        contratos actuales</button>
+                                    <button class="chat-suggestion"
+                                        data-query="Cuantas ordenes estan en proceso y cuales son urgentes?">Estado de
+                                        ordenes urgentes</button>
+                                    <button class="chat-suggestion"
+                                        data-query="Que productos tienen stock bajo o agotado en inventario?">Alertas de
+                                        inventario</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-input-area">
+                            <textarea id="gemini-input" placeholder="Pregunta sobre proveedores, precios, productos..."
+                                rows="1"></textarea>
+                            <button class="btn btn-primary" id="gemini-send" style="align-self:flex-end">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                    height="16">
+                                    <path d="m22 2-7 20-4-9-9-4 20-7Z" />
+                                    <path d="M22 2 11 13" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════
+                 ANALÍTICAS
+            ═══════════════════════════════════════ -->
+                <div id="analiticasSection" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Analíticas</h2>
+                            <p class="section-subtitle">Rendimiento financiero y operativo</p>
+                        </div>
+                    </div>
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-label">Margen Bruto</div>
+                            <div class="kpi-value" id="analiticas-margen">0%</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-label">Ingresos del Mes</div>
+                            <div class="kpi-value" id="analiticas-ingresos">$0</div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-label">Gastos del Mes</div>
+                            <div class="kpi-value" id="analiticas-gastos">$0</div>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-wrapper">
+                            <canvas id="analiticasChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════
+                 NOTAS
+            ═══════════════════════════════════════ -->
+                <div id="notasSection" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Notas</h2>
+                            <p class="section-subtitle">Ideas, tareas y recordatorios — <span id="notas-count">0</span>
+                                guardadas</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="nuevaNota()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                height="16">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                            Nueva Nota
+                        </button>
+                    </div>
+                    <div class="proveedores-grid" id="notas-grid"></div>
+                </div>
+
+                <!-- ═══════════════════════════════════════
+                 BITÁCORA
+            ═══════════════════════════════════════ -->
+                <div id="bitacoraSection" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Bitácora de Actividad</h2>
+                            <p class="section-subtitle">Registro centralizado de auditoría del sistema</p>
+                        </div>
+                    </div>
+                    <div class="filters-bar">
+                        <select class="form-select" id="bitacora-modulo" style="max-width:200px"
+                            onchange="renderBitacora()">
+                            <option value="">Todos los módulos</option>
+                            <option value="auth">Autenticación</option>
+                            <option value="contratos">Contratos</option>
+                            <option value="inventario">Inventario</option>
+                            <option value="ordenes">Órdenes</option>
+                            <option value="proveedores">Proveedores</option>
+                            <option value="clientes">Clientes</option>
+                            <option value="gastos">Gastos</option>
+                        </select>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Fecha/Hora</th>
+                                    <th>Usuario</th>
+                                    <th>Módulo</th>
+                                    <th>Acción</th>
+                                    <th>Detalle</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bitacora-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════
+                 DISEÑO IA
+            ═══════════════════════════════════════ -->
+                <div id="disenoSection" class="section" style="padding:0;max-width:none">
+
+                    <!-- Toolbar superior -->
+                    <div class="design-toolbar">
+                        <input type="text" id="design-canvas-name" class="design-name-input" value="Mi diseño"
+                            title="Nombre del diseño">
+                        <div class="design-toolbar-sep"></div>
+                        <select id="design-preset-select" class="design-select"
+                            onchange="applyCanvasPreset(this.value)">
+                            <option value="square">Cuadrado 800×800</option>
+                            <option value="instagram">Instagram 1080×1080</option>
+                            <option value="termo">Etiqueta Termo 600×400</option>
+                            <option value="banner">Banner 1200×400</option>
+                            <option value="a4v">A4 Vertical</option>
+                            <option value="portada">Portada Producto</option>
+                            <option value="tarjeta">Tarjeta Presentación</option>
+                        </select>
+                        <div class="design-toolbar-sep"></div>
+                        <span style="font-size:.75rem;color:var(--text-xs);font-weight:600">PLANTILLA:</span>
+                        <button class="dtoolbtn" onclick="applyTemplate('termo_label')">Etiqueta Termo</button>
+                        <button class="dtoolbtn" onclick="applyTemplate('gift_tag')">Etiqueta Regalo</button>
+                        <button class="dtoolbtn" onclick="applyTemplate('portada')">Portada Pro</button>
+                        <div class="design-toolbar-sep"></div>
+                        <button class="dtoolbtn" onclick="undoDesign()" title="Deshacer (Ctrl+Z)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14"
+                                height="14">
+                                <path d="M3 7v6h6" />
+                                <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
+                            </svg>
+                        </button>
+                        <button class="dtoolbtn" onclick="redoDesign()" title="Rehacer (Ctrl+Y)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14"
+                                height="14">
+                                <path d="M21 7v6h-6" />
+                                <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div id="disenoSection" class="section">
+                        <div class="studio-layout">
+                            <!-- Barra lateral de herramientas (Rail) -->
+                            <div class="studio-rail">
+                                <button class="rail-btn active" onclick="switchCanvasPanel('templates')">
+                                    <i class="fas fa-th-large"></i>
+                                    <span>Plantillas</span>
+                                </button>
+                                <button class="rail-btn" onclick="switchCanvasPanel('elements')">
+                                    <i class="fas fa-shapes"></i>
+                                    <span>Elementos</span>
+                                </button>
+                                <button class="rail-btn" onclick="switchCanvasPanel('text')">
+                                    <i class="fas fa-font"></i>
+                                    <span>Texto</span>
+                                </button>
+                                <button class="rail-btn" onclick="switchCanvasPanel('uploads')">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Subidas</span>
+                                </button>
+                                <div class="rail-spacer"></div>
+                                <button class="rail-btn special-ai" onclick="openModal('modal-hf-generator')">
+                                    <i class="fas fa-magic"></i>
+                                    <span>Estudio IA</span>
+                                </button>
+                            </div>
+
+                            <!-- Panel de contenido (Contextual) -->
+                            <div class="studio-panel">
+                                <div id="cv-panel-templates" class="cv-panel-content active">
+                                    <h3>Plantillas</h3>
+                                    <div id="template-list" class="template-grid"></div>
+                                </div>
+                                <div id="cv-panel-elements" class="cv-panel-content">
+                                    <h3>Elementos</h3>
+                                    <div class="shape-grid">
+                                        <button class="shape-btn" onclick="addShape('rect')"><div class="s-rect"></div><span>Rect</span></button>
+                                        <button class="shape-btn" onclick="addShape('circle')"><div class="s-circle"></div><span>Circ</span></button>
+                                        <button class="shape-btn" onclick="addShape('triangle')"><div class="s-triangle"></div><span>Tri</span></button>
+                                    </div>
+                                </div>
+                                <div id="cv-panel-text" class="cv-panel-content">
+                                    <h3>Texto</h3>
+                                    <div class="text-presets">
+                                        <button class="btn-text-preset t-h1" onclick="addText('heading')">Añadir título</button>
+                                        <button class="btn-text-preset t-h2" onclick="addText('subheading')">Añadir subtítulo</button>
+                                        <button class="btn-text-preset t-body" onclick="addText('body')">Añadir cuerpo</button>
+                                    </div>
+                                </div>
+                                <div id="cv-panel-uploads" class="cv-panel-content">
+                                    <h3>Subidas</h3>
+                                    <button class="btn btn-secondary" style="width: 100%; margin-bottom: 12px;" onclick="triggerImageUpload()">Subir Imagen</button>
+                                    <input type="file" id="image-upload-input" hidden accept="image/*">
+                                    <div id="user-uploads-list"></div>
+                                </div>
+                            </div>
+
+                            <!-- Área Central -->
+                            <div class="studio-main">
+                                <div class="studio-header">
+                                    <div class="sh-left" style="display:flex; align-items:center; gap:8px;">
+                                        <span class="project-name" contenteditable="true" style="font-weight:600; padding:4px; border-radius:4px;">Diseño Etiqueta Premium</span>
+                                        <button class="btn btn-ghost btn-sm" onclick="undo()" title="Deshacer"><i class="fas fa-undo"></i></button>
+                                        <button class="btn btn-ghost btn-sm" onclick="redo()" title="Rehacer"><i class="fas fa-redo"></i></button>
+                                        <span class="save-status" style="font-size:12px; color:#64748b;"><i class="fas fa-cloud-check"></i> Guardado</span>
+                                    </div>
+                                    <div class="sh-center" style="display:flex; align-items:center; gap:8px; background:#f1f5f9; padding:4px 12px; border-radius:20px;">
+                                        <button class="btn btn-ghost btn-sm" onclick="zoomCanvas('out')">-</button>
+                                        <span id="cv-zoom-label" style="font-size:12px; font-weight:600;">100%</span>
+                                        <button class="btn btn-ghost btn-sm" onclick="zoomCanvas('in')">+</button>
+                                    </div>
+                                    <div class="sh-right" style="display:flex; align-items:center; gap:8px;">
+                                        <button class="btn btn-secondary btn-sm"><i class="fas fa-share"></i> Compartir</button>
+                                        <button class="btn btn-primary btn-sm" style="background:#D4AF37; border-color:#D4AF37; color:#1A3021; font-weight:bold;" onclick="exportDesign()"><i class="fas fa-check"></i> FINALIZAR</button>
+                                    </div>
+                                </div>
+
+                                <div id="design-canvas-area" class="canvas-container">
+                                    <canvas id="design-canvas"></canvas>
+                                </div>
+
+                                <!-- Toolbar Flotante -->
+                                <div id="cv-element-toolbar" class="floating-toolbar" style="display:none;">
+                                    <div id="cv-text-tools" class="tool-group" style="display:none;">
+                                        <select id="prop-font-family" onchange="updateTextProp('fontFamily', this.value)"></select>
+                                        <input type="number" id="prop-font-size" value="32" onchange="updateTextProp('fontSize', parseInt(this.value))">
+                                        <input type="color" id="prop-text-color" onchange="updateTextProp('fill', this.value)">
+                                    </div>
+                                    <div id="cv-shape-tools" class="tool-group" style="display:none;">
+                                        <input type="color" id="prop-fill-color" onchange="updateShapeProp('fill', this.value)">
+                                    </div>
+                                    <button class="btn-delete" style="margin-left:8px;" onclick="deleteSelected()"><i class="fas fa-trash"></i></button>
+                                </div>
+
+                                <div class="canvas-footer">
+                                    <button class="btn btn-ghost btn-sm" onclick="prevPage()"><i class="fas fa-chevron-left"></i> Anterior</button>
+                                    <span id="cv-page-indicator" style="font-size:12px; font-weight:500;">Página 1 / 1</span>
+                                    <button class="btn btn-ghost btn-sm" onclick="nextPage()">Siguiente <i class="fas fa-chevron-right"></i></button>
+                                    <div style="width:20px;"></div>
+                                    <button class="btn btn-ghost btn-sm" onclick="addNewPage()"><i class="fas fa-plus"></i> Nueva Página</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                <!-- ═══════════════════════════════════════
+                 CALENDARIO
+            ═══════════════════════════════════════ -->
+                <div id="calendarioSection" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Calendario</h2>
+                            <p class="section-subtitle" id="cal-legend-count">Fechas límite de contratos y órdenes</p>
+                        </div>
+                        <div style="display:flex;gap:.5rem">
+                            <button class="btn btn-secondary btn-sm" onclick="calPrevMonth()">‹ Anterior</button>
+                            <button class="btn btn-secondary btn-sm" onclick="calGoToday()">Hoy</button>
+                            <button class="btn btn-secondary btn-sm" onclick="calNextMonth()">Siguiente ›</button>
+                        </div>
+                    </div>
+
+                    <div class="calendar-card card">
+                        <div class="calendar-header card-header">
+                            <h3 id="cal-month-label">—</h3>
+                            <div class="cal-legend">
+                                <span class="cal-legend-item"><span
+                                        class="cal-legend-dot cal-legend-blue"></span>Contrato</span>
+                                <span class="cal-legend-item"><span
+                                        class="cal-legend-dot cal-legend-amber"></span>Orden</span>
+                                <span class="cal-legend-item"><span
+                                        class="cal-legend-dot cal-legend-red"></span>Urgente</span>
+                            </div>
+                        </div>
+                        <div class="card-body" style="padding:0">
+                            <div class="cal-grid" id="cal-grid"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════
+                 REPORTES
+            ═══════════════════════════════════════ -->
+                <div id="reportesSection" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Reportes</h2>
+                            <p class="section-subtitle">Genera y exporta reportes por contrato</p>
+                        </div>
+                        <div style="display:flex;gap:.5rem">
+                            <button class="btn btn-secondary" onclick="exportarCSV()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14"
+                                    height="14">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <polyline points="7 10 12 15 17 10" />
+                                    <line x1="12" y1="15" x2="12" y2="3" />
+                                </svg>
+                                Exportar CSV
+                            </button>
+                            <button class="btn btn-primary" onclick="imprimirReporte()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14"
+                                    height="14">
+                                    <path d="M6 9V2h12v7" />
+                                    <path
+                                        d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                                    <rect width="12" height="8" x="6" y="14" />
+                                </svg>
+                                Imprimir
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-bottom:1.5rem">
+                        <div class="card-header">
+                            <label class="form-label" style="margin:0;font-weight:600">Seleccionar contrato</label>
+                            <select class="form-select" id="reporte-contrato-sel" style="min-width:280px">
+                                <option value="">Selecciona un contrato...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="report-preview" id="report-preview">
+                        <div class="empty-state" style="padding:3rem">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48"
+                                height="48">
+                                <path d="M3 3v18h18" />
+                                <path d="m19 9-5 5-4-4-3 3" />
+                            </svg>
+                            <h4>Sin reporte seleccionado</h4>
+                            <p>Selecciona un contrato para ver y exportar el reporte.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════
+                 CONFIGURACIÓN
+            ═══════════════════════════════════════ -->
+                <div id="configSection" class="section" data-role="owner">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Configuración</h2>
+                            <p class="section-subtitle">Gestión de usuarios y datos de la empresa</p>
+                        </div>
+                    </div>
+
+                    <!-- Equipo -->
+                    <div class="card" style="margin-bottom:1.5rem">
+                        <div class="card-header">
+                            <h3>Equipo</h3>
+                        </div>
+                        <div class="card-body" id="users-list">
+                            <p style="color:var(--text-sm)">Cargando usuarios...</p>
+                        </div>
+                    </div>
+
+                    <!-- Empresa -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Información de la empresa</h3>
+                        </div>
+                        <div class="card-body">
+                            <form onsubmit="guardarEmpresa(event)">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Nombre de la empresa</label>
+                                        <input class="form-input" type="text" id="f-empresa-nombre"
+                                            placeholder="Manolette S.A.S.">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Contacto principal</label>
+                                        <input class="form-input" type="text" id="f-empresa-contacto"
+                                            placeholder="Tel / Email de contacto">
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary" type="submit">Guardar cambios</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </main><!-- /content-area -->
+        </div><!-- /main-content -->
+    </div><!-- /appInterface -->
+
+
+    <!-- ═══════════════════════════════════════════════
+     MODALES
+═══════════════════════════════════════════════ -->
+
+    <!-- Modal: Contrato -->
+    <div class="modal-overlay" id="modal-contrato">
+        <div class="modal-box modal-lg">
+            <div class="modal-header">
+                <h3 id="modal-contrato-title">Nuevo Contrato</h3>
+                <button class="modal-close" onclick="closeModal('modal-contrato')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M18 6 6 18M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <form id="form-contrato" onsubmit="guardarContrato(event)">
+                <div class="modal-body">
+                    <input type="hidden" id="f-contrato-id">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Número de contrato <span class="required">*</span></label>
+                            <input class="form-input" id="f-contrato-num" placeholder="CAFAM-2025-001" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Cliente <span class="required">*</span></label>
+                            <input class="form-input" id="f-contrato-cliente" value="Cafam" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Descripción</label>
+                        <textarea class="form-textarea" id="f-contrato-desc"
+                            placeholder="Descripción del contrato..."></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Fecha de inicio</label>
+                            <input class="form-input" type="date" id="f-contrato-inicio">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Fecha límite</label>
+                            <input class="form-input" type="date" id="f-contrato-limite">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Responsable</label>
+                            <input class="form-input" id="f-contrato-resp" placeholder="Nombre del responsable">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Estado</label>
+                            <select class="form-select" id="f-contrato-estado">
+                                <option value="activo">Activo</option>
+                                <option value="en_riesgo">En Riesgo</option>
+                                <option value="completado">Completado</option>
+                                <option value="cancelado">Cancelado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Instrucciones especiales</label>
+                        <textarea class="form-textarea" id="f-contrato-inst"
+                            placeholder="Instrucciones de empaque, etiquetado, entrega..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Notas internas</label>
+                        <textarea class="form-textarea" id="f-contrato-notas"
+                            placeholder="Notas del equipo..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        onclick="closeModal('modal-contrato')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar contrato</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Orden -->
+    <div class="modal-overlay" id="modal-orden">
+        <div class="modal-box modal-lg">
+            <div class="modal-header">
+                <h3>Nueva Orden</h3>
+                <button class="modal-close" onclick="closeModal('modal-orden')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M18 6 6 18M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <form id="form-orden" onsubmit="guardarOrden(event)">
+                <div class="modal-body">
+                    <input type="hidden" id="f-orden-id">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Número de orden</label>
+                            <input class="form-input" id="f-orden-num" placeholder="ORD-2025-001">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Producto <span class="required">*</span></label>
+                            <input class="form-input" id="f-orden-producto" placeholder="Nombre del producto" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Cantidad</label>
+                            <input class="form-input" type="number" id="f-orden-cantidad" placeholder="100" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Unidad</label>
+                            <input class="form-input" id="f-orden-unidad" placeholder="unidades, cajas, kg...">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Contrato asociado</label>
+                            <select class="form-select" id="f-orden-contrato">
+                                <option value="">Sin contrato</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Estado inicial</label>
+                            <select class="form-select" id="f-orden-estado">
+                                <option value="recibido">Recibido</option>
+                                <option value="empaque">En Empaque</option>
+                                <option value="calidad">Control Calidad</option>
+                                <option value="listo">Listo</option>
+                                <option value="enviado">Enviado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Prioridad</label>
+                            <select class="form-select" id="f-orden-prioridad">
+                                <option value="normal">Normal</option>
+                                <option value="alta">Alta</option>
+                                <option value="urgente">Urgente</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Asignado a</label>
+                            <input class="form-input" id="f-orden-asignado" placeholder="Nombre del empleado">
+                        </div>
+                    </div>
+                    <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr">
+                        <div class="form-group">
+                            <label class="form-label">Fecha límite</label>
+                            <input class="form-input" type="date" id="f-orden-limite">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Hora límite</label>
+                            <input class="form-input" type="time" id="f-orden-hora">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Proveedor</label>
+                            <select class="form-select" id="f-orden-proveedor">
+                                <option value="">Sin proveedor</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Notas</label>
+                        <textarea class="form-textarea" id="f-orden-notas"
+                            placeholder="Instrucciones de empaque, observaciones..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        onclick="closeModal('modal-orden')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar orden</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Inventario -->
+    <div class="modal-overlay" id="modal-inventario">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="modal-inventario-title">Agregar Producto</h3>
+                <button class="modal-close" onclick="closeModal('modal-inventario')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M18 6 6 18M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <form id="form-inventario" onsubmit="guardarItem(event)">
+                <div class="modal-body">
+                    <input type="hidden" id="f-item-id">
+                    <div class="form-group">
+                        <label class="form-label">Nombre del producto <span class="required">*</span></label>
+                        <input class="form-input" id="f-item-nombre" placeholder="Termos, cajas de regalo..." required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">SKU / Código</label>
+                            <input class="form-input" id="f-item-sku" placeholder="PROD-001">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Categoría</label>
+                            <input class="form-input" id="f-item-categoria" placeholder="Regalos, Termos...">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Stock actual</label>
+                            <input class="form-input" type="number" id="f-item-stock" value="0" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Stock mínimo</label>
+                            <input class="form-input" type="number" id="f-item-minimo" value="0" min="0">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Unidad</label>
+                            <input class="form-input" id="f-item-unidad" placeholder="unidades, cajas, kg...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Ubicación</label>
+                            <input class="form-input" id="f-item-ubicacion" placeholder="Piso 1, Estante A...">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        onclick="closeModal('modal-inventario')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Movimiento de Stock -->
+    <div class="modal-overlay" id="modal-movimiento">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Registrar Movimiento de Stock</h3>
+                <button class="modal-close" onclick="closeModal('modal-movimiento')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M18 6 6 18M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <form id="form-movimiento" onsubmit="guardarMovimiento(event)">
+                <div class="modal-body">
+                    <input type="hidden" id="f-mov-id">
+                    <div class="mov-product-info">
+                        <div class="mov-product-name" id="f-mov-nombre">—</div>
+                        <div class="mov-stock-actual">
+                            Stock actual: <strong id="f-mov-actual">0</strong>
+                            <span id="f-mov-unidad"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Tipo de movimiento</label>
+                            <select class="form-select" id="f-mov-tipo">
+                                <option value="entrada">📥 Entrada (aumentar stock)</option>
+                                <option value="salida">📤 Salida (reducir stock)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Cantidad <span class="required">*</span></label>
+                            <input class="form-input" type="number" id="f-mov-cantidad" placeholder="0" min="1"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Razón / Motivo</label>
+                        <input class="form-input" id="f-mov-razon"
+                            placeholder="Compra a proveedor, despacho, ajuste...">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        onclick="closeModal('modal-movimiento')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Registrar movimiento</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Proveedor -->
+    <div class="modal-overlay" id="modal-proveedor">
+        <div class="modal-box modal-lg">
+            <div class="modal-header">
+                <h3 id="modal-proveedor-title">Nuevo Proveedor</h3>
+                <button class="modal-close" onclick="closeModal('modal-proveedor')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M18 6 6 18M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <form id="form-proveedor" onsubmit="guardarProveedor(event)">
+                <div class="modal-body">
+                    <input type="hidden" id="f-prov-id">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Nombre <span class="required">*</span></label>
+                            <input class="form-input" id="f-prov-nombre" placeholder="Distribuidora Andina S.A.S."
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Ciudad</label>
+                            <input class="form-input" id="f-prov-ciudad" placeholder="Bogotá, Medellín, Cali...">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Categoría</label>
+                            <select class="form-select" id="f-prov-categoria">
+                                <option value="General">General</option>
+                                <option value="Termos">Termos</option>
+                                <option value="Regalos Corporativos">Regalos Corporativos</option>
+                                <option value="Cajas y Empaques">Cajas y Empaques</option>
+                                <option value="Materiales de Empaque">Materiales de Empaque</option>
+                                <option value="Transporte y Logística">Transporte y Logística</option>
+                                <option value="Imprenta y Papelería">Imprenta y Papelería</option>
+                                <option value="Plásticos">Plásticos</option>
+                                <option value="Textiles">Textiles</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Contacto (tel / email)</label>
+                            <input class="form-input" id="f-prov-contacto"
+                                placeholder="310 555 1234 o correo@empresa.com">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Dirección</label>
+                        <input class="form-input" id="f-prov-direccion" placeholder="Calle 80 #20-45, Bogotá">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Productos / Servicios que ofrece</label>
+                        <input class="form-input" id="f-prov-productos"
+                            placeholder="Termos de acero, mugs, bolígrafos...">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Notas internas</label>
+                        <textarea class="form-textarea" id="f-prov-notas"
+                            placeholder="Condiciones de pago, tiempos de entrega, descuentos..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        onclick="closeModal('modal-proveedor')">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar proveedor</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════
+     DRAWERS
+═══════════════════════════════════════════════ -->
+
+    <!-- Drawer: Contrato -->
+    <div class="drawer-overlay" id="drawer-contrato-overlay" onclick="closeDrawer('drawer-contrato')"></div>
+    <aside class="drawer" id="drawer-contrato">
+        <div class="drawer-header">
+            <h3 id="drawer-contrato-title">Detalle del contrato</h3>
+            <button class="modal-close" onclick="closeDrawer('drawer-contrato')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                    <path d="M18 6 6 18M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div class="drawer-body" id="drawer-contrato-body"></div>
+    </aside>
+
+    <!-- Drawer: Orden -->
+    <div class="drawer-overlay" id="drawer-orden-overlay" onclick="closeDrawer('drawer-orden')"></div>
+    <aside class="drawer" id="drawer-orden">
+        <div class="drawer-header">
+            <h3 id="drawer-orden-title">Detalle de la orden</h3>
+            <button class="modal-close" onclick="closeDrawer('drawer-orden')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                    <path d="M18 6 6 18M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div class="drawer-body" id="drawer-orden-body"></div>
+    </aside>
+
+
+    <!-- ══ Modal: Cliente ══ -->
+    <div class="modal-overlay" id="modal-cliente">
+        <div class="modal-box modal-lg">
+            <div class="modal-header">
+                <h3>Nuevo / Editar Cliente</h3>
+                <button class="modal-close" onclick="closeModal('modal-cliente')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M18 6 6 18M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form-cliente" onsubmit="guardarCliente(event)">
+                    <input type="hidden" id="f-cliente-id">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                        <div class="form-group"><label class="form-label">Nombre *</label><input class="form-input"
+                                id="f-cliente-nombre" required></div>
+                        <div class="form-group"><label class="form-label">Empresa</label><input class="form-input"
+                                id="f-cliente-empresa"></div>
+                        <div class="form-group"><label class="form-label">Telefono</label><input class="form-input"
+                                id="f-cliente-telefono"></div>
+                        <div class="form-group"><label class="form-label">Email</label><input class="form-input"
+                                id="f-cliente-email" type="email"></div>
+                        <div class="form-group"><label class="form-label">Ciudad</label><input class="form-input"
+                                id="f-cliente-ciudad"></div>
+                        <div class="form-group"><label class="form-label">NIT/CC</label><input class="form-input"
+                                id="f-cliente-nit"></div>
+                        <div class="form-group"><label class="form-label">Prioridad</label>
+                            <select class="form-select" id="f-cliente-prioridad">
+                                <option value="normal">Normal</option>
+                                <option value="media">Media</option>
+                                <option value="alta">Alta</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group"><label class="form-label">Direccion</label><input class="form-input"
+                            id="f-cliente-direccion"></div>
+                    <div class="form-group"><label class="form-label">Notas</label><textarea class="form-textarea"
+                            id="f-cliente-notas" rows="2"></textarea></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            onclick="closeModal('modal-cliente')">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ Modal: Gasto ══ -->
+    <div class="modal-overlay" id="modal-gasto">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Nuevo Gasto</h3>
+                <button class="modal-close" onclick="closeModal('modal-gasto')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M18 6 6 18M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form-gasto" onsubmit="guardarGasto(event)">
+                    <div class="form-group"><label class="form-label">Concepto *</label><input class="form-input"
+                            id="f-gasto-concepto" required></div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                        <div class="form-group"><label class="form-label">Monto *</label><input class="form-input"
+                                id="f-gasto-monto" type="number" min="0" step="100" required></div>
+                        <div class="form-group"><label class="form-label">Categoria</label><select class="form-select"
+                                id="f-gasto-categoria"></select></div>
+                    </div>
+                    <div class="form-group"><label class="form-label">Fecha</label><input class="form-input"
+                            id="f-gasto-fecha" type="date"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            onclick="closeModal('modal-gasto')">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ Modal: Cotizacion ══ -->
+    <div class="modal-overlay" id="modal-cotizacion">
+        <div class="modal-box modal-lg">
+            <div class="modal-header">
+                <h3>Nueva Cotizacion</h3>
+                <button class="modal-close" onclick="closeModal('modal-cotizacion')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M18 6 6 18M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form-cotizacion" onsubmit="guardarCotizacion(event)">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+                        <div class="form-group"><label class="form-label">Numero</label><input class="form-input mono"
+                                id="f-cot-numero" readonly></div>
+                        <div class="form-group"><label class="form-label">Cliente *</label><input class="form-input"
+                                id="f-cot-cliente" required></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" style="display:flex;justify-content:space-between;align-items:center">
+                            <span>Productos a gestionar</span>
+                            <button type="button" class="btn btn-ghost btn-sm" onclick="agregarItemCot()" style="font-size:11px;padding:2px 8px;height:24px">+ Agregar producto</button>
+                        </label>
+                        <div id="cot-items-list" style="display:flex;flex-direction:column;gap:12px;margin-top:8px"></div>
+                    </div>
+                    <div
+                        style="text-align:right;font-size:var(--fz-lg);font-weight:var(--weight-bold);font-family:var(--font-mono);margin:12px 0">
+                        Total: <span id="cot-total-display">$0</span></div>
+                    <div class="form-group"><label class="form-label">Notas</label><textarea class="form-textarea"
+                            id="f-cot-notas" rows="2"></textarea></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            onclick="closeModal('modal-cotizacion')">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Crear Cotizacion</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ Modal: Nota ══ -->
+    <div class="modal-overlay" id="modal-nota">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Nota</h3>
+                <button class="modal-close" onclick="closeModal('modal-nota')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M18 6 6 18M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form-nota" onsubmit="guardarNota(event)">
+                    <input type="hidden" id="f-nota-id">
+                    <div class="form-group"><label class="form-label">Titulo *</label><input class="form-input"
+                            id="f-nota-titulo" required></div>
+                    <div class="form-group"><label class="form-label">Contenido</label><textarea class="form-textarea"
+                            id="f-nota-contenido" rows="6" placeholder="Escribe tu nota aqui..."></textarea></div>
+                    <div style="display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center">
+                        <div class="form-group" style="margin:0"><label class="form-label">Categoria</label>
+                            <select class="form-select" id="f-nota-categoria">
+                                <option value="general">General</option>
+                                <option value="contrato">Contrato</option>
+                                <option value="proveedor">Proveedor</option>
+                                <option value="urgente">Urgente</option>
+                                <option value="idea">Idea</option>
+                            </select>
+                        </div>
+                        <label
+                            style="display:flex;align-items:center;gap:6px;font-size:var(--fz-xs);color:var(--text-secondary);cursor:pointer;margin-top:18px"><input
+                                type="checkbox" id="f-nota-pin"> Fijar arriba</label>
+                    </div>
+                    <div class="modal-footer" style="justify-content:space-between">
+                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminarNotaActual()"
+                            id="btn-eliminar-nota">Eliminar</button>
+                        <div style="display:flex;gap:8px">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="closeModal('modal-nota')">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ Modal: Generador HF Studio (Reemplazo completo) ══ -->
+    <div class="modal-overlay" id="modal-hf-generator">
+        <div class="modal-box modal-xl" style="width:98vw; height:95vh; max-width:1600px; display:flex; flex-direction:column; padding:0; overflow:hidden; border-radius:16px">
+            <div class="modal-header" style="padding:20px 32px; background:#ffffff; border-bottom:1px solid #f1f5f9">
+                <div style="display:flex;align-items:center;gap:16px">
+                    <div style="width:48px;height:48px;background:linear-gradient(135deg, #2563eb, #7c3aed);color:#fff;border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 16px rgba(37,99,235,0.2)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="24" height="24"><path d="M12 2v8"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m8 22 4-10 4 10"/></svg>
+                    </div>
+                    <div>
+                        <h2 style="margin:0; font-size:1.5rem; font-weight:800; letter-spacing:-0.03em; color:#0f172a">Creative Asset Studio AI</h2>
+                        <div style="display:flex;align-items:center;gap:8px;margin-top:2px">
+                            <span class="badge badge-blue">Pro Edition</span>
+                            <span style="font-size:12px;color:#64748b">Generación multimodelo de alta resolución</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px">
+                    <button class="btn btn-secondary btn-sm" onclick="clearHFChat()">Limpiar historial</button>
+                    <button class="modal-close" onclick="closeModal('modal-hf-generator')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><path d="M18 6 6 18M6 6l12 12" /></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="hf-studio-container" style="background:#f8fafc">
+                <!-- Columna Izquierda: Parámetros Técnicos -->
+                <aside class="hf-sidebar-left" style="width:340px; background:#ffffff; padding:24px; border-right:1px solid #e2e8f0">
+                    <div style="margin-bottom:32px">
+                        <h3 class="hf-section-title" style="color:#0f172a; font-size:14px; margin-bottom:16px">Arquitectura del Modelo</h3>
+                        <div class="form-group">
+                            <select class="form-select" id="hf-model" style="height:44px; border-radius:10px">
+                                <option value="black-forest-labs/FLUX.1-schnell">FLUX.1 Schnell (Calidad Extrema)</option>
+                                <option value="stabilityai/stable-diffusion-xl-base-1.0">Stable Diffusion XL 1.0</option>
+                                <option value="runwayml/stable-diffusion-v1-5">SD v1.5 (Rápido)</option>
+                                <option value="prompthero/openjourney">OpenJourney v4</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom:32px">
+                        <h3 class="hf-section-title" style="color:#0f172a; font-size:14px; margin-bottom:16px">Configuración de Lienzo</h3>
+                        <div class="hf-aspect-grid" style="grid-template-columns: repeat(2, 1fr); gap:12px">
+                            <label class="aspect-chip"><input type="radio" name="hf-aspect" value="1:1" checked hidden><span>1:1 Cuadrado</span></label>
+                            <label class="aspect-chip"><input type="radio" name="hf-aspect" value="16:9" hidden><span>16:9 Wide</span></label>
+                            <label class="aspect-chip"><input type="radio" name="hf-aspect" value="9:16" hidden><span>9:16 Portrait</span></label>
+                            <label class="aspect-chip"><input type="radio" name="hf-aspect" value="4:5" hidden><span>4:5 Social</span></label>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom:32px">
+                        <h3 class="hf-section-title" style="color:#0f172a; font-size:14px; margin-bottom:16px">Estilo y Composición</h3>
+                        <div style="display:flex; flex-direction:column; gap:12px">
+                            <select class="form-select" id="hf-style" style="height:40px">
+                                <option value="">Estilo Libre</option>
+                                <option value=", cinematic lighting, 8k, highly detailed, photorealistic">Fotografía Cinematográfica</option>
+                                <option value=", digital art, colorful, sharp focus, masterpiece">Ilustración Digital</option>
+                                <option value=", minimalist, clean, flat design, vector style">Branding Minimalista</option>
+                                <option value=", vintage photography, film grain, retro style">Retro / Vintage</option>
+                            </select>
+                            <div class="form-group">
+                                <label class="form-label">Guía de detalle (Prompt Negativo)</label>
+                                <textarea class="form-textarea" id="hf-negative" rows="3" style="font-size:12px" placeholder="Evitar: deformidades, texto, baja calidad..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:auto">
+                        <div style="padding:16px; background:#f1f5f9; border-radius:12px; font-size:12px; color:#475569">
+                            <strong>Tip:</strong> Sé específico con la iluminación y la textura para resultados profesionales.
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Columna Central: Chat Interactivo -->
+                <main class="hf-main-content" style="background:#ffffff; border-right:1px solid #e2e8f0">
+                    <div id="hf-chat-history" class="hf-chat-area" style="padding:32px; scroll-behavior: smooth">
+                        <div class="hf-welcome" style="margin-top:60px">
+                            <h1 style="font-size:2.5rem; font-weight:900; letter-spacing:-0.05em; color:#0f172a">Imagina. Crea.<br><span style="color:var(--accent)">Manolette AI.</span></h1>
+                            <p style="font-size:16px; color:#64748b; max-width:400px; margin:20px auto 0">Describe con precisión técnica lo que necesitas. El Agente de Diseño generará una propuesta visual de alto nivel.</p>
+                        </div>
+                    </div>
+
+                    <!-- Input Console -->
+                    <div class="hf-input-container" style="background:linear-gradient(transparent, #ffffff 40%); padding:32px">
+                        <div class="hf-input-wrapper" style="max-width:850px; background:#ffffff; border-radius:20px; border:1px solid #e2e8f0; box-shadow:0 10px 40px rgba(0,0,0,0.06); padding:8px">
+                            <textarea id="hf-prompt" class="form-textarea hf-prompt-area" style="border:none; box-shadow:none; padding:16px 20px; font-size:15px; min-height:100px" 
+                                placeholder="Ej: Un empaque de regalo premium para Manolette, fondo minimalista, iluminación de estudio, resolución 8k..."></textarea>
+                            <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; border-top:1px solid #f1f5f9">
+                                <div style="display:flex; gap:8px">
+                                    <span class="badge badge-gray">Auto-Enrich activo</span>
+                                </div>
+                                <button id="btn-generate-hf" onclick="executeHFGeneration()" class="btn btn-primary" style="height:44px; padding:0 24px; border-radius:12px; font-weight:700">
+                                    Generar Activo
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+
+                <!-- Columna Derecha: Biblioteca de Sesión -->
+                <aside class="hf-sidebar-right" style="width:360px; background:#f8fafc; padding:24px; overflow-y:auto">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px">
+                        <h3 class="hf-section-title" style="margin:0">Biblioteca del Proyecto</h3>
+                        <span id="hf-gal-count" class="badge badge-gray">0 items</span>
+                    </div>
+                    <div id="hf-gallery" class="hf-gallery-grid" style="grid-template-columns: repeat(1, 1fr); gap:16px">
+                        <div class="empty-state" style="padding:40px 20px">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40" style="opacity:0.2; margin-bottom:12px"><path d="m2 8 2 2 4-4"/><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
+                            <p style="font-size:12px; color:#94a3b8">No hay imágenes generadas en esta sesión.</p>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ Drawer: Cliente ══ -->
+    <div class="drawer-overlay" id="drawer-cliente-overlay" onclick="closeDrawer('drawer-cliente')"></div>
+    <aside class="drawer" id="drawer-cliente">
+        <div class="drawer-header">
+            <h3 id="drawer-cliente-title">Detalle del cliente</h3>
+            <button class="modal-close" onclick="closeDrawer('drawer-cliente')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                    <path d="M18 6 6 18M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div class="drawer-body" id="drawer-cliente-body"></div>
+    </aside>
+
+    <!-- ══ Drawer: Empleado ══ -->
+    <div class="drawer-overlay" id="drawer-empleado-overlay" onclick="closeDrawer('drawer-empleado')"></div>
+    <aside class="drawer" id="drawer-empleado">
+        <div class="drawer-header">
+            <h3 id="drawer-empleado-title">Detalle del empleado</h3>
+            <button class="modal-close" onclick="closeDrawer('drawer-empleado')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                    <path d="M18 6 6 18M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div class="drawer-body" id="drawer-empleado-body"></div>
+    </aside>
+
+    <!-- ══ Drawer: Cotizacion ══ -->
+    <div class="drawer-overlay" id="drawer-cotizacion-overlay" onclick="closeDrawer('drawer-cotizacion')"></div>
+    <aside class="drawer" id="drawer-cotizacion">
+        <div class="drawer-header">
+            <h3 id="drawer-cotizacion-title">Detalle de cotizacion</h3>
+            <button class="modal-close" onclick="closeDrawer('drawer-cotizacion')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                    <path d="M18 6 6 18M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div class="drawer-body" id="drawer-cotizacion-body"></div>
+    </aside>
+
+    <!-- ═══════════════════════════════════════════════
+     FIREBASE SDK
+═══════════════════════════════════════════════ -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- Fabric.js (editor de diseño) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+
+    <!-- ═══════════════════════════════════════════════
+     APP SCRIPTS — orden exacto
+═══════════════════════════════════════════════ -->
+    <script src="config.js"></script>
+    <script src="js/firebase-init.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/activity.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/contracts.js"></script>
+    <script src="js/orders.js"></script>
+    <script src="js/inventory.js"></script>
+    <script src="js/suppliers.js"></script>
+    <script src="js/clientes.js"></script>
+    <script src="js/empleados.js"></script>
+    <script src="js/gastos.js"></script>
+    <script src="js/cotizaciones.js"></script>
+    <script src="js/analiticas.js"></script>
+    <script src="js/notas.js"></script>
+    <script src="js/bitacora.js"></script>
+    <script src="js/reports.js"></script>
+    <script src="js/calendar-view.js"></script>
+    <script src="js/config-section.js"></script>
+    <script src="js/antigravity.js"></script>
+    <script src="js/design.js"></script>
+    <script src="js/prompts.js"></script>
+    <script src="js/producto-dia.js"></script>
+
+    <!-- ═══════════════════════════════════════════════
+     INICIO
+═══════════════════════════════════════════════ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            window.authReady.then(user => {
+                if (user) {
+                    document.getElementById('appInterface').style.display = 'grid';
+                    initRouter();
+                    initNotifications();
+                }
+            });
+        });
+    </script>
+
+    <!-- ═══════════════════════════════════════════════
+     COMMAND PALETTE (Ctrl+K)
+═══════════════════════════════════════════════ -->
+    <div id="cmd-palette-overlay" class="cmd-overlay" style="display:none" onclick="closeCmdPalette()">
+        <div class="cmd-palette" onclick="event.stopPropagation()">
+            <div class="cmd-palette-input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" width="18" height="18">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.3-4.3" />
+                </svg>
+                <input type="text" id="cmd-input" placeholder="Buscar o ejecutar comando..." autocomplete="off"
+                    oninput="filterCmdResults(this.value)">
+                <kbd>Esc</kbd>
+            </div>
+            <div class="cmd-palette-results" id="cmd-results"></div>
+        </div>
+    </div>
+
+    <style>
+        .cmd-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: min(20vh, 160px);
+            animation: fadeIn .12s ease
+        }
+
+        .cmd-palette {
+            background: var(--bg-surface, #fff);
+            border: 1px solid var(--border-subtle, #e4e4e7);
+            border-radius: var(--r-xl, 12px);
+            width: 100%;
+            max-width: 540px;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, .18);
+            overflow: hidden;
+            animation: slideUp .15s cubic-bezier(.16, 1, .3, 1)
+        }
+
+        .cmd-palette-input-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-subtle, #e4e4e7)
+        }
+
+        .cmd-palette-input-wrap svg {
+            color: var(--text-tertiary, #a1a1aa);
+            flex-shrink: 0
+        }
+
+        .cmd-palette-input-wrap input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            font-family: var(--font-sans, 'Inter', sans-serif);
+            background: transparent;
+            color: var(--text-primary, #09090b)
+        }
+
+        .cmd-palette-input-wrap input::placeholder {
+            color: var(--text-tertiary, #a1a1aa)
+        }
+
+        .cmd-palette-input-wrap kbd {
+            font-family: var(--font-sans);
+            font-size: 11px;
+            padding: 2px 6px;
+            border: 1px solid var(--border-subtle, #e4e4e7);
+            border-radius: 4px;
+            color: var(--text-tertiary, #a1a1aa);
+            background: var(--bg-raised, #f4f4f5)
+        }
+
+        .cmd-palette-results {
+            max-height: 340px;
+            overflow-y: auto;
+            padding: 6px
+        }
+
+        .cmd-group-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--text-tertiary, #a1a1aa);
+            padding: 8px 10px 4px
+        }
+
+        .cmd-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: var(--r-md, 6px);
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-secondary, #52525b);
+            transition: background .08s
+        }
+
+        .cmd-item:hover,
+        .cmd-item.active {
+            background: var(--accent-subtle, #eef2ff);
+            color: var(--accent, #4f46e5)
+        }
+
+        .cmd-item svg {
+            width: 16px;
+            height: 16px;
+            stroke-width: 1.75;
+            flex-shrink: 0;
+            opacity: .6
+        }
+
+        .cmd-item:hover svg {
+            opacity: 1;
+            color: var(--accent, #4f46e5)
+        }
+
+        .cmd-item-shortcut {
+            margin-left: auto;
+            font-size: 11px;
+            color: var(--text-tertiary, #a1a1aa);
+            font-family: var(--font-mono, monospace)
+        }
+
+        .cmd-empty {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-tertiary, #a1a1aa);
+            font-size: 13px
+        }
+    </style>
+
+    <script>
+        const CMD_ITEMS = [
+            { group: 'Navegacion', label: 'Dashboard', icon: '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>', action: () => navigate('dashboard'), key: '1' },
+            { group: 'Navegacion', label: 'Contratos', icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>', action: () => navigate('contratos'), key: '2' },
+            { group: 'Navegacion', label: 'Ordenes', icon: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>', action: () => navigate('ordenes'), key: '3' },
+            { group: 'Navegacion', label: 'Inventario', icon: '<path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>', action: () => navigate('inventario'), key: '4' },
+            { group: 'Navegacion', label: 'Calendario', icon: '<rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>', action: () => navigate('calendario'), key: '5' },
+            { group: 'Navegacion', label: 'Asistente IA', icon: '<path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 14v-4m0-4h.01"/>', action: () => navigate('gemini'), key: '6' },
+            { group: 'Navegacion', label: 'Proveedores', icon: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>', action: () => navigate('proveedores') },
+            { group: 'Acciones', label: 'Nuevo Contrato', icon: '<path d="M5 12h14M12 5v14"/>', action: () => { closeCmdPalette(); navigate('contratos'); setTimeout(() => typeof nuevoContrato === 'function' && nuevoContrato(), 200); } },
+            { group: 'Acciones', label: 'Nueva Orden', icon: '<path d="M5 12h14M12 5v14"/>', action: () => { closeCmdPalette(); navigate('ordenes'); setTimeout(() => typeof nuevaOrden === 'function' && nuevaOrden(), 200); } },
+            { group: 'Acciones', label: 'Cerrar sesion', icon: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>', action: () => { closeCmdPalette(); typeof logout === 'function' && logout(); } },
+        ];
+
+        function openCmdPalette() {
+            const overlay = document.getElementById('cmd-palette-overlay');
+            if (!overlay) return;
+            overlay.style.display = 'flex';
+            const input = document.getElementById('cmd-input');
+            if (input) { input.value = ''; input.focus(); }
+            filterCmdResults('');
+        }
+
+        function closeCmdPalette() {
+            const overlay = document.getElementById('cmd-palette-overlay');
+            if (overlay) overlay.style.display = 'none';
+        }
+
+        function filterCmdResults(query) {
+            const el = document.getElementById('cmd-results');
+            if (!el) return;
+            const q = query.toLowerCase().trim();
+            const filtered = q ? CMD_ITEMS.filter(i => i.label.toLowerCase().includes(q) || i.group.toLowerCase().includes(q)) : CMD_ITEMS;
+            if (filtered.length === 0) { el.innerHTML = '<div class="cmd-empty">Sin resultados</div>'; return; }
+            let html = '', lastGroup = '';
+            filtered.forEach(item => {
+                if (item.group !== lastGroup) { lastGroup = item.group; html += `<div class="cmd-group-label">${item.group}</div>`; }
+                html += `<div class="cmd-item" onclick="CMD_ITEMS.find(i=>i.label==='${item.label}').action();closeCmdPalette()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">${item.icon}</svg>
+            ${item.label}
+            ${item.key ? `<span class="cmd-item-shortcut">${item.key}</span>` : ''}
+        </div>`;
+            });
+            el.innerHTML = html;
+        }
+
+        document.addEventListener('keydown', e => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); openCmdPalette(); }
+            if (e.key === 'Escape') closeCmdPalette();
+            // Number shortcuts when palette is open
+            const overlay = document.getElementById('cmd-palette-overlay');
+            if (overlay?.style.display === 'flex' && e.key >= '1' && e.key <= '9') {
+                const item = CMD_ITEMS.find(i => i.key === e.key);
+                if (item && document.activeElement?.id !== 'cmd-input') { item.action(); closeCmdPalette(); }
+            }
+        });
+    </script>
+
+</body>
+
+</html>

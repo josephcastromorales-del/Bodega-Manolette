@@ -1,249 +1,195 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <title>Manolette | Sistema de Bodega</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <title>Manolette — Iniciar sesión</title>
+    <link rel="icon" type="image/png" href="manolette-2.png">
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        .login-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: .35rem;
+            margin-bottom: .9rem;
+        }
+
+        .auth-error {
+            color: #fca5a5;
+            font-size: .85rem;
+            text-align: center;
+            min-height: 1.2em;
+            margin-bottom: .5rem;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: .75rem;
+            background: var(--accent, #4f46e5);
+            color: white;
+            border: none;
+            border-radius: var(--r-md);
+            font-weight: 700;
+            font-size: 1rem;
+            font-family: var(--font-sans, 'Inter', sans-serif);
+            cursor: pointer;
+            transition: var(--t);
+            margin-top: .5rem;
+        }
+
+        .login-btn:hover:not(:disabled) {
+            background: var(--accent-hover, #4338ca);
+        }
+
+        .login-btn:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .login-form-input, .login-form-select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: .65rem .75rem;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--r-md);
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            transition: border-color var(--t);
+        }
+
+        .login-form-input:focus, .login-form-select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .login-form-label {
+            font-size: .85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .pass-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .pass-wrapper .login-form-input {
+            padding-right: 2.75rem;
+        }
+
+        .toggle-pass {
+            position: absolute;
+            right: .75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: rgba(255, 255, 255, .4);
+            padding: 0;
+            line-height: 1;
+        }
+
+        .toggle-pass:hover {
+            color: rgba(255, 255, 255, .8);
+        }
+    </style>
 </head>
+
 <body>
+    <div id="loginScreen">
+        <div class="login-box">
+            <div class="login-logo">
+                <img src="manolette-imagen.png" alt="Manolette" class="sidebar-logo"
+                    style="width: 100%; object-fit: cover; height: auto; margin: 0 auto;">
+                <p style="margin: 10px auto; text-align: center;">Plataforma de gestión empresarial</p>
+            </div>
 
-<!-- ═══════════ LOGIN ═══════════ -->
-<div id="loginScreen">
-    <div class="login-box">
-        <img src="manolette-imagen.png" alt="Manolette" class="login-logo">
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-target="loginForm">Iniciar sesión</button>
+                <button class="auth-tab" data-target="registerForm">Crear cuenta</button>
+            </div>
 
-        <!-- LOGIN FORM -->
-        <div id="loginFormContainer">
-            <h2>Bienvenido</h2>
-            <p>Ingresa tus credenciales para acceder</p>
-            <form id="loginForm">
-                <div class="input-group">
-                    <label>Correo electrónico</label>
-                    <input type="email" id="loginEmail" placeholder="tu@correo.com" required>
+            <p class="auth-error" id="authError"></p>
+
+            <!-- LOGIN -->
+            <form id="loginForm" class="auth-form">
+                <div class="login-form-group">
+                    <label class="login-form-label" for="loginEmail">Correo electrónico</label>
+                    <input class="login-form-input" type="email" id="loginEmail" placeholder="nombre@empresa.com"
+                        required autocomplete="email">
                 </div>
-                <div class="input-group">
-                    <label>Contraseña</label>
-                    <div class="password-container">
-                        <input type="password" id="loginPass" placeholder="••••••••" required>
-                        <span class="toggle-password" onclick="toggleVisibility('loginPass')">👁️</span>
+                <div class="login-form-group">
+                    <label class="login-form-label" for="loginPass">Contraseña</label>
+                    <div class="pass-wrapper">
+                        <input class="login-form-input" type="password" id="loginPass" placeholder="••••••••" required
+                            autocomplete="current-password">
+                        <button type="button" class="toggle-pass" data-input="loginPass">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                height="16">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
-                <button type="submit" id="btnLogin" style="margin-top: 0.5rem;">Iniciar Sesión</button>
+                <button class="login-btn" id="btnLogin" type="submit">Iniciar sesión</button>
             </form>
-            <p style="margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-muted);">
-                ¿No tienes cuenta? <a href="#" onclick="toggleAuth(true)" style="color: var(--green-light); font-weight: 600;">Regístrate aquí</a>
-            </p>
-        </div>
 
-        <!-- REGISTER FORM -->
-        <div id="registerFormContainer" style="display: none;">
-            <h2>Crear Cuenta</h2>
-            <p>Regístrate en el sistema de bodega</p>
-            <form id="registerForm">
-                <div class="input-group">
-                    <label>Correo electrónico</label>
-                    <input type="email" id="regEmail" placeholder="tu@correo.com" required>
+            <!-- REGISTRO -->
+            <form id="registerForm" class="auth-form" style="display:none">
+                <div class="login-form-group">
+                    <label class="login-form-label" for="regNombre">Nombre completo</label>
+                    <input class="login-form-input" type="text" id="regNombre" placeholder="Tu nombre" required>
                 </div>
-                <div class="input-group">
-                    <label>Contraseña</label>
-                    <div class="password-container">
-                        <input type="password" id="regPass" placeholder="Mínimo 6 caracteres" required>
-                        <span class="toggle-password" onclick="toggleVisibility('regPass')">👁️</span>
+                <div class="login-form-group">
+                    <label class="login-form-label" for="regEmail">Correo electrónico</label>
+                    <input class="login-form-input" type="email" id="regEmail" placeholder="nombre@empresa.com" required
+                        autocomplete="email">
+                </div>
+                <div class="login-form-group">
+                    <label class="login-form-label" for="regPass">Contraseña</label>
+                    <div class="pass-wrapper">
+                        <input class="login-form-input" type="password" id="regPass" placeholder="Mínimo 6 caracteres"
+                            required autocomplete="new-password">
+                        <button type="button" class="toggle-pass" data-input="regPass">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                height="16">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
-                <div class="input-group">
-                    <label>Rol</label>
-                    <select id="regRol">
+                <div class="login-form-group">
+                    <label class="login-form-label" for="regRol">Rol en la empresa</label>
+                    <select class="login-form-select" id="regRol">
                         <option value="empleado">Empleado</option>
-                        <option value="dueño">Dueño (Administrador)</option>
+                        <option value="supervisor">Supervisor</option>
+                        <option value="dueño">Dueño / Administrador</option>
                     </select>
                 </div>
-                <button type="submit" id="btnReg" class="btn-gold" style="margin-top: 0.5rem;">Crear Cuenta</button>
+                <button class="login-btn" id="btnReg" type="submit">Crear cuenta</button>
             </form>
-            <p style="margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-muted);">
-                ¿Ya tienes cuenta? <a href="#" onclick="toggleAuth(false)" style="color: var(--green-light); font-weight: 600;">Inicia sesión</a>
-            </p>
         </div>
-
-        <p id="authError" style="color: var(--danger); margin-top: 1rem; display: none; font-size: 0.85rem; background: var(--danger-light); padding: 0.75rem 1rem; border-radius: 8px;"></p>
     </div>
-</div>
 
-<!-- ═══════════ APP ═══════════ -->
-<div id="appInterface">
-    <div class="main-layout">
-
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-            <img src="manolette-imagen.png" alt="Manolette" class="sidebar-logo">
-
-            <div class="nav-label">Gestión</div>
-            <div class="nav-item active" onclick="showSection('dashboardView')">
-                <span>📦</span> Inventario
-            </div>
-            <div class="nav-item owner-only" onclick="showSection('addView')" style="display:none;">
-                <span>➕</span> Nuevo Ingreso
-            </div>
-
-            <div class="sidebar-divider"></div>
-
-            <div class="nav-label">Reportes</div>
-            <div class="nav-item" onclick="showSection('historyView')">
-                <span>🕒</span> Historial
-            </div>
-
-            <div class="sidebar-footer">
-                <div class="user-badge">
-                    <div class="user-badge-email" id="userEmail"></div>
-                    <div class="user-badge-role" id="userRole"></div>
-                </div>
-                <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
-            </div>
-        </aside>
-
-        <!-- MAIN -->
-        <main class="main-content">
-
-            <!-- INVENTARIO -->
-            <section id="dashboardView" class="content-section active">
-                <div class="page-header">
-                    <div>
-                        <h2 class="page-title">Inventario</h2>
-                        <p class="page-subtitle">Estado actual de productos en bodega</p>
-                    </div>
-                    <div class="search-bar">
-                        <input type="text" id="buscador" placeholder="🔍  Buscar producto...">
-                        <select id="filtroPiso" style="max-width: 140px;">
-                            <option value="">Todos los pisos</option>
-                            <option value="piso1">Piso 1</option>
-                            <option value="piso2">Piso 2</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- STATS -->
-                <div class="stats-bar">
-                    <div class="stat-card">
-                        <div class="stat-icon gold">📥</div>
-                        <div>
-                            <div class="stat-num" id="count-llegaron">0</div>
-                            <div class="stat-label">Llegaron</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon olive">⏳</div>
-                        <div>
-                            <div class="stat-num" id="count-espera">0</div>
-                            <div class="stat-label">En Espera</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon green">✅</div>
-                        <div>
-                            <div class="stat-num" id="count-listos">0</div>
-                            <div class="stat-label">Listos</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- KANBAN -->
-                <div class="dashboard">
-                    <div class="column column-llegaron">
-                        <div class="column-header">
-                            <span class="column-title">📥 Llegaron</span>
-                            <span class="column-badge" id="badge-llegaron">0</span>
-                        </div>
-                        <div id="estado-llegaron" class="cards-container"></div>
-                    </div>
-                    <div class="column column-espera">
-                        <div class="column-header">
-                            <span class="column-title">⏳ En Espera</span>
-                            <span class="column-badge" id="badge-espera">0</span>
-                        </div>
-                        <div id="estado-espera" class="cards-container"></div>
-                    </div>
-                    <div class="column column-listos">
-                        <div class="column-header">
-                            <span class="column-title">✅ Listos</span>
-                            <span class="column-badge" id="badge-listos">0</span>
-                        </div>
-                        <div id="estado-listos" class="cards-container"></div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- NUEVO INGRESO -->
-            <section id="addView" class="content-section">
-                <div class="page-header">
-                    <div>
-                        <h2 class="page-title">Nuevo Ingreso</h2>
-                        <p class="page-subtitle">Registra un nuevo producto en el sistema</p>
-                    </div>
-                </div>
-                <div class="form-card">
-                    <form id="productForm">
-                        <div class="form-grid">
-                            <div class="form-field">
-                                <label>Nombre del Producto</label>
-                                <input id="nombre" placeholder="Ej: Aguacate Hass" required>
-                            </div>
-                            <div class="form-field">
-                                <label>Registrado por</label>
-                                <input id="quien" readonly>
-                            </div>
-                            <div class="form-field">
-                                <label>Estado Inicial</label>
-                                <select id="estado">
-                                    <option value="llegaron">Llegaron</option>
-                                    <option value="espera">En Espera</option>
-                                    <option value="listos">Listos</option>
-                                </select>
-                            </div>
-                            <div class="form-field">
-                                <label>Piso</label>
-                                <select id="piso">
-                                    <option value="piso1">Piso 1</option>
-                                    <option value="piso2">Piso 2</option>
-                                </select>
-                            </div>
-                            <div class="form-field">
-                                <label>Unidad de Medida</label>
-                                <select id="tipoCantidad">
-                                    <option value="kg">Kilogramos (kg)</option>
-                                    <option value="caja">Cajas</option>
-                                </select>
-                            </div>
-                            <div class="form-field">
-                                <label>Cantidad</label>
-                                <input id="cantidad" type="number" min="0" placeholder="0" required>
-                            </div>
-                        </div>
-                        <button type="submit" style="margin-top: 2rem; max-width: 250px;">Guardar Producto</button>
-                    </form>
-                </div>
-            </section>
-
-            <!-- HISTORIAL -->
-            <section id="historyView" class="content-section">
-                <div class="page-header">
-                    <div>
-                        <h2 class="page-title">Historial</h2>
-                        <p class="page-subtitle">Últimas 30 actividades registradas</p>
-                    </div>
-                </div>
-                <ul id="historial" class="historial-list"></ul>
-            </section>
-
-        </main>
-    </div>
-</div>
-
-<div id="toast"></div>
-
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-<script src="script.js"></script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="config.js"></script>
+    <script src="js/firebase-init.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/auth.js"></script>
 </body>
+
 </html>
