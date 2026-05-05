@@ -16,6 +16,8 @@ const SECTIONS = {
     diseno:       { id: 'disenoSection',       label: 'Diseño',         nav: 'nav-diseno' },
     calendario:   { id: 'calendarioSection',   label: 'Calendario',     nav: 'nav-calendario' },
     reportes:     { id: 'reportesSection',     label: 'Reportes',       nav: 'nav-reportes' },
+    hojaCalc:     { id: 'hojaCalcSection',     label: 'Hoja de Cálculo', nav: 'nav-hojaCalc' },
+    documento:    { id: 'documentoSection',    label: 'Documentos',     nav: 'nav-documento' },
     notas:        { id: 'notasSection',        label: 'Notas',          nav: 'nav-notas' },
     bitacora:     { id: 'bitacoraSection',     label: 'Bitácora',       nav: 'nav-bitacora' },
     config:       { id: 'configSection',       label: 'Configuración',  nav: 'nav-config' },
@@ -44,7 +46,7 @@ function navigate(section) {
     // La sección Diseño necesita quitar padding del content-area
     const contentArea = document.querySelector('.content-area');
     if (contentArea) {
-        if (section === 'diseno') {
+        if (section === 'diseno' || section === 'hojaCalc') {
             contentArea.style.padding = '0';
             contentArea.style.maxWidth = 'none';
         } else {

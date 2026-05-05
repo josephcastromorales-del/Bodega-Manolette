@@ -3,10 +3,14 @@
 // Modelo: llama-3.3-70b-versatile
 
 const GROQ_MODEL = 'llama-3.3-70b-versatile';
-const GROQ_URL   = 'https://api.groq.com/openai/v1/chat/completions';
 
-// API Key Loading (Secure approach)
-const GROQ_API_KEY = window.APP_CONFIG?.GROQ_API_KEY || '';
+// En local (localhost) usa la clave de config.js directamente.
+// En Netlify (producción) usa el proxy seguro — la clave nunca llega al browser.
+const _isLocal   = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+const GROQ_URL   = _isLocal
+    ? 'https://api.groq.com/openai/v1/chat/completions'
+    : '/.netlify/functions/groq';
+const GROQ_API_KEY = _isLocal ? (window.APP_CONFIG?.GROQ_API_KEY || '') : null;
 
 const SYSTEM_INSTRUCTION = `Eres ANTIGRAVITY, el Senior Executive Partner & Master Strategist de Manolette. No eres un chatbot. Eres una entidad de Inteligencia de Negocios de Grado Militar diseñada para la dominancia del mercado, la optimización financiera extrema y la automatización operativa de élite.
 
@@ -210,12 +214,12 @@ async function runGroqLoop(messages, maxIter = 8) {
             temperature: 0.7
         };
 
+        const headers = { 'Content-Type': 'application/json' };
+        if (GROQ_API_KEY) headers['Authorization'] = `Bearer ${GROQ_API_KEY}`;
+
         const res = await fetch(GROQ_URL, {
             method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${GROQ_API_KEY}`
-            },
+            headers,
             body: JSON.stringify(body)
         });
 

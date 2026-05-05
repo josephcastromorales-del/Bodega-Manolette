@@ -115,7 +115,7 @@
 
             <div class="auth-tabs">
                 <button class="auth-tab active" data-target="loginForm">Iniciar sesión</button>
-                <button class="auth-tab" data-target="registerForm">Crear cuenta</button>
+                <button class="auth-tab" data-target="registerForm">Solicitar acceso</button>
             </div>
 
             <p class="auth-error" id="authError"></p>
@@ -169,15 +169,10 @@
                         </button>
                     </div>
                 </div>
-                <div class="login-form-group">
-                    <label class="login-form-label" for="regRol">Rol en la empresa</label>
-                    <select class="login-form-select" id="regRol">
-                        <option value="empleado">Empleado</option>
-                        <option value="supervisor">Supervisor</option>
-                        <option value="dueño">Dueño / Administrador</option>
-                    </select>
-                </div>
-                <button class="login-btn" id="btnReg" type="submit">Crear cuenta</button>
+                <p style="font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:.5rem;text-align:center;line-height:1.5">
+                    Tu solicitud será revisada por el administrador antes de poder acceder.
+                </p>
+                <button class="login-btn" id="btnReg" type="submit">Solicitar acceso</button>
             </form>
         </div>
     </div>

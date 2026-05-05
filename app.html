@@ -13,6 +13,11 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Oswald:wght@400;600&family=Pacifico&family=Montserrat:wght@400;600;700&family=Raleway:wght@400;600&display=swap"
         rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/luckysheet@latest/dist/plugins/css/pluginsCss.css' />
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/luckysheet@latest/dist/plugins/plugins.css' />
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/luckysheet@latest/dist/css/luckysheet.css' />
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/luckysheet@latest/dist/assets/iconfont/iconfont.css' />
 </head>
 
 <body>
@@ -200,6 +205,23 @@
                         <path d="m19 9-5 5-4-4-3 3" />
                     </svg>
                     Reportes
+                </button>
+
+                <button class="nav-item" id="nav-hojaCalc">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect width="18" height="18" x="3" y="3" rx="1"/>
+                        <path d="M3 9h18M3 15h18M9 3v18M15 3v18"/>
+                    </svg>
+                    Hoja de Cálculo
+                </button>
+
+                <button class="nav-item" id="nav-documento">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <path d="M16 13H8M16 17H8M10 9H8"/>
+                    </svg>
+                    Documentos
                 </button>
 
                 <button class="nav-item" id="nav-notas">
@@ -1017,151 +1039,260 @@
                 </div>
 
                 <!-- ═══════════════════════════════════════
-                 DISEÑO IA
+                 DISEÑO — Estilo Canva
             ═══════════════════════════════════════ -->
+                <!-- DISEÑO — Estilo Canva -->
                 <div id="disenoSection" class="section" style="padding:0;max-width:none">
-
-                    <!-- Toolbar superior -->
-                    <div class="design-toolbar">
-                        <input type="text" id="design-canvas-name" class="design-name-input" value="Mi diseño"
-                            title="Nombre del diseño">
-                        <div class="design-toolbar-sep"></div>
-                        <select id="design-preset-select" class="design-select"
-                            onchange="applyCanvasPreset(this.value)">
-                            <option value="square">Cuadrado 800×800</option>
-                            <option value="instagram">Instagram 1080×1080</option>
-                            <option value="termo">Etiqueta Termo 600×400</option>
-                            <option value="banner">Banner 1200×400</option>
-                            <option value="a4v">A4 Vertical</option>
-                            <option value="portada">Portada Producto</option>
-                            <option value="tarjeta">Tarjeta Presentación</option>
-                        </select>
-                        <div class="design-toolbar-sep"></div>
-                        <span style="font-size:.75rem;color:var(--text-xs);font-weight:600">PLANTILLA:</span>
-                        <button class="dtoolbtn" onclick="applyTemplate('termo_label')">Etiqueta Termo</button>
-                        <button class="dtoolbtn" onclick="applyTemplate('gift_tag')">Etiqueta Regalo</button>
-                        <button class="dtoolbtn" onclick="applyTemplate('portada')">Portada Pro</button>
-                        <div class="design-toolbar-sep"></div>
-                        <button class="dtoolbtn" onclick="undoDesign()" title="Deshacer (Ctrl+Z)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14"
-                                height="14">
-                                <path d="M3 7v6h6" />
-                                <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
-                            </svg>
-                        </button>
-                        <button class="dtoolbtn" onclick="redoDesign()" title="Rehacer (Ctrl+Y)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14"
-                                height="14">
-                                <path d="M21 7v6h-6" />
-                                <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13" />
-                            </svg>
-                        </button>
+                    <!-- Top toolbar -->
+                    <div class="canva-topbar">
+                        <input type="text" id="design-canvas-name" class="canva-title-input" value="Diseño sin título">
+                        <div class="canva-topbar-center">
+                            <button class="canva-tbtn" onclick="undoDesign()" title="Deshacer">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+                            </button>
+                            <button class="canva-tbtn" onclick="redoDesign()" title="Rehacer">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg>
+                            </button>
+                        </div>
+                        <div class="canva-topbar-right">
+                            <select class="canva-preset-sel" onchange="applyCanvasPreset(this.value)">
+                                <option value="square">Cuadrado 800×800</option>
+                                <option value="instagram">Instagram 1080×1080</option>
+                                <option value="termo">Etiqueta Termo 600×400</option>
+                                <option value="banner">Banner 1200×400</option>
+                                <option value="a4v">A4 Vertical</option>
+                                <option value="portada">Portada</option>
+                                <option value="tarjeta">Tarjeta</option>
+                            </select>
+                            <button class="canva-tbtn canva-tbtn-download" onclick="exportDesign('png')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                Descargar
+                            </button>
+                        </div>
                     </div>
 
-                    <div id="disenoSection" class="section">
-                        <div class="studio-layout">
-                            <!-- Barra lateral de herramientas (Rail) -->
-                            <div class="studio-rail">
-                                <button class="rail-btn active" onclick="switchCanvasPanel('templates')">
-                                    <i class="fas fa-th-large"></i>
+                    <!-- Main workspace -->
+                    <div class="canva-workspace">
+
+                        <!-- Left panel -->
+                        <div class="canva-left-panel">
+                            <div class="canva-panel-tabs">
+                                <button class="canva-ptab active" onclick="switchDesignTab('plantillas', this)">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
                                     <span>Plantillas</span>
                                 </button>
-                                <button class="rail-btn" onclick="switchCanvasPanel('elements')">
-                                    <i class="fas fa-shapes"></i>
+                                <button class="canva-ptab" onclick="switchDesignTab('elementos', this)">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="12" cy="12" r="9"/><path d="m9 12 2 2 4-4"/></svg>
                                     <span>Elementos</span>
                                 </button>
-                                <button class="rail-btn" onclick="switchCanvasPanel('text')">
-                                    <i class="fas fa-font"></i>
+                                <button class="canva-ptab" onclick="switchDesignTab('texto', this)">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>
                                     <span>Texto</span>
                                 </button>
-                                <button class="rail-btn" onclick="switchCanvasPanel('uploads')">
-                                    <i class="fas fa-cloud-upload-alt"></i>
-                                    <span>Subidas</span>
+                                <button class="canva-ptab" onclick="switchDesignTab('fondo', this)">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                                    <span>Fondo</span>
                                 </button>
-                                <div class="rail-spacer"></div>
-                                <button class="rail-btn special-ai" onclick="openModal('modal-hf-generator')">
-                                    <i class="fas fa-magic"></i>
-                                    <span>Estudio IA</span>
+                                <button class="canva-ptab" onclick="switchDesignTab('subir', this)">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                    <span>Subir</span>
                                 </button>
                             </div>
 
-                            <!-- Panel de contenido (Contextual) -->
-                            <div class="studio-panel">
-                                <div id="cv-panel-templates" class="cv-panel-content active">
-                                    <h3>Plantillas</h3>
-                                    <div id="template-list" class="template-grid"></div>
+                            <!-- Panel content -->
+                            <div class="canva-panel-content">
+                                <!-- Plantillas -->
+                                <div id="dtab-plantillas" class="canva-tab-pane active">
+                                    <div class="canva-panel-search">
+                                        <input type="text" placeholder="Buscar plantillas..." class="canva-search-input">
+                                    </div>
+                                    <div class="canva-section-label">Plantillas para Manolette</div>
+                                    <div class="canva-templates-grid" id="templates-grid"></div>
                                 </div>
-                                <div id="cv-panel-elements" class="cv-panel-content">
-                                    <h3>Elementos</h3>
-                                    <div class="shape-grid">
-                                        <button class="shape-btn" onclick="addShape('rect')"><div class="s-rect"></div><span>Rect</span></button>
-                                        <button class="shape-btn" onclick="addShape('circle')"><div class="s-circle"></div><span>Circ</span></button>
-                                        <button class="shape-btn" onclick="addShape('triangle')"><div class="s-triangle"></div><span>Tri</span></button>
+
+                                <!-- Elementos -->
+                                <div id="dtab-elementos" class="canva-tab-pane">
+                                    <div class="canva-panel-search">
+                                        <input type="text" placeholder="Buscar elementos..." class="canva-search-input">
+                                    </div>
+                                    <div class="canva-section-label">Formas básicas</div>
+                                    <div class="canva-shapes-grid">
+                                        <div class="canva-shape-item" onclick="addShape('rect')" title="Rectángulo">
+                                            <svg viewBox="0 0 40 40" width="40" height="40"><rect x="4" y="8" width="32" height="24" rx="2" fill="currentColor"/></svg>
+                                        </div>
+                                        <div class="canva-shape-item" onclick="addShape('circle')" title="Círculo">
+                                            <svg viewBox="0 0 40 40" width="40" height="40"><circle cx="20" cy="20" r="16" fill="currentColor"/></svg>
+                                        </div>
+                                        <div class="canva-shape-item" onclick="addShape('triangle')" title="Triángulo">
+                                            <svg viewBox="0 0 40 40" width="40" height="40"><polygon points="20,4 36,36 4,36" fill="currentColor"/></svg>
+                                        </div>
+                                        <div class="canva-shape-item" onclick="addShape('line')" title="Línea">
+                                            <svg viewBox="0 0 40 40" width="40" height="40"><line x1="4" y1="20" x2="36" y2="20" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+                                        </div>
+                                        <div class="canva-shape-item" onclick="addShape('star')" title="Estrella">
+                                            <svg viewBox="0 0 40 40" width="40" height="40"><polygon points="20,2 25,15 39,15 28,24 32,38 20,30 8,38 12,24 1,15 15,15" fill="currentColor"/></svg>
+                                        </div>
+                                        <div class="canva-shape-item" onclick="addShape('arrow')" title="Flecha">
+                                            <svg viewBox="0 0 40 40" width="40" height="40"><path d="M4 20h28M24 10l12 10-12 10" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                        </div>
+                                        <div class="canva-shape-item" onclick="addShape('heart')" title="Corazón">
+                                            <svg viewBox="0 0 40 40" width="40" height="40"><path d="M20 34s-16-10-16-20a8 8 0 0 1 16 0 8 8 0 0 1 16 0c0 10-16 20-16 20z" fill="currentColor"/></svg>
+                                        </div>
+                                        <div class="canva-shape-item" onclick="addShape('rounded-rect')" title="Rectángulo redondeado">
+                                            <svg viewBox="0 0 40 40" width="40" height="40"><rect x="4" y="8" width="32" height="24" rx="8" fill="currentColor"/></svg>
+                                        </div>
+                                    </div>
+                                    <div class="canva-section-label" style="margin-top:16px">Marcos y bordes</div>
+                                    <div class="canva-shapes-grid">
+                                        <div class="canva-shape-item" onclick="addFrame('rect-frame')" title="Marco rectángulo">
+                                            <svg viewBox="0 0 40 40" width="40" height="40"><rect x="4" y="6" width="32" height="28" rx="2" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+                                        </div>
+                                        <div class="canva-shape-item" onclick="addFrame('circle-frame')" title="Marco círculo">
+                                            <svg viewBox="0 0 40 40" width="40" height="40"><circle cx="20" cy="20" r="16" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+                                        </div>
                                     </div>
                                 </div>
-                                <div id="cv-panel-text" class="cv-panel-content">
-                                    <h3>Texto</h3>
-                                    <div class="text-presets">
-                                        <button class="btn-text-preset t-h1" onclick="addText('heading')">Añadir título</button>
-                                        <button class="btn-text-preset t-h2" onclick="addText('subheading')">Añadir subtítulo</button>
-                                        <button class="btn-text-preset t-body" onclick="addText('body')">Añadir cuerpo</button>
-                                    </div>
+
+                                <!-- Texto -->
+                                <div id="dtab-texto" class="canva-tab-pane">
+                                    <div class="canva-section-label">Agregar texto</div>
+                                    <button class="canva-text-preset canva-text-h1" onclick="addTextPreset('h1')">Agregar un título</button>
+                                    <button class="canva-text-preset canva-text-h2" onclick="addTextPreset('h2')">Agregar un subtítulo</button>
+                                    <button class="canva-text-preset canva-text-body" onclick="addTextPreset('body')">Agregar texto normal</button>
+                                    <div class="canva-section-label" style="margin-top:16px">Estilos de texto</div>
+                                    <div class="canva-text-styles-grid" id="text-styles-grid"></div>
                                 </div>
-                                <div id="cv-panel-uploads" class="cv-panel-content">
-                                    <h3>Subidas</h3>
-                                    <button class="btn btn-secondary" style="width: 100%; margin-bottom: 12px;" onclick="triggerImageUpload()">Subir Imagen</button>
-                                    <input type="file" id="image-upload-input" hidden accept="image/*">
-                                    <div id="user-uploads-list"></div>
+
+                                <!-- Fondo -->
+                                <div id="dtab-fondo" class="canva-tab-pane">
+                                    <div class="canva-section-label">Color de fondo</div>
+                                    <div class="canva-bg-colors" id="bg-colors-grid"></div>
+                                    <div class="canva-section-label" style="margin-top:16px">Color personalizado</div>
+                                    <input type="color" id="bg-custom-color" value="#ffffff" style="width:100%;height:40px;border:1px solid var(--border-default);border-radius:var(--r-md);cursor:pointer;background:none" onchange="setCanvasBackground(this.value)">
+                                    <div class="canva-section-label" style="margin-top:16px">Gradientes</div>
+                                    <div class="canva-gradients-grid" id="gradients-grid"></div>
+                                </div>
+
+                                <!-- Subir -->
+                                <div id="dtab-subir" class="canva-tab-pane">
+                                    <div class="canva-section-label">Tus imágenes</div>
+                                    <div class="canva-upload-zone" onclick="triggerImageUpload()">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                        <p>Haz clic para subir una imagen</p>
+                                        <span>PNG, JPG, SVG, WEBP</span>
+                                    </div>
+                                    <div id="uploaded-images-grid" class="canva-uploaded-grid"></div>
+                                    <input type="file" id="image-upload-input" accept="image/*" hidden multiple>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Área Central -->
-                            <div class="studio-main">
-                                <div class="studio-header">
-                                    <div class="sh-left" style="display:flex; align-items:center; gap:8px;">
-                                        <span class="project-name" contenteditable="true" style="font-weight:600; padding:4px; border-radius:4px;">Diseño Etiqueta Premium</span>
-                                        <button class="btn btn-ghost btn-sm" onclick="undo()" title="Deshacer"><i class="fas fa-undo"></i></button>
-                                        <button class="btn btn-ghost btn-sm" onclick="redo()" title="Rehacer"><i class="fas fa-redo"></i></button>
-                                        <span class="save-status" style="font-size:12px; color:#64748b;"><i class="fas fa-cloud-check"></i> Guardado</span>
-                                    </div>
-                                    <div class="sh-center" style="display:flex; align-items:center; gap:8px; background:#f1f5f9; padding:4px 12px; border-radius:20px;">
-                                        <button class="btn btn-ghost btn-sm" onclick="zoomCanvas('out')">-</button>
-                                        <span id="cv-zoom-label" style="font-size:12px; font-weight:600;">100%</span>
-                                        <button class="btn btn-ghost btn-sm" onclick="zoomCanvas('in')">+</button>
-                                    </div>
-                                    <div class="sh-right" style="display:flex; align-items:center; gap:8px;">
-                                        <button class="btn btn-secondary btn-sm"><i class="fas fa-share"></i> Compartir</button>
-                                        <button class="btn btn-primary btn-sm" style="background:#D4AF37; border-color:#D4AF37; color:#1A3021; font-weight:bold;" onclick="exportDesign()"><i class="fas fa-check"></i> FINALIZAR</button>
+                        <!-- Center canvas -->
+                        <div class="canva-canvas-area">
+                            <div class="canva-canvas-wrap" id="design-canvas-wrap">
+                                <canvas id="design-canvas"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Right properties panel -->
+                        <div class="canva-right-panel" id="canva-right-panel">
+                            <div id="canva-no-sel" class="canva-no-sel">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28"><path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>
+                                <p>Selecciona un elemento para editar</p>
+                            </div>
+                            <div id="canva-props" style="display:none">
+                                <!-- Position & Size -->
+                                <div class="canva-prop-group">
+                                    <div class="canva-prop-label">Posición y tamaño</div>
+                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+                                        <div><div class="canva-prop-sublabel">X</div><input type="number" id="prop-x" class="canva-prop-input" onchange="updateObjPosition('left', this.value)"></div>
+                                        <div><div class="canva-prop-sublabel">Y</div><input type="number" id="prop-y" class="canva-prop-input" onchange="updateObjPosition('top', this.value)"></div>
+                                        <div><div class="canva-prop-sublabel">Ancho</div><input type="number" id="prop-w" class="canva-prop-input" onchange="updateObjSize('width', this.value)"></div>
+                                        <div><div class="canva-prop-sublabel">Alto</div><input type="number" id="prop-h" class="canva-prop-input" onchange="updateObjSize('height', this.value)"></div>
                                     </div>
                                 </div>
-
-                                <div id="design-canvas-area" class="canvas-container">
-                                    <canvas id="design-canvas"></canvas>
-                                </div>
-
-                                <!-- Toolbar Flotante -->
-                                <div id="cv-element-toolbar" class="floating-toolbar" style="display:none;">
-                                    <div id="cv-text-tools" class="tool-group" style="display:none;">
-                                        <select id="prop-font-family" onchange="updateTextProp('fontFamily', this.value)"></select>
-                                        <input type="number" id="prop-font-size" value="32" onchange="updateTextProp('fontSize', parseInt(this.value))">
-                                        <input type="color" id="prop-text-color" onchange="updateTextProp('fill', this.value)">
+                                <!-- Opacity -->
+                                <div class="canva-prop-group">
+                                    <div class="canva-prop-label">Opacidad</div>
+                                    <div style="display:flex;align-items:center;gap:8px">
+                                        <input type="range" id="prop-opacity" min="0" max="100" value="100" style="flex:1" oninput="updateCommonProp('opacity', this.value/100); document.getElementById('prop-opacity-val').textContent=this.value+'%'">
+                                        <span id="prop-opacity-val" style="font-size:12px;color:var(--text-tertiary);min-width:36px">100%</span>
                                     </div>
-                                    <div id="cv-shape-tools" class="tool-group" style="display:none;">
-                                        <input type="color" id="prop-fill-color" onchange="updateShapeProp('fill', this.value)">
-                                    </div>
-                                    <button class="btn-delete" style="margin-left:8px;" onclick="deleteSelected()"><i class="fas fa-trash"></i></button>
                                 </div>
-
-                                <div class="canvas-footer">
-                                    <button class="btn btn-ghost btn-sm" onclick="prevPage()"><i class="fas fa-chevron-left"></i> Anterior</button>
-                                    <span id="cv-page-indicator" style="font-size:12px; font-weight:500;">Página 1 / 1</span>
-                                    <button class="btn btn-ghost btn-sm" onclick="nextPage()">Siguiente <i class="fas fa-chevron-right"></i></button>
-                                    <div style="width:20px;"></div>
-                                    <button class="btn btn-ghost btn-sm" onclick="addNewPage()"><i class="fas fa-plus"></i> Nueva Página</button>
+                                <!-- Rotation -->
+                                <div class="canva-prop-group">
+                                    <div class="canva-prop-label">Rotación</div>
+                                    <div style="display:flex;align-items:center;gap:8px">
+                                        <input type="range" id="prop-rotation" min="-180" max="180" value="0" style="flex:1" oninput="updateCommonProp('angle', parseInt(this.value)); document.getElementById('prop-rotation-val').textContent=this.value+'°'">
+                                        <span id="prop-rotation-val" style="font-size:12px;color:var(--text-tertiary);min-width:36px">0°</span>
+                                    </div>
+                                </div>
+                                <!-- Text props (shown only for text) -->
+                                <div id="canva-text-props" class="canva-prop-group" style="display:none">
+                                    <div class="canva-prop-label">Texto</div>
+                                    <select id="prop-font" class="canva-prop-select" onchange="updateTextProp('fontFamily', this.value)">
+                                        <option value="Inter">Inter</option>
+                                        <option value="Arial">Arial</option>
+                                        <option value="Georgia">Georgia</option>
+                                        <option value="Times New Roman">Times New Roman</option>
+                                        <option value="Courier New">Courier New</option>
+                                        <option value="Montserrat">Montserrat</option>
+                                        <option value="Playfair Display">Playfair Display</option>
+                                        <option value="Oswald">Oswald</option>
+                                        <option value="Pacifico">Pacifico</option>
+                                        <option value="Roboto">Roboto</option>
+                                        <option value="Lato">Lato</option>
+                                    </select>
+                                    <div style="display:flex;gap:6px;margin-top:6px">
+                                        <input type="number" id="prop-fontsize" min="6" max="400" class="canva-prop-input" style="width:60px" onchange="updateTextProp('fontSize', parseInt(this.value))">
+                                        <div style="display:flex;gap:3px;flex:1">
+                                            <button class="canva-fmt-btn" id="fmt-bold"   onclick="toggleBold()"><b>N</b></button>
+                                            <button class="canva-fmt-btn" id="fmt-italic" onclick="toggleItalic()"><i>K</i></button>
+                                            <button class="canva-fmt-btn" onclick="setTextAlign('left')">
+                                                <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M2 4h12v1.5H2zM2 7h8v1.5H2zM2 10h12v1.5H2zM2 13h8v1.5H2z"/></svg>
+                                            </button>
+                                            <button class="canva-fmt-btn" onclick="setTextAlign('center')">
+                                                <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M2 4h12v1.5H2zM4 7h8v1.5H4zM2 10h12v1.5H2zM4 13h8v1.5H4z"/></svg>
+                                            </button>
+                                            <button class="canva-fmt-btn" onclick="setTextAlign('right')">
+                                                <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M2 4h12v1.5H2zM6 7h8v1.5H6zM2 10h12v1.5H2zM6 13h8v1.5H6z"/></svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="canva-prop-sublabel" style="margin-top:8px">Color del texto</div>
+                                    <input type="color" id="prop-text-color" value="#000000" style="width:100%;height:32px;border:1px solid var(--border-default);border-radius:var(--r-md);cursor:pointer;background:none" oninput="updateTextProp('fill', this.value)">
+                                </div>
+                                <!-- Shape/fill props -->
+                                <div id="canva-shape-props" class="canva-prop-group" style="display:none">
+                                    <div class="canva-prop-label">Relleno</div>
+                                    <input type="color" id="prop-fill-color" value="#3b82f6" style="width:100%;height:32px;border:1px solid var(--border-default);border-radius:var(--r-md);cursor:pointer;background:none" oninput="updateShapeProp('fill', this.value)">
+                                    <div class="canva-prop-sublabel" style="margin-top:8px">Borde</div>
+                                    <div style="display:flex;gap:6px">
+                                        <input type="color" id="prop-stroke-color" value="#000000" style="width:40px;height:32px;border:1px solid var(--border-default);border-radius:var(--r-md);cursor:pointer;background:none" oninput="updateShapeProp('stroke', this.value)">
+                                        <input type="number" id="prop-stroke-w" min="0" max="30" value="0" class="canva-prop-input" placeholder="Grosor" oninput="updateShapeProp('strokeWidth', parseInt(this.value)||0)">
+                                    </div>
+                                </div>
+                                <!-- Layer actions -->
+                                <div class="canva-prop-group">
+                                    <div class="canva-prop-label">Capas</div>
+                                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+                                        <button class="btn btn-secondary btn-sm w-full" onclick="bringForward()">Al frente</button>
+                                        <button class="btn btn-secondary btn-sm w-full" onclick="sendBackward()">Al fondo</button>
+                                        <button class="btn btn-secondary btn-sm w-full" onclick="duplicateSelected()">Duplicar</button>
+                                        <button class="btn btn-danger btn-sm w-full" onclick="deleteSelected()">Eliminar</button>
+                                    </div>
+                                </div>
+                                <!-- AI Design helper -->
+                                <div class="canva-prop-group">
+                                    <div class="canva-prop-label">Asistente IA de diseño</div>
+                                    <div id="design-ai-messages" style="max-height:160px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;margin-bottom:8px"></div>
+                                    <textarea id="design-ai-input" placeholder="Pide colores, ideas, slogans..." style="width:100%;min-height:60px;resize:none;background:var(--bg-raised);border:1px solid var(--border-default);border-radius:var(--r-md);padding:8px;color:var(--text-primary);font-size:12px;font-family:var(--font-sans)"></textarea>
+                                    <button class="btn btn-primary w-full btn-sm" style="margin-top:4px" onclick="askDesignAI()">Preguntar a la IA</button>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
                 <!-- ═══════════════════════════════════════
                  CALENDARIO
@@ -1247,6 +1378,49 @@
                             </svg>
                             <h4>Sin reporte seleccionado</h4>
                             <p>Selecciona un contrato para ver y exportar el reporte.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════
+                 HOJA DE CÁLCULO
+            ═══════════════════════════════════════ -->
+                <!-- HOJA DE CÁLCULO -->
+                <div id="hojaCalcSection" class="section" style="padding:0;max-width:none">
+                    <div id="luckysheet" style="margin:0;padding:0;width:100%;height:calc(100vh - 48px)"></div>
+                </div>
+
+                <!-- ═══════════════════════════════════════
+                 EDITOR DE DOCUMENTOS
+            ═══════════════════════════════════════ -->
+                <!-- EDITOR DE DOCUMENTOS -->
+                <div id="documentoSection" class="section">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Editor de Documentos</h2>
+                            <p class="section-subtitle">Crea y edita documentos profesionales</p>
+                        </div>
+                        <div style="display:flex;gap:.5rem">
+                            <button class="btn btn-secondary btn-sm" onclick="docExportPDF()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                Exportar PDF
+                            </button>
+                            <button class="btn btn-secondary btn-sm" onclick="docExportDOCX()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                Descargar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Word-like toolbar -->
+                    <div class="card" style="margin-bottom:12px;border-radius:var(--r-lg)">
+                        <div id="doc-toolbar" style="padding:6px 12px"></div>
+                    </div>
+
+                    <!-- Page simulation -->
+                    <div style="display:flex;justify-content:center;background:var(--bg-base);min-height:70vh;padding:32px 16px;border-radius:var(--r-lg);border:1px solid var(--border-subtle)">
+                        <div style="width:100%;max-width:816px;background:#ffffff;min-height:1056px;box-shadow:0 4px 24px rgba(0,0,0,0.3);border-radius:2px;padding:96px 96px;box-sizing:border-box">
+                            <div id="doc-editor" style="min-height:864px;color:#09090b;font-family:'Times New Roman',serif;font-size:12pt"></div>
                         </div>
                     </div>
                 </div>
@@ -2027,6 +2201,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <!-- Fabric.js (editor de diseño) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+    <!-- Quill (editor de documentos) -->
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+    <!-- Luckysheet (hoja de cálculo) -->
+    <script src="https://cdn.jsdelivr.net/npm/luckysheet@latest/dist/plugins/js/plugin.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luckysheet@latest/dist/luckysheet.umd.js"></script>
 
     <!-- ═══════════════════════════════════════════════
      APP SCRIPTS — orden exacto
@@ -2057,6 +2236,8 @@
     <script src="js/design.js"></script>
     <script src="js/prompts.js"></script>
     <script src="js/producto-dia.js"></script>
+    <script src="js/spreadsheet.js"></script>
+    <script src="js/document-editor.js"></script>
 
     <!-- ═══════════════════════════════════════════════
      INICIO

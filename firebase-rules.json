@@ -1,0 +1,19 @@
+{
+  "rules": {
+    "usuarios": {
+      ".read":  "auth != null",
+      ".write": "auth != null",
+      "$uid": {
+        ".read":  "auth != null && (auth.uid === $uid || root.child('usuarios').child(auth.uid).child('rol').val() === 'dueño')",
+        ".write": "auth != null && (auth.uid === $uid || root.child('usuarios').child(auth.uid).child('rol').val() === 'dueño')"
+      }
+    },
+    "contratos":     { ".read": "auth != null && root.child('usuarios').child(auth.uid).child('pendiente').val() !== true", ".write": "auth != null && root.child('usuarios').child(auth.uid).child('pendiente').val() !== true" },
+    "ordenes":       { ".read": "auth != null && root.child('usuarios').child(auth.uid).child('pendiente').val() !== true", ".write": "auth != null && root.child('usuarios').child(auth.uid).child('pendiente').val() !== true" },
+    "inventario":    { ".read": "auth != null && root.child('usuarios').child(auth.uid).child('pendiente').val() !== true", ".write": "auth != null && root.child('usuarios').child(auth.uid).child('pendiente').val() !== true" },
+    "proveedores":   { ".read": "auth != null && root.child('usuarios').child(auth.uid).child('pendiente').val() !== true", ".write": "auth != null && root.child('usuarios').child(auth.uid).child('pendiente').val() !== true" },
+    "movimientos":   { ".read": "auth != null && root.child('usuarios').child(auth.uid).child('pendiente').val() !== true", ".write": "auth != null && root.child('usuarios').child(auth.uid).child('pendiente').val() !== true" },
+    "actividad":     { ".read": "auth != null && root.child('usuarios').child(auth.uid).child('pendiente').val() !== true", ".write": "auth != null && root.child('usuarios').child(auth.uid).child('pendiente').val() !== true" },
+    "configuracion": { ".read": "auth != null && root.child('usuarios').child(auth.uid).child('rol').val() === 'dueño'",    ".write": "auth != null && root.child('usuarios').child(auth.uid).child('rol').val() === 'dueño'" }
+  }
+}

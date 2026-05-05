@@ -190,3 +190,16 @@ function escHtml(str) {
 function genId() {
     return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
 }
+
+/* ── COP Currency Formatting ── */
+window.formatCOP = function(value) {
+    if (!value && value !== 0) return '—';
+    return new Intl.NumberFormat('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+    }).format(value);
+};
+
+window.parseCOP = function(str) { return parseInt(String(str).replace(/\D/g,'')) || 0; };

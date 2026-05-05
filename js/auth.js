@@ -17,6 +17,37 @@ auth.onAuthStateChanged(async (user) => {
         // Obtener datos del usuario
         const snap = await db.ref(`usuarios/${user.uid}`).once('value');
         const data = snap.val() || {};
+
+        // ── Verificar estado de aprobación ────────────────────────────
+        if (data.pendiente === true) {
+            await auth.signOut();
+            if (onLogin) _showAuthMessage(
+                'Tu solicitud está pendiente de aprobación por el administrador.',
+                'warning'
+            );
+            return;
+        }
+
+        if (data.rechazado === true) {
+            await auth.signOut();
+            if (onLogin) _showAuthMessage(
+                'Tu solicitud de acceso fue rechazada. Contacta al administrador.',
+                'error'
+            );
+            return;
+        }
+
+        if (!data.activo && data.pendiente !== undefined) {
+            // Usuario desactivado manualmente
+            await auth.signOut();
+            if (onLogin) _showAuthMessage(
+                'Tu cuenta ha sido desactivada. Contacta al administrador.',
+                'error'
+            );
+            return;
+        }
+        // ─────────────────────────────────────────────────────────────
+
         window.userRole = data.rol || 'empleado';
         window.userName = data.nombre || user.email.split('@')[0];
 
@@ -43,6 +74,15 @@ auth.onAuthStateChanged(async (user) => {
         }
     }
 });
+
+function _showAuthMessage(msg, type) {
+    const el = document.getElementById('authError');
+    if (!el) return;
+    el.textContent = msg;
+    el.style.color = type === 'warning' ? '#f59e0b'
+                   : type === 'error'   ? '#ef4444'
+                   : '#22c55e';
+}
 
 function updateUserUI() {
     const emailEl  = document.getElementById('user-email');
@@ -138,35 +178,49 @@ function initLoginPage() {
         }
     };
 
-    // REGISTRO
+    // REGISTRO — crea solicitud pendiente de aprobación
     registerForm.onsubmit = async (e) => {
         e.preventDefault();
         const email  = document.getElementById('regEmail').value.trim();
         const pass   = document.getElementById('regPass').value;
         const nombre = document.getElementById('regNombre').value.trim();
-        const rol    = document.getElementById('regRol').value;
         const btn    = document.getElementById('btnReg');
         authError.textContent = '';
 
         if (pass.length < 6) {
-            authError.textContent = 'La contraseña debe tener mínimo 6 caracteres.';
+            _showAuthMessage('La contraseña debe tener mínimo 6 caracteres.', 'error');
+            return;
+        }
+        if (!nombre) {
+            _showAuthMessage('Ingresa tu nombre completo.', 'error');
             return;
         }
 
         btn.disabled = true;
-        btn.textContent = 'Creando cuenta...';
+        btn.textContent = 'Enviando solicitud...';
         try {
             const result = await auth.createUserWithEmailAndPassword(email, pass);
+            // Guardado como PENDIENTE — el dueño debe aprobar
             await db.ref(`usuarios/${result.user.uid}`).set({
-                email, rol, nombre, activo: true, creadoEn: Date.now()
+                email,
+                nombre,
+                rol: 'empleado',      // rol por defecto; el dueño puede cambiarlo al aprobar
+                pendiente: true,
+                activo:    false,
+                creadoEn:  Date.now()
             });
+            // Cerrar sesión inmediatamente — no puede entrar hasta ser aprobado
+            await auth.signOut();
+            _showAuthMessage('Solicitud enviada. El administrador revisará tu cuenta.', 'success');
+            btn.textContent = 'Solicitud enviada';
+            registerForm.reset();
         } catch (err) {
             const msg = err.code === 'auth/email-already-in-use'
                 ? 'Ya existe una cuenta con este email.'
                 : 'Error al registrar: ' + err.message;
-            authError.textContent = msg;
+            _showAuthMessage(msg, 'error');
             btn.disabled = false;
-            btn.textContent = 'Crear cuenta';
+            btn.textContent = 'Solicitar acceso';
         }
     };
 }
