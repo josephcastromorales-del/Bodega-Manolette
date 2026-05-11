@@ -5,13 +5,15 @@ const SECTIONS = {
     contratos:    { id: 'contratosSection',    label: 'Contratos',      nav: 'nav-contratos' },
     ordenes:      { id: 'ordenesSection',      label: 'Órdenes',        nav: 'nav-ordenes' },
     inventario:   { id: 'inventarioSection',   label: 'Inventario',     nav: 'nav-inventario' },
+    materiales:   { id: 'materialesSection',   label: 'Materiales',     nav: 'nav-materiales' },
     proveedores:  { id: 'proveedoresSection',  label: 'Proveedores',    nav: 'nav-proveedores' },
     clientes:     { id: 'clientesSection',     label: 'Clientes',       nav: 'nav-clientes' },
     empleados:    { id: 'empleadosSection',    label: 'Empleados',      nav: 'nav-empleados' },
     gastos:       { id: 'gastosSection',       label: 'Gastos',         nav: 'nav-gastos' },
     cotizaciones: { id: 'cotizacionesSection', label: 'Cotizaciones',   nav: 'nav-cotizaciones' },
     productoDia:  { id: 'productoDiaSection',  label: 'Producto del Día', nav: 'nav-productoDia' },
-    gemini:       { id: 'geminiSection',       label: 'Asistente IA',   nav: 'nav-gemini' },
+    gemini:       { id: 'geminiSection',       label: 'Asistente Nox',   nav: 'nav-gemini' },
+    apikeys:      { id: 'apiKeysSection',      label: 'API Keys',        nav: 'nav-apikeys' },
     analiticas:   { id: 'analiticasSection',   label: 'Analíticas',     nav: 'nav-analiticas' },
     diseno:       { id: 'disenoSection',       label: 'Diseño',         nav: 'nav-diseno' },
     calendario:   { id: 'calendarioSection',   label: 'Calendario',     nav: 'nav-calendario' },
@@ -46,12 +48,14 @@ function navigate(section) {
     // La sección Diseño necesita quitar padding del content-area
     const contentArea = document.querySelector('.content-area');
     if (contentArea) {
-        if (section === 'diseno' || section === 'hojaCalc') {
+        if (section === 'diseno' || section === 'hojaCalc' || section === 'gemini') {
             contentArea.style.padding = '0';
             contentArea.style.maxWidth = 'none';
+            contentArea.style.background = section === 'gemini' ? '#0a0a0a' : '';
         } else {
             contentArea.style.padding = '';
             contentArea.style.maxWidth = '';
+            contentArea.style.background = '';
         }
     }
 

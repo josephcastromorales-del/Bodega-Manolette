@@ -1,16 +1,16 @@
-// config.example.js — Copia este archivo como config.js y llena los valores
-// NUNCA pongas claves reales en este archivo
-window.APP_CONFIG = {
-    firebase: {
-        apiKey: "YOUR_FIREBASE_API_KEY",
-        authDomain: "YOUR_PROJECT.firebaseapp.com",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_PROJECT.firebasestorage.app",
-        messagingSenderId: "YOUR_SENDER_ID",
-        appId: "YOUR_APP_ID",
-        databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com"
-    },
-    gemini: {
-        apiKey: "YOUR_GEMINI_API_KEY"
-    }
+// config.example.js — Plantilla para configuración de Firebase
+// RENOMBRA ESTE ARCHIVO A config.js Y PON TUS CLAVES REALES
+// NO SUBAS EL ARCHIVO config.js A GITHUB (Ya está en .gitignore)
+
+const firebaseConfig = {
+    apiKey: "TU_API_KEY_AQUÍ",
+    authDomain: "TU_PROYECTO.firebaseapp.com",
+    databaseURL: "https://TU_PROYECTO-default-rtdb.firebaseio.com",
+    projectId: "TU_PROYECTO",
+    storageBucket: "TU_PROYECTO.appspot.com",
+    messagingSenderId: "TU_SENDER_ID",
+    appId: "TU_APP_ID"
 };
+
+// Configuración de Gemini AI (Opcional)
+const GEMINI_API_KEY = "TU_GEMINI_KEY_AQUÍ";

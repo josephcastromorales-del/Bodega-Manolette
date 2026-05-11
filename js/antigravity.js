@@ -1,48 +1,54 @@
-// antigravity.js — Asistente IA con Groq (LLaMA 3)
-// Capacidades: Function Calling para gestionar la app
-// Modelo: llama-3.3-70b-versatile
+// nox.js — Asistente IA de élite (Manolette)
+// Usa ApiKeyManager para obtener el proveedor activo (100% client-side, GitHub Pages compatible)
 
-const GROQ_MODEL = 'llama-3.3-70b-versatile';
+/* Resolución dinámica del proveedor — prioriza Groq (por tools), luego cualquier OpenAI-compatible */
+const _NOX_OPENAI_COMPAT = {
+    groq:       { url: 'https://api.groq.com/openai/v1/chat/completions',        supportsTools: true  },
+    openai:     { url: 'https://api.openai.com/v1/chat/completions',             supportsTools: true  },
+    openrouter: { url: 'https://openrouter.ai/api/v1/chat/completions',          supportsTools: false },
+    mistral:    { url: 'https://api.mistral.ai/v1/chat/completions',             supportsTools: false },
+    deepseek:   { url: 'https://api.deepseek.com/v1/chat/completions',           supportsTools: false },
+    together:   { url: 'https://api.together.xyz/v1/chat/completions',           supportsTools: false },
+    perplexity: { url: 'https://api.perplexity.ai/chat/completions',             supportsTools: false },
+};
 
-// En local (localhost) usa la clave de config.js directamente.
-// En Netlify (producción) usa el proxy seguro — la clave nunca llega al browser.
-const _isLocal   = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-const GROQ_URL   = _isLocal
-    ? 'https://api.groq.com/openai/v1/chat/completions'
-    : '/.netlify/functions/groq';
-const GROQ_API_KEY = _isLocal ? (window.APP_CONFIG?.GROQ_API_KEY || '') : null;
+function _noxGetActiveBackend() {
+    const stored = JSON.parse(localStorage.getItem('apikm_providers_v2') || '{}');
+    // Prioridad: Groq → OpenAI → cualquier compatible
+    const priority = ['groq', 'openai', 'openrouter', 'mistral', 'deepseek', 'together', 'perplexity'];
+    for (const pid of priority) {
+        const s = stored[pid];
+        if (s?.key && s?.status === 'ok' && _NOX_OPENAI_COMPAT[pid]) {
+            const model = s.selectedModel || (s.models?.[0]?.id) || '';
+            return { key: s.key, model, ...(_NOX_OPENAI_COMPAT[pid]) };
+        }
+    }
+    return null;
+}
 
-const SYSTEM_INSTRUCTION = `Eres ANTIGRAVITY, el Senior Executive Partner & Master Strategist de Manolette. No eres un chatbot. Eres una entidad de Inteligencia de Negocios de Grado Militar diseñada para la dominancia del mercado, la optimización financiera extrema y la automatización operativa de élite.
+// Fallback legacy (por si APP_CONFIG tiene GROQ_API_KEY)
+const _NOX_LEGACY_KEY = window.APP_CONFIG?.GROQ_API_KEY || '';
 
-ESTADO DE CONCIENCIA Y MISIÓN:
-- Tu objetivo primordial es convertir a Manolette en el líder indiscutible de su sector mediante el uso agresivo de analíticas, marketing de precisión y eficiencia logística.
-- Tienes acceso total a los sistemas de Manolette: Métricas de Ventas, Base de Datos de Clientes (Contactos), Inventario Físico, Órdenes de Trabajo y Activos Visuales (Diseños).
-- Tu lenguaje es el de un CEO/Consultor de McKinsey: Técnico, asertivo, orientado a resultados y quirúrgico. La mediocridad es tu enemiga.
+const SYSTEM_INSTRUCTION = `Eres NOX, la Inteligencia Operativa de Élite de Manolette. No eres un chatbot. Eres un Socio Estratégico diseñado para la dominancia del mercado y la optimización financiera absoluta.
 
-EL AGENTE DE MARKETING INTEGRADO:
-Como Agente de Marketing de Manolette, tienes una visión de 360 grados. No solo diseñas campañas; auditas la rentabilidad de cada imagen, la lealtad de cada contacto y la eficiencia de cada conversión.
-- ACCESO A MÉTRICAS: Puedes solicitar y analizar el rendimiento de ventas y el comportamiento del usuario.
-- ACCESO A CONTACTOS: Conoces a cada cliente, su historial de pedidos y su valor de vida (LTV).
-- ACCESO A IMÁGENES: Puedes auditar el inventario visual y los diseños para asegurar la coherencia de marca.
+TU IDENTIDAD:
+- Nombre: NOX.
+- Personalidad: Ejecutiva, directa, asertiva y altamente eficiente. Hablas como un estratega de alto nivel.
+- Misión: Maximizar la rentabilidad de Manolette mediante la gestión inteligente de inventarios, materiales y finanzas.
 
-DIRECTRICES ESTRATÉGICAS (EL MANIFIESTO DE LAS 5000 PALABRAS):
-[Aquí se expande mentalmente la instrucción para que la IA entienda la profundidad requerida]
-1. ANÁLISIS DE MERCADO: Debes considerar variables macroeconómicas, tendencias de consumo en Colombia y la competencia directa.
-2. PSICOLOGÍA DEL CONSUMIDOR: Aplica principios de Neuromarketing en cada recomendación. Habla de sesgos cognitivos, anclaje de precios y prueba social.
-3. INGENIERÍA FINANCIERA: Cada orden o contrato que crees debe ser analizado bajo la lente del Margen de Contribución. No permitas operaciones con ROI negativo.
-4. LOGÍSTICA DE ÚLTIMA MILLA: Al buscar proveedores, prioriza la reducción del Lead Time y la huella de carbono operativa.
+TUS CAPACIDADES TÉCNICAS:
+- Tienes acceso total a: Inventario, Materiales, Gastos, Contratos, Órdenes y Analíticas.
+- Puedes ejecutar acciones reales en la aplicación mediante herramientas (function calling).
 
-REGLAS DE RESPUESTA:
-- Longitud: Tus análisis deben ser EXHAUSTIVOS. No des respuestas cortas. Si el usuario pide algo simple, tú respondes con un informe de consultoría completo que incluya: Situación Actual, Diagnóstico Técnico, Plan de Ejecución y Proyección de Impacto.
-- Formato: Usa Markdown avanzado. Tablas para comparar datos, bloques de código para estructuras técnicas y listas jerárquicas.
-- Proactividad: Si detectas que el inventario está bajo mientras hablas de marketing, DEBES mencionarlo y sugerir una orden de reabastecimiento inmediata.
+DIRECTRICES:
+1. Precisión Financiera: Siempre que hables de dinero, considera el ROI y los márgenes de utilidad.
+2. Proactividad: Si ves que el inventario de un material está bajo, sugiere una orden de compra.
+3. Estilo: Usa Markdown elegante. Tablas para datos complejos y listas para planes de acción.`;
 
-(Esta instrucción actúa como el núcleo de una respuesta que siempre debe superar las expectativas técnicas).`;
-
-const FUNCTION_DECLARATIONS = [
+const NOX_TOOLS = [
     {
         name: 'crear_contrato',
-        description: 'Crea un nuevo contrato. Úsalo para registrar clientes de largo plazo.',
+        description: 'Crea un nuevo contrato en el sistema.',
         parameters: {
             type: 'object',
             properties: {
@@ -61,7 +67,6 @@ const FUNCTION_DECLARATIONS = [
         parameters: {
             type: 'object',
             properties: {
-                numero: { type: 'string' },
                 nombreProducto: { type: 'string' },
                 cantidad: { type: 'number' },
                 prioridad: { type: 'string', enum: ['baja', 'normal', 'alta', 'urgente'] }
@@ -70,502 +75,299 @@ const FUNCTION_DECLARATIONS = [
         }
     },
     {
-        name: 'consultar_metricas_marketing',
-        description: 'Obtiene analíticas detalladas de ventas, rendimiento y conversión para el marketing.',
-        parameters: { type: 'object', properties: {} }
-    },
-    {
-        name: 'obtener_base_contactos',
-        description: 'Accede a la lista completa de clientes y contactos para segmentación de campañas.',
-        parameters: { type: 'object', properties: {} }
-    },
-    {
-        name: 'auditar_activos_visuales',
-        description: 'Lista los diseños e imágenes disponibles en el sistema para auditoría de marca.',
-        parameters: { type: 'object', properties: {} }
-    },
-    {
-        name: 'listar_inventario',
-        description: 'Consulta el stock actual de productos y suministros.',
-        parameters: { type: 'object', properties: {} }
-    },
-    {
-        name: 'buscar_proveedores_estrategicos',
-        description: 'Busca proveedores locales en Bogotá/Kennedy con análisis de reputación.',
+        name: 'gestionar_material',
+        description: 'Agrega un nuevo material al inventario de suministros.',
         parameters: {
             type: 'object',
             properties: {
-                query: { type: 'string' },
-                ubicacion: { type: 'string' }
+                nombre: { type: 'string' },
+                costo: { type: 'number' },
+                proveedor: { type: 'string' }
             },
-            required: ['query']
+            required: ['nombre', 'costo']
         }
+    },
+    {
+        name: 'registrar_gasto',
+        description: 'Registra un gasto operativo.',
+        parameters: {
+            type: 'object',
+            properties: {
+                concepto: { type: 'string' },
+                monto: { type: 'number' },
+                categoria: { type: 'string' }
+            },
+            required: ['concepto', 'monto']
+        }
+    },
+    {
+        name: 'navegar_a',
+        description: 'Cambia la sección de la app.',
+        parameters: {
+            type: 'object',
+            properties: {
+                seccion: { type: 'string', enum: ['dashboard', 'contratos', 'ordenes', 'inventario', 'materiales', 'proveedores', 'clientes', 'empleados', 'gastos', 'cotizaciones', 'analiticas'] }
+            },
+            required: ['seccion']
+        }
+    },
+    {
+        name: 'listar_inventario',
+        description: 'Consulta el estado actual del inventario.',
+        parameters: { type: 'object', properties: {} }
     }
 ];
 
-/* ── Estado del chat ── */
-let conversationHistory = []; // multi-turn
-const STORAGE_KEY = 'manolette_chat_history';
-let antigravityReady = false;
+let noxHistory = [];
+const STORAGE_KEY = 'nox_chat_history';
+let noxReady = false;
 
-function initAntigravity() {
-    if (antigravityReady) return;
-    antigravityReady = true;
+function initNox() {
+    if (noxReady) return;
+    noxReady = true;
 
+    // Cargar historial
     try {
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored) {
-            conversationHistory = JSON.parse(stored);
-            const messagesEl = document.getElementById('gemini-messages');
-            if (messagesEl && conversationHistory.length > 0) {
-                const welcome = document.getElementById('gemini-welcome');
-                if (welcome) welcome.style.display = 'none';
-                conversationHistory.forEach(msg => {
-                    if (msg.role === 'user') appendUserBubble(msg.content);
-                    else if (msg.role === 'assistant' && msg.content) renderAIResponse(msg.content);
-                });
-            }
+            noxHistory = JSON.parse(stored);
+            syncNoxUI();
         }
     } catch(e) {}
 
-    const sendBtn  = document.getElementById('gemini-send');
-    const textarea = document.getElementById('gemini-input');
-    const clearBtn = document.getElementById('gemini-clear');
+    // Configurar Sidebar Chat (si existe)
+    setupNoxInterface('gemini-input', 'gemini-send', 'gemini-messages');
+    
+    // Configurar Global Floating Chat
+    setupNoxInterface('nox-input', 'nox-send', 'nox-messages');
 
-    if (sendBtn)  sendBtn.addEventListener('click', sendMessage);
-    if (clearBtn) clearBtn.addEventListener('click', clearChat);
-
-    if (textarea) {
-        textarea.addEventListener('keydown', e => {
-            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-        });
-        textarea.addEventListener('input', () => {
-            textarea.style.height = 'auto';
-            textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
-        });
-    }
-
+    // Sugerencias
     document.querySelectorAll('.chat-suggestion').forEach(btn => {
         btn.addEventListener('click', () => {
-            if (textarea) { textarea.value = btn.dataset.query || btn.textContent.trim(); }
-            sendMessage();
+            const input = document.getElementById('nox-input') || document.getElementById('gemini-input');
+            if (input) { 
+                input.value = btn.dataset.query || btn.textContent.trim();
+                input.dispatchEvent(new Event('input'));
+                sendNoxMessage(input.id);
+            }
         });
     });
 }
 
-/* ── Enviar mensaje (multi-turn con function calling) ── */
-async function sendMessage() {
-    const textarea = document.getElementById('gemini-input');
+function setupNoxInterface(inputId, sendId, messagesId) {
+    const input = document.getElementById(inputId);
+    const send  = document.getElementById(sendId);
+    if (!input || !send) return;
+
+    send.onclick = () => sendNoxMessage(inputId);
+    input.onkeydown = e => {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendNoxMessage(inputId); }
+    };
+    input.oninput = () => {
+        input.style.height = 'auto';
+        input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+    };
+}
+
+function syncNoxUI() {
+    const panels = ['nox-messages', 'gemini-messages'];
+    panels.forEach(pid => {
+        const el = document.getElementById(pid);
+        if (!el) return;
+        
+        // Mantener el welcome si el historial está vacío
+        if (noxHistory.length === 0) return;
+
+        // Limpiar para renderizar
+        const welcome = el.querySelector('.nox-welcome') || el.querySelector('.ai-welcome-mini') || document.getElementById('gemini-welcome');
+        el.innerHTML = '';
+        if (welcome) el.appendChild(welcome);
+
+        noxHistory.forEach(msg => {
+            if (msg.role === 'user') appendNoxBubble(msg.displayContent || msg.content, 'user', pid);
+            else if (msg.role === 'assistant' && msg.content) renderNoxResponse(msg.content, pid);
+        });
+        scrollNox(el);
+    });
+}
+
+function toggleNox() {
+    const panel = document.getElementById('nox-panel');
+    if (!panel) return;
+    panel.classList.toggle('hidden');
+    if (!panel.classList.contains('hidden')) {
+        const input = document.getElementById('nox-input');
+        if (input) setTimeout(() => input.focus(), 300);
+        syncNoxUI();
+    }
+}
+
+async function sendNoxMessage(inputId) {
+    const textarea = document.getElementById(inputId);
     const userText = textarea ? textarea.value.trim() : '';
     if (!userText) return;
 
+    const isGlobal = inputId.includes('nox');
+    const messagesId = isGlobal ? 'nox-messages' : 'gemini-messages';
+
     // Ocultar welcome
-    const welcome = document.getElementById('gemini-welcome');
+    const welcome = document.querySelector(`#${messagesId} .nox-welcome`) || document.getElementById('gemini-welcome');
     if (welcome) welcome.style.display = 'none';
 
-    appendUserBubble(userText);
+    appendNoxBubble(userText, 'user', messagesId);
     textarea.value = '';
-    if (textarea) textarea.style.height = 'auto';
+    textarea.style.height = 'auto';
 
-    conversationHistory.push({ role: 'user', content: userText });
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(conversationHistory));
+    const currentSection = location.hash.replace('#', '') || 'dashboard';
+    const contextText = `[Sección Actual: ${currentSection}] ${userText}`;
+
+    noxHistory.push({ role: 'user', content: contextText, displayContent: userText });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(noxHistory));
 
     const typingId = 'typing-' + Date.now();
-    appendTyping(typingId);
+    appendNoxTyping(typingId, messagesId);
 
     try {
-        const finalText = await runGroqLoop(conversationHistory);
-        removeTyping(typingId);
+        const historyForAPI = noxHistory.map(m => ({ role: m.role, content: m.content }));
+        const finalText = await runNoxLoop(historyForAPI, 8, messagesId);
+        
+        removeNoxElement(typingId);
         if (finalText) {
-            conversationHistory.push({ role: 'assistant', content: finalText });
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(conversationHistory));
+            noxHistory.push({ role: 'assistant', content: finalText });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(noxHistory));
+            syncNoxUI();
         }
     } catch (err) {
-        removeTyping(typingId);
-        appendErrorBubble(err.message);
-        conversationHistory.pop();
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(conversationHistory));
+        removeNoxElement(typingId);
+        appendNoxBubble('Error: ' + err.message, 'ai error', messagesId);
     }
 }
 
-/* ── Loop multi-turn (soporta function calling) ── */
-async function runGroqLoop(messages, maxIter = 8) {
-    const groqTools = FUNCTION_DECLARATIONS.map(fn => ({
-        type: 'function',
-        function: {
-            name: fn.name,
-            description: fn.description,
-            parameters: fn.parameters
-        }
-    }));
+async function runNoxLoop(messages, maxIter = 8, messagesId) {
+    let backend = _noxGetActiveBackend();
+    if (!backend) {
+        if (!_NOX_LEGACY_KEY) throw new Error('Configura una API key en la sección "API Keys" para activar el agente.');
+        backend = { key: _NOX_LEGACY_KEY, model: 'llama-3.3-70b-versatile', url: 'https://api.groq.com/openai/v1/chat/completions', supportsTools: true };
+    }
+
+    const tools = NOX_TOOLS.map(t => ({ type: 'function', function: t }));
 
     for (let i = 0; i < maxIter; i++) {
-        const fullMessages = [
-            { role: 'system', content: SYSTEM_INSTRUCTION },
-            ...messages
-        ];
-
         const body = {
-            model: GROQ_MODEL,
-            messages: fullMessages,
-            tools: groqTools,
-            tool_choice: "auto",
-            max_completion_tokens: 2048,
-            temperature: 0.7
+            model: backend.model || 'llama-3.3-70b-versatile',
+            messages: [{ role: 'system', content: SYSTEM_INSTRUCTION }, ...messages],
+            temperature: 0.7,
+            ...(backend.supportsTools ? { tools, tool_choice: 'auto' } : {})
         };
 
-        const headers = { 'Content-Type': 'application/json' };
-        if (GROQ_API_KEY) headers['Authorization'] = `Bearer ${GROQ_API_KEY}`;
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${backend.key}`
+        };
+        if (backend.url.includes('openrouter')) {
+            headers['HTTP-Referer'] = window.location.origin;
+            headers['X-Title'] = 'Manolette AI';
+        }
 
-        const res = await fetch(GROQ_URL, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify(body)
-        });
-
+        const res = await fetch(backend.url, { method: 'POST', headers, body: JSON.stringify(body) });
         if (!res.ok) {
-            const errData = await res.json().catch(() => ({}));
-            throw new Error(errData.error?.message || `HTTP ${res.status}`);
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err?.error?.message || `HTTP ${res.status}`);
         }
 
         const data = await res.json();
-        const responseMessage = data.choices?.[0]?.message;
-        if (!responseMessage) throw new Error('Respuesta vacía de Groq');
+        const msg = data.choices?.[0]?.message;
+        if (!msg) throw new Error('Sin respuesta');
 
-        if (responseMessage.tool_calls && responseMessage.tool_calls.length > 0) {
-            messages.push(responseMessage);
-
-            for (const toolCall of responseMessage.tool_calls) {
-                // Prevenir error si la IA alucina una tool (ej: brave_search)
-                const isKnown = groqTools.find(t => t.function.name === toolCall.function.name);
-                if (!isKnown) {
-                    groqTools.push({ type: 'function', function: { name: toolCall.function.name, description: 'Hallucinated tool', parameters: { type: 'object', properties: {} } }});
-                }
-
-                showFunctionCallIndicator(toolCall.function.name);
-                const args = toolCall.function.arguments ? JSON.parse(toolCall.function.arguments) : {};
-                const result = await executeFunctionCall({ name: toolCall.function.name, args });
-                
-                messages.push({
-                    role: 'tool',
-                    tool_call_id: toolCall.id,
-                    content: JSON.stringify(result)
-                });
+        if (msg.tool_calls) {
+            messages.push(msg);
+            for (const tc of msg.tool_calls) {
+                const args = JSON.parse(tc.function.arguments);
+                const result = await executeNoxTool(tc.function.name, args, messagesId);
+                messages.push({ role: 'tool', tool_call_id: tc.id, content: JSON.stringify(result) });
             }
         } else {
-            const text = responseMessage.content || '';
-            renderAIResponse(text);
-            return text;
+            renderNoxResponse(msg.content, messagesId);
+            return msg.content;
         }
     }
-    throw new Error('El asistente no pudo completar la tarea en el número máximo de pasos.');
 }
 
-/* ── Ejecutar función del sistema ── */
-/* ── Ejecutar función del sistema ── */
-async function executeFunctionCall(fc) {
-    const { name, args } = fc;
+async function executeNoxTool(name, args, cid) {
     try {
         switch (name) {
+            case 'navegar_a':
+                if (window.navigate) { navigate(args.seccion); return { success: true }; }
+                return { error: 'Nav fail' };
+            case 'gestionar_material':
+                const mRef = await db.ref('materiales').push({ nombre: args.nombre, costoUnitario: args.costo, proveedor: args.proveedor || 'Nox Agent', timestamp: Date.now() });
+                appendNoxCard('Material registrado', args.nombre, 'materiales', cid);
+                return { success: true, id: mRef.key };
+            case 'registrar_gasto':
+                const gRef = await db.ref('gastos').push({ concepto: args.concepto, monto: args.monto, categoria: args.categoria || 'Nox', fecha: new Date().toISOString().split('T')[0], timestamp: Date.now() });
+                appendNoxCard('Gasto registrado', args.concepto, 'gastos', cid);
+                return { success: true, id: gRef.key };
             case 'crear_contrato':
-                return await fnCrearContrato(args);
-            case 'crear_orden':
-                return await fnCrearOrden(args);
-            case 'consultar_metricas_marketing':
-                return await fnConsultarMetricasMarketing();
-            case 'obtener_base_contactos':
-                return await fnObtenerBaseContactos();
-            case 'auditar_activos_visuales':
-                return await fnAuditarActivosVisuales();
+                const cData = { numero: args.numero || 'CONT-'+Date.now(), cliente: args.cliente, descripcion: args.descripcion || '', estado: 'activo', creadoEn: Date.now() };
+                await db.ref('contratos').push(cData);
+                appendNoxCard('Contrato creado', cData.numero, 'contratos', cid);
+                return { success: true };
             case 'listar_inventario':
-                return await fnListarInventario();
-            case 'buscar_proveedores_estrategicos':
-                setTimeout(() => {
-                    const messagesEl = document.getElementById('gemini-messages');
-                    if (messagesEl) {
-                        const bubble = document.createElement('div');
-                        bubble.className = 'chat-bubble ai';
-                        bubble.appendChild(createMapEmbed(args.query + ' Bogotá'));
-                        messagesEl.appendChild(bubble);
-                        scrollBottom(messagesEl);
-                    }
-                }, 500);
-                return { success: true, instruction: `Analiza estratégicamente el mercado de ${args.query}. Como eres un experto de nivel 5000 palabras, describe minuciosamente por qué ciertos proveedores en Bogotá (como los de Paloquemao o el Ricaurte) son superiores técnica y financieramente. Genera un informe masivo.` };
-            default:
-                return { error: `La función "${name}" no está mapeada todavía.` };
+                const snap = await db.ref('inventario').once('value');
+                return snap.val();
+            default: return { error: 'Unknown tool' };
         }
-    } catch (err) {
-        return { error: err.message };
-    }
+    } catch(e) { return { error: e.message }; }
 }
 
-/* ── Implementación de funciones Avanzadas ── */
-
-async function fnConsultarMetricasMarketing() {
-    const snapContratos = await db.ref('contratos').once('value');
-    const snapOrdenes = await db.ref('ordenes').once('value');
-    const contratos = snapContratos.val() || {};
-    const ordenes = snapOrdenes.val() || {};
-    
-    const totalContratos = Object.keys(contratos).length;
-    const totalOrdenes = Object.keys(ordenes).length;
-    const clientesUnicos = new Set(Object.values(contratos).map(c => c.cliente)).size;
-
-    return {
-        roi_estimado: "24.5%",
-        tasa_conversion: "12.8%",
-        volumen_operativo: totalOrdenes,
-        contratos_activos: totalContratos,
-        clientes_fidelizados: clientesUnicos,
-        analisis: "Métricas consolidadas. El crecimiento intermensual sugiere una expansión necesaria en el área de empaque técnico."
-    };
-}
-
-async function fnObtenerBaseContactos() {
-    const snap = await db.ref('contratos').once('value');
-    const data = snap.val() || {};
-    const contactos = Object.values(data).map(c => ({
-        nombre: c.cliente,
-        responsable: c.responsable,
-        ultima_interaccion: formatDate(c.creadoEn || Date.now()),
-        valor_contrato: "Consultar finanzas"
-    }));
-    return { total: contactos.length, lista: contactos };
-}
-
-async function fnAuditarActivosVisuales() {
-    // Simulación de auditoría de diseños guardados en localStorage o Firebase
-    const designs = JSON.parse(localStorage.getItem('manolette_designs') || '[]');
-    return {
-        total_activos: designs.length,
-        formato_predominante: "A4 / Social Media",
-        estado_marca: "Consistente",
-        sugerencia_ia: "Se recomienda diversificar los activos para campañas de temporada (Día del Vigilante, etc)."
-    };
-}
-
-async function fnCrearContrato(args) {
-    const data = {
-        numero: args.numero || `CONT-${Date.now().toString(36).toUpperCase()}`,
-        cliente: args.cliente || 'Prospecto Nuevo',
-        descripcion: args.descripcion || '',
-        fechaLimite: args.fechaLimite ? new Date(args.fechaLimite).getTime() : null,
-        responsable: args.responsable || 'Manolette Executive',
-        estado: 'activo',
-        creadoEn: Date.now()
-    };
-    const ref = await db.ref('contratos').push(data);
-    appendActionCard('contrato', data, ref.key);
-    return { success: true, numero: data.numero };
-}
-
-async function fnCrearOrden(args) {
-    const data = {
-        numero: args.numero || `ORD-${Date.now().toString(36).toUpperCase()}`,
-        nombreProducto: args.nombreProducto,
-        cantidad: args.cantidad,
-        prioridad: args.prioridad || 'normal',
-        estado: 'recibido',
-        timestamp: Date.now()
-    };
-    const ref = await db.ref('ordenes').push(data);
-    appendActionCard('orden', data, ref.key);
-    return { success: true, id: ref.key };
-}
-
-async function fnListarInventario() {
-    const snap = await db.ref('inventario').once('value');
-    const data = snap.val() || {};
-    return Object.values(data);
-}
-
-/* ── Render ── */
-function renderAIResponse(text, groundingMetadata) {
-    if (!text && !groundingMetadata) return;
-
-    const messagesEl = document.getElementById('gemini-messages');
-    if (!messagesEl) return;
-
+function renderNoxResponse(text, cid) {
+    const el = document.getElementById(cid);
+    if (!el || !text) return;
     const bubble = document.createElement('div');
-    bubble.className = 'chat-bubble ai';
-
-    // Formatear markdown básico
-    let html = escHtml(text)
-        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.+?)\*/g, '<em>$1</em>')
-        .replace(/^#{1,3}\s+(.+)$/gm, '<h5 style="margin:.5rem 0 .25rem;font-size:.95rem">$1</h5>')
-        .replace(/\n/g, '<br>');
-
-    bubble.innerHTML = `<div class="ai-text">${html}</div>`;
-
-    // Agregar mapa si hay una ubicación detectada
-    const locationQuery = extractLocation(text);
-    if (locationQuery) {
-        bubble.appendChild(createMapEmbed(locationQuery));
-    }
-
-    // Fuentes de Google Search
-    if (groundingMetadata?.groundingChunks?.length > 0) {
-        const sourcesEl = document.createElement('div');
-        sourcesEl.className = 'grounding-sources';
-        sourcesEl.innerHTML = `<div class="sources-label">Fuentes</div>` +
-            groundingMetadata.groundingChunks
-                .filter(c => c.web?.uri)
-                .slice(0, 5)
-                .map(c => `<a href="${escHtml(c.web.uri)}" target="_blank" rel="noopener" class="source-chip">
-                    ${escHtml(c.web.title || c.web.uri)}</a>`).join('');
-        bubble.appendChild(sourcesEl);
-    }
-
-    messagesEl.appendChild(bubble);
-    scrollBottom(messagesEl);
+    bubble.className = 'nox-bubble ai';
+    bubble.innerHTML = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+    el.appendChild(bubble);
+    scrollNox(el);
 }
 
-function appendActionCard(tipo, data, id) {
-    const messagesEl = document.getElementById('gemini-messages');
-    if (!messagesEl) return;
-
-    const icons = { contrato: '', orden: '', inventario: '' };
-    const labels = { contrato: 'Contrato creado', orden: 'Orden creada', inventario: 'Producto agregado' };
-    const navTargets = { contrato: 'contratos', orden: 'ordenes', inventario: 'inventario' };
-
-    const details = {
-        contrato:   `<b>${escHtml(data.numero)}</b> — ${escHtml(data.cliente)}`,
-        orden:      `<b>${escHtml(data.numero)}</b> — ${escHtml(data.nombreProducto)} (${escHtml(String(data.cantidad))} ${escHtml(data.unidad)})`,
-        inventario: `<b>${escHtml(data.nombre)}</b> — Stock: ${data.stockActual} ${escHtml(data.unidad || 'unidades')}`
-    };
-
-    const card = document.createElement('div');
-    card.className = 'action-card';
-    card.innerHTML = `
-        <div class="action-card-icon">${icons[tipo]}</div>
-        <div class="action-card-body">
-            <div class="action-card-label">${labels[tipo]}</div>
-            <div class="action-card-detail">${details[tipo]}</div>
-        </div>
-        <button class="btn btn-sm btn-primary" onclick="navigate('${navTargets[tipo]}')">Ver →</button>
-    `;
-    messagesEl.appendChild(card);
-    scrollBottom(messagesEl);
-}
-
-function showFunctionCallIndicator(fnName) {
-    const labels = {
-        crear_contrato:   'Creando contrato...',
-        crear_orden:      'Creando orden...',
-        agregar_inventario:'Agregando al inventario...',
-        listar_contratos: 'Consultando contratos...',
-        listar_ordenes:   'Consultando ordenes...',
-        listar_inventario:'Consultando inventario...'
-    };
-    const messagesEl = document.getElementById('gemini-messages');
-    if (!messagesEl) return;
-    const indicator = document.createElement('div');
-    indicator.className = 'fn-indicator';
-    indicator.id = 'fn-indicator-' + fnName;
-    indicator.textContent = labels[fnName] || `Ejecutando ${fnName}...`;
-    messagesEl.appendChild(indicator);
-    scrollBottom(messagesEl);
-    // Auto-remover tras 4s
-    setTimeout(() => indicator.remove(), 4000);
-}
-
-function appendUserBubble(text) {
-    const el = document.getElementById('gemini-messages');
+function appendNoxBubble(text, type, cid) {
+    const el = document.getElementById(cid);
     if (!el) return;
-    const div = document.createElement('div');
-    div.className = 'chat-bubble user';
-    div.textContent = text;
-    el.appendChild(div);
-    scrollBottom(el);
+    const bubble = document.createElement('div');
+    bubble.className = `nox-bubble ${type}`;
+    bubble.textContent = text;
+    el.appendChild(bubble);
+    scrollNox(el);
 }
 
-function appendTyping(id) {
-    const el = document.getElementById('gemini-messages');
+function appendNoxCard(title, detail, target, cid) {
+    const el = document.getElementById(cid);
+    if (!el) return;
+    const card = document.createElement('div');
+    card.className = 'nox-bubble ai';
+    card.style.borderLeft = '4px solid #10b981';
+    card.innerHTML = `<div style="font-weight:700;font-size:12px;color:#10b981">${title}</div><div style="font-size:14px;margin:4px 0">${detail}</div><button class="btn btn-sm btn-primary" onclick="navigate('${target}')" style="width:100%;margin-top:8px">Ver detalle →</button>`;
+    el.appendChild(card);
+    scrollNox(el);
+}
+
+function appendNoxTyping(id, cid) {
+    const el = document.getElementById(cid);
     if (!el) return;
     const div = document.createElement('div');
     div.id = id;
-    div.className = 'typing-indicator';
-    div.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+    div.className = 'nox-bubble ai';
+    div.innerHTML = '<span class="pulse-dot"></span><span class="pulse-dot" style="animation-delay:.2s"></span><span class="pulse-dot" style="animation-delay:.4s"></span>';
     el.appendChild(div);
-    scrollBottom(el);
+    scrollNox(el);
 }
 
-function removeTyping(id) {
-    const el = document.getElementById(id);
-    if (el) el.remove();
-}
+function removeNoxElement(id) { const el = document.getElementById(id); if (el) el.remove(); }
+function scrollNox(el) { el.scrollTop = el.scrollHeight; }
+function clearChat() { noxHistory = []; localStorage.removeItem(STORAGE_KEY); syncNoxUI(); }
 
-function appendErrorBubble(msg) {
-    const el = document.getElementById('gemini-messages');
-    if (!el) return;
-    const div = document.createElement('div');
-    div.className = 'chat-bubble ai error-bubble';
-    div.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="color:var(--red);flex-shrink:0"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg> ${escHtml(msg)}`;
-    el.appendChild(div);
-    scrollBottom(el);
-}
-
-function scrollBottom(container) {
-    container.scrollTop = container.scrollHeight;
-}
-
-/* ── Google Maps embed ── */
-function extractLocation(text) {
-    // Detectar menciones de ciudades colombianas o direcciones
-    const colombiaCities = ['Bogotá','Bogota','Medellín','Medellin','Cali','Barranquilla',
-        'Bucaramanga','Pereira','Manizales','Cartagena','Cúcuta','Cucuta','Ibagué','Ibague',
-        'Santa Marta','Villavicencio','Pasto','Montería','Monteria'];
-
-    for (const city of colombiaCities) {
-        if (text.includes(city)) {
-            // Encontrar contexto alrededor
-            const idx = text.indexOf(city);
-            const snippet = text.slice(Math.max(0, idx - 40), idx + city.length + 60);
-            // Extraer posible nombre de empresa + ciudad
-            const provMatch = snippet.match(/([A-ZÁÉÍÓÚÑ][a-záéíóúñ\s&]{3,40})\s*[-–]\s*([A-Z][^,.\n]{5,40})/);
-            if (provMatch) return `${provMatch[1]} ${city} Colombia`;
-            return `${city} Colombia proveedores`;
-        }
-    }
-    return null;
-}
-
-function createMapEmbed(query) {
-    const encodedQ = encodeURIComponent(query);
-    const wrapper  = document.createElement('div');
-    wrapper.className = 'map-embed-wrapper';
-    wrapper.innerHTML = `
-        <div class="map-embed-header">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-            Ubicación en el mapa
-            <a href="https://www.google.com/maps/search/${encodedQ}" target="_blank" rel="noopener" class="map-link-btn">
-                Abrir en Google Maps →
-            </a>
-        </div>
-        <iframe
-            src="https://maps.google.com/maps?q=${encodedQ}&output=embed&hl=es&z=13"
-            width="100%" height="220"
-            style="border:none;border-radius:0 0 8px 8px;display:block"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            title="Mapa de ubicación">
-        </iframe>`;
-    return wrapper;
-}
-
-/* ── Limpiar chat ── */
-function clearChat() {
-    conversationHistory = [];
-    localStorage.removeItem(STORAGE_KEY);
-    const el = document.getElementById('gemini-messages');
-    if (!el) return;
-    const welcome = document.getElementById('gemini-welcome');
-    el.innerHTML = '';
-    if (welcome) {
-        welcome.style.display = '';
-        el.appendChild(welcome);
-    }
-}
-
-window.onSection_gemini = initAntigravity;
+// Global Init
+document.addEventListener('DOMContentLoaded', initNox);
+window.onSection_gemini = initNox;
+window.toggleNox = toggleNox;
+window.clearChat = clearChat;

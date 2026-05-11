@@ -38,7 +38,7 @@ async function renderProductoDia() {
             container.innerHTML = `<div class="pd-empty">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
                 <h4>Sin datos suficientes</h4>
-                <p>Necesitas órdenes completadas (estado "enviado") para que ANTIGRAVITY pueda elegir un producto ganador.</p>
+                <p>Necesitas órdenes completadas (estado "enviado") para que NOX pueda elegir un producto ganador.</p>
             </div>`;
             return;
         }
@@ -233,7 +233,7 @@ function _renderProductoCard(container, data) {
             <div class="pd-razon">
                 <div class="pd-razon-label">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 14v-4m0-4h.01"/></svg>
-                    Análisis ANTIGRAVITY (Groq)
+                    Análisis NOX (Groq)
                 </div>
                 <p>${escHtml(data.razon || '')}</p>
             </div>

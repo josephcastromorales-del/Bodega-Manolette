@@ -1,0 +1,869 @@
+/* ════════════════════════════════════════════════════
+   NOX MULTI-AGENT SYSTEM — UI Styles v2
+   Manolette Business Platform
+   ════════════════════════════════════════════════════ */
+
+/* ── Keyframes ── */
+@keyframes nox-fade-in    { from { opacity:0; transform:translateY(8px); }  to { opacity:1; transform:translateY(0); } }
+@keyframes nox-slide-up   { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+@keyframes nox-chip-in    { from { opacity:0; transform:translateY(6px) scale(0.94); } to { opacity:1; transform:translateY(0) scale(1); } }
+@keyframes nox-typing-bounce { 0%,80%,100% { transform:translateY(0); } 40% { transform:translateY(-5px); } }
+@keyframes nox-glow-pulse { 0%,100% { box-shadow:0 0 0 1px rgba(59,130,246,.28),0 0 22px rgba(59,130,246,.35),0 0 60px rgba(99,102,241,.15),0 8px 32px rgba(0,0,0,.4); } 50% { box-shadow:0 0 0 1px rgba(99,102,241,.4),0 0 36px rgba(59,130,246,.55),0 0 80px rgba(99,102,241,.25),0 8px 32px rgba(0,0,0,.4); } }
+@keyframes nox-input-glow { 0%,100% { box-shadow:0 0 0 3px rgba(59,130,246,.12); } 50% { box-shadow:0 0 0 4px rgba(59,130,246,.28); } }
+@keyframes nox-shake      { 0%,100% { transform:translateX(0); } 25% { transform:translateX(-6px); } 75% { transform:translateX(6px); } }
+@keyframes pulse          { 0%,100% { opacity:1; } 50% { opacity:.5; } }
+@keyframes slideInRight   { from { opacity:0; transform:translateX(-8px); } to { opacity:1; transform:translateX(0); } }
+
+/* ── Section wrapper reset — ocupa todo sin margen ── */
+#geminiSection,
+#geminiSection.active {
+    display: flex !important;
+    flex-direction: column;
+    height: 100%;
+    background: #0a0a0a;
+    margin: 0;
+    padding: 0 !important;
+    max-width: none !important;
+    animation: none !important;
+}
+
+/* ── Layout ── */
+.nox-ag-layout {
+    display: flex;
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+    background: #0a0a0a;
+    position: relative;
+}
+
+/* ── Agents Sidebar Panel ── */
+.nox-agents-panel {
+    width: 0;
+    opacity: 0;
+    pointer-events: none;
+    flex-shrink: 0;
+    background: #111;
+    border-right: 1px solid rgba(255,255,255,.07);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: width .28s cubic-bezier(.4,0,.2,1), opacity .22s ease;
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(12px);
+}
+.nox-agents-panel.nox-panel-open { width: 228px; opacity: 1; pointer-events: auto; }
+
+.nox-panel-header {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(59,130,246,.09);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+.nox-panel-title {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: rgba(148,163,184,.65);
+}
+.nox-panel-badge {
+    font-size: 10px;
+    font-weight: 700;
+    background: rgba(59,130,246,.13);
+    color: #60a5fa;
+    border: 1px solid rgba(59,130,246,.22);
+    border-radius: 999px;
+    padding: 1px 7px;
+}
+.nox-agents-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(59,130,246,.18) transparent;
+}
+.nox-agents-list::-webkit-scrollbar { width: 3px; }
+.nox-agents-list::-webkit-scrollbar-thumb { background: rgba(59,130,246,.2); border-radius: 4px; }
+
+.nox-agent-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background .14s ease, transform .12s ease;
+    border: 1px solid transparent;
+    min-width: 0;
+}
+.nox-agent-item:hover {
+    background: rgba(59,130,246,.07);
+    border-color: rgba(59,130,246,.12);
+    transform: translateX(2px);
+}
+.nox-agent-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.nox-agent-info { flex: 1; min-width: 0; }
+.nox-agent-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: #dde6f0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+}
+.nox-agent-hint {
+    font-size: 9px;
+    color: rgba(148,163,184,.55);
+    font-family: var(--font-mono, 'Fira Code', monospace);
+}
+.nox-agent-status-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.nox-agent-idle  { background: rgba(148,163,184,.25); }
+.nox-agent-active { background: #10b981; animation: pulse 1s infinite; }
+
+.nox-panel-footer {
+    padding: 10px 12px;
+    border-top: 1px solid rgba(59,130,246,.09);
+    flex-shrink: 0;
+}
+.nox-panel-hint { font-size: 10px; color: rgba(148,163,184,.55); line-height: 1.55; }
+.nox-panel-hint code {
+    background: rgba(59,130,246,.12);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: var(--font-mono, monospace);
+    color: #60a5fa;
+    font-size: 10px;
+}
+
+/* ── Main chat area ── */
+.nox-ag-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+/* ── Header ── */
+.nox-ag-header {
+    height: 48px;
+    background: #0a0a0a;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    flex-shrink: 0;
+    gap: 10px;
+    backdrop-filter: blur(14px);
+    position: relative;
+    z-index: 2;
+}
+.nox-ag-header-left, .nox-ag-header-right { display: flex; align-items: center; gap: 8px; }
+.nox-ag-brand { display: flex; align-items: center; gap: 10px; }
+
+/* NOX logo with glow */
+.nox-ag-logo {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 15px;
+    color: #fff;
+    flex-shrink: 0;
+    letter-spacing: -.02em;
+    box-shadow: 0 0 16px rgba(59,130,246,.45), 0 2px 8px rgba(0,0,0,.3);
+}
+.nox-ag-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #f0f5ff;
+    line-height: 1.2;
+    letter-spacing: -.01em;
+}
+.nox-ag-subtitle {
+    font-size: 10px;
+    color: rgba(148,163,184,.65);
+    font-weight: 400;
+}
+
+/* Header icon buttons */
+.nox-icon-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid rgba(59,130,246,.14);
+    background: rgba(59,130,246,.05);
+    color: rgba(148,163,184,.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all .15s ease;
+    flex-shrink: 0;
+}
+.nox-icon-btn:hover {
+    background: rgba(59,130,246,.14);
+    border-color: rgba(59,130,246,.32);
+    color: #93c5fd;
+    transform: scale(1.06);
+}
+
+/* API Key / Provider button */
+.nox-key-btn {
+    height: 32px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(59,130,246,.2);
+    background: rgba(59,130,246,.07);
+    color: rgba(148,163,184,.85);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--font-sans, Inter, sans-serif);
+    cursor: pointer;
+    transition: all .15s ease;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.nox-key-btn:hover {
+    border-color: #3b82f6;
+    color: #60a5fa;
+    background: rgba(59,130,246,.14);
+}
+.nox-key-btn.nox-key-ok {
+    border-color: rgba(16,185,129,.35);
+    color: #34d399;
+    background: rgba(16,185,129,.07);
+}
+
+/* ── Active agents bar ── */
+.nox-active-bar {
+    background: #0a0a0a;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+    padding: 6px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+}
+.nox-active-agent {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--agent-color) 11%, rgba(0,0,0,.45));
+    border: 1px solid color-mix(in srgb, var(--agent-color) 26%, transparent);
+    color: var(--agent-color);
+    font-size: 11px;
+    font-weight: 600;
+    animation: slideInRight .2s ease;
+}
+.nox-active-dots { display: flex; gap: 3px; margin-left: 2px; }
+.nox-active-dots span {
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: nox-typing-bounce 1.2s infinite;
+}
+.nox-active-dots span:nth-child(2) { animation-delay: .15s; }
+.nox-active-dots span:nth-child(3) { animation-delay: .3s; }
+
+/* ── Messages ── */
+.nox-ag-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-height: 0;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(59,130,246,.13) transparent;
+}
+.nox-ag-messages::-webkit-scrollbar { width: 4px; }
+.nox-ag-messages::-webkit-scrollbar-thumb { background: rgba(59,130,246,.15); border-radius: 4px; }
+
+/* ── Welcome screen ── */
+.nox-ag-welcome {
+    margin: auto;
+    text-align: center;
+    max-width: 600px;
+    padding: 40px 28px;
+    animation: nox-fade-in .5s ease;
+}
+
+/* NOX avatar — animated glow */
+.nox-ag-welcome-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #3b82f6 0%, #6366f1 55%, #8b5cf6 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 auto 20px;
+    letter-spacing: -.03em;
+    animation: nox-glow-pulse 3.5s ease-in-out infinite;
+    position: relative;
+}
+.nox-ag-welcome-avatar::after {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border-radius: 25px;
+    background: linear-gradient(135deg, rgba(59,130,246,.25), rgba(139,92,246,.25));
+    filter: blur(10px);
+    z-index: -1;
+}
+
+.nox-ag-welcome h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #f0f5ff;
+    margin: 0 0 10px;
+    letter-spacing: -.025em;
+}
+.nox-ag-welcome p {
+    font-size: 13px;
+    color: rgba(148,163,184,.82);
+    line-height: 1.7;
+    margin: 0 0 24px;
+}
+.nox-ag-welcome code {
+    background: rgba(59,130,246,.12);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: var(--font-mono, monospace);
+    color: #60a5fa;
+    font-size: 12px;
+    border: 1px solid rgba(59,130,246,.2);
+}
+
+/* Agent pills — staggered entrance */
+.nox-welcome-agents-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+}
+.nox-welcome-agent-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--agent-color) 9%, rgba(0,0,0,.45));
+    border: 1px solid color-mix(in srgb, var(--agent-color) 20%, transparent);
+    color: var(--agent-color);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .18s ease;
+    animation: nox-chip-in .4s ease both;
+}
+.nox-welcome-agent-pill:hover {
+    background: color-mix(in srgb, var(--agent-color) 18%, rgba(0,0,0,.35));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--agent-color) 22%, transparent);
+}
+.nox-welcome-agent-pill:nth-child(1)  { animation-delay:.05s; }
+.nox-welcome-agent-pill:nth-child(2)  { animation-delay:.10s; }
+.nox-welcome-agent-pill:nth-child(3)  { animation-delay:.15s; }
+.nox-welcome-agent-pill:nth-child(4)  { animation-delay:.20s; }
+.nox-welcome-agent-pill:nth-child(5)  { animation-delay:.25s; }
+.nox-welcome-agent-pill:nth-child(6)  { animation-delay:.30s; }
+.nox-welcome-agent-pill:nth-child(7)  { animation-delay:.35s; }
+.nox-welcome-agent-pill:nth-child(8)  { animation-delay:.40s; }
+.nox-welcome-agent-pill:nth-child(9)  { animation-delay:.45s; }
+.nox-welcome-agent-pill:nth-child(10) { animation-delay:.50s; }
+.nox-welcome-agent-pill:nth-child(11) { animation-delay:.55s; }
+.nox-welcome-agent-pill:nth-child(12) { animation-delay:.60s; }
+
+/* ── Chat bubbles ── */
+.nox-ag-bubble { animation: nox-slide-up .22s ease; }
+
+.nox-ag-bubble--user { display: flex; justify-content: flex-end; }
+.nox-ag-user-text {
+    background: linear-gradient(135deg, #3b82f6, #4f46e5);
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 16px 16px 4px 16px;
+    font-size: 13px;
+    line-height: 1.55;
+    max-width: 70%;
+    word-break: break-word;
+    box-shadow: 0 2px 12px rgba(59,130,246,.25);
+}
+
+.nox-ag-bubble--ai { display: flex; flex-direction: column; gap: 5px; }
+.nox-ag-ai-header { display: flex; align-items: center; gap: 8px; }
+.nox-ag-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    color: #fff;
+    flex-shrink: 0;
+    box-shadow: 0 0 8px rgba(59,130,246,.3);
+}
+.nox-ag-name {
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(148,163,184,.75);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+/* Agent tags on response */
+.nox-ag-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-left: 34px; }
+.nox-ag-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 600;
+    background: color-mix(in srgb, var(--agent-color) 11%, rgba(0,0,0,.4));
+    color: var(--agent-color);
+    border: 1px solid color-mix(in srgb, var(--agent-color) 22%, transparent);
+}
+
+/* AI content area */
+.nox-ag-content {
+    background: #141414;
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 4px 16px 16px 16px;
+    padding: 14px 16px;
+    margin-left: 34px;
+    font-size: 13px;
+    line-height: 1.72;
+    color: #dde6f5;
+    overflow-x: auto;
+    word-break: break-word;
+    backdrop-filter: blur(4px);
+}
+
+/* Markdown typography */
+.nox-h2 { font-size: 16px; font-weight: 700; margin: 14px 0 6px; color: #f0f5ff; letter-spacing: -.015em; }
+.nox-h3 { font-size: 14px; font-weight: 600; margin: 11px 0 5px; color: #e2e8f0; }
+.nox-h4 { font-size: 13px; font-weight: 600; margin: 9px 0 4px; color: #60a5fa; }
+.nox-p  { margin: 6px 0; color: #c8d4e8; }
+.nox-hr { border: none; border-top: 1px solid rgba(59,130,246,.12); margin: 14px 0; }
+
+.nox-ul { padding-left: 0; margin: 6px 0; list-style: none; display: flex; flex-direction: column; gap: 5px; counter-reset: nox-counter; }
+.nox-li, .nox-li-num {
+    display: flex;
+    gap: 7px;
+    font-size: 13px;
+    color: #c8d4e8;
+    line-height: 1.55;
+}
+.nox-li::before { content: '–'; color: #3b82f6; font-weight: 700; flex-shrink: 0; }
+.nox-li-num { counter-increment: nox-counter; }
+.nox-li-num::before {
+    content: counter(nox-counter) '.';
+    color: #3b82f6;
+    font-weight: 700;
+    flex-shrink: 0;
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    min-width: 14px;
+}
+
+.nox-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12px; }
+.nox-table td { padding: 7px 11px; border: 1px solid rgba(59,130,246,.1); color: #c8d4e8; vertical-align: top; }
+.nox-table tr:first-child td { background: rgba(59,130,246,.08); font-weight: 600; color: #e2e8f0; }
+
+.nox-code-block {
+    background: #020812;
+    border: 1px solid rgba(59,130,246,.15);
+    border-radius: 10px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    margin: 10px 0;
+    font-family: var(--font-mono, 'Fira Code', monospace);
+    font-size: 12px;
+    line-height: 1.65;
+    color: #e2e8f0;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(59,130,246,.2) transparent;
+}
+.nox-inline-code {
+    background: rgba(59,130,246,.1);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    color: #60a5fa;
+    border: 1px solid rgba(59,130,246,.18);
+}
+
+/* ── Typing indicator ── */
+.nox-ag-typing .nox-typing-dots {
+    display: inline-flex;
+    gap: 5px;
+    padding: 12px 16px;
+    margin-left: 34px;
+    background: #141414;
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 4px 16px 16px 16px;
+}
+.nox-typing-dots span {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(59,130,246,.6);
+    animation: nox-typing-bounce 1.2s infinite;
+}
+.nox-typing-dots span:nth-child(2) { animation-delay:.15s; }
+.nox-typing-dots span:nth-child(3) { animation-delay:.3s; }
+
+/* ── Suggestion chips ── */
+.nox-suggestions-bar {
+    display: flex;
+    gap: 6px;
+    padding: 8px 16px;
+    overflow-x: auto;
+    flex-shrink: 0;
+    border-top: 1px solid rgba(255,255,255,.05);
+    background: #0a0a0a;
+    scrollbar-width: none;
+}
+.nox-suggestions-bar::-webkit-scrollbar { display: none; }
+.nox-suggestion-chip {
+    flex-shrink: 0;
+    padding: 5px 13px;
+    border-radius: 999px;
+    border: 1px solid rgba(59,130,246,.17);
+    background: rgba(59,130,246,.05);
+    color: rgba(148,163,184,.88);
+    font-size: 12px;
+    font-family: var(--font-sans, Inter, sans-serif);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .18s ease;
+    animation: nox-chip-in .35s ease both;
+}
+.nox-suggestion-chip:nth-child(1) { animation-delay:0s; }
+.nox-suggestion-chip:nth-child(2) { animation-delay:.05s; }
+.nox-suggestion-chip:nth-child(3) { animation-delay:.10s; }
+.nox-suggestion-chip:nth-child(4) { animation-delay:.15s; }
+.nox-suggestion-chip:nth-child(5) { animation-delay:.20s; }
+.nox-suggestion-chip:hover {
+    border-color: rgba(59,130,246,.45);
+    color: #93c5fd;
+    background: rgba(59,130,246,.11);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59,130,246,.14);
+}
+
+/* ── Input area ── */
+.nox-ag-input-area {
+    padding: 10px 16px 14px;
+    border-top: 1px solid rgba(255,255,255,.05);
+    background: #0a0a0a;
+    flex-shrink: 0;
+    position: relative;
+}
+.nox-ag-input-wrap {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    background: #161616;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 14px;
+    padding: 8px 8px 8px 14px;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+.nox-ag-input-wrap:focus-within {
+    border-color: rgba(59,130,246,.55);
+    box-shadow: 0 0 0 3px rgba(59,130,246,.11), 0 0 0 1px rgba(59,130,246,.28);
+    animation: nox-input-glow 2.2s ease-in-out infinite;
+}
+.nox-ag-textarea {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: #e2e8f0;
+    font-size: 13px;
+    font-family: var(--font-sans, Inter, sans-serif);
+    line-height: 1.55;
+    resize: none;
+    max-height: 160px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(59,130,246,.15) transparent;
+}
+.nox-ag-textarea::placeholder { color: rgba(148,163,184,.4); }
+.nox-ag-textarea:disabled { cursor: pointer; }
+
+.nox-ag-send-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #3b82f6, #4f46e5);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all .15s ease;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(59,130,246,.3);
+}
+.nox-ag-send-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #2563eb, #4338ca);
+    transform: scale(1.08);
+    box-shadow: 0 4px 16px rgba(59,130,246,.45);
+}
+.nox-ag-send-btn:disabled { opacity: .28; cursor: not-allowed; box-shadow: none; }
+
+.nox-ag-input-hint {
+    margin-top: 5px;
+    font-size: 10px;
+    color: rgba(148,163,184,.38);
+    text-align: center;
+}
+.nox-ag-input-hint code {
+    background: rgba(59,130,246,.09);
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-family: var(--font-mono, monospace);
+    color: rgba(96,165,250,.75);
+    font-size: 10px;
+}
+
+/* ── @Mention dropdown ── */
+.nox-mention-dropdown {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 16px;
+    right: 16px;
+    background: #0b1627;
+    border: 1px solid rgba(59,130,246,.24);
+    border-radius: 12px;
+    box-shadow: 0 -8px 32px rgba(0,0,0,.55), 0 0 0 1px rgba(59,130,246,.08);
+    overflow: hidden;
+    z-index: 100;
+    animation: nox-fade-in .15s ease;
+    max-height: 280px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(59,130,246,.2) transparent;
+}
+.nox-mention-header {
+    padding: 8px 12px 5px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .09em;
+    color: rgba(148,163,184,.48);
+    border-bottom: 1px solid rgba(59,130,246,.1);
+    position: sticky;
+    top: 0;
+    background: #0b1627;
+}
+.nox-mention-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background .12s ease;
+}
+.nox-mention-item:hover,
+.nox-mention-item.nox-mention-active {
+    background: rgba(59,130,246,.09);
+}
+.nox-mention-item-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.nox-mention-item-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #dde6f0;
+}
+.nox-mention-item-hint {
+    font-size: 10px;
+    color: rgba(148,163,184,.5);
+    font-family: var(--font-mono, monospace);
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+/* ── API Key modal ── */
+.nox-apikey-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.75);
+    backdrop-filter: blur(5px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    animation: nox-fade-in .15s ease;
+}
+.nox-apikey-box {
+    background: #0d1b2a;
+    border: 1px solid rgba(59,130,246,.2);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 24px 56px rgba(0,0,0,.55);
+    overflow: hidden;
+}
+.nox-apikey-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 20px 14px;
+    border-bottom: 1px solid rgba(59,130,246,.1);
+}
+.nox-apikey-logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    flex-shrink: 0;
+    box-shadow: 0 0 16px rgba(59,130,246,.4);
+}
+.nox-apikey-header h3 { font-size: 15px; font-weight: 700; color: #f0f5ff; margin: 0 0 2px; }
+.nox-apikey-header p  { font-size: 12px; color: rgba(148,163,184,.7); margin: 0; }
+.nox-apikey-body { padding: 18px 20px; }
+.nox-apikey-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: rgba(148,163,184,.65);
+    margin-bottom: 6px;
+}
+.nox-apikey-input {
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(12,20,35,.9);
+    border: 1px solid rgba(59,130,246,.18);
+    border-radius: 8px;
+    color: #e2e8f0;
+    font-size: 13px;
+    font-family: var(--font-mono, monospace);
+    transition: border-color .15s;
+}
+.nox-apikey-input:focus { outline: none; border-color: rgba(59,130,246,.55); }
+.nox-apikey-input.nox-input-error { border-color: #ef4444; animation: nox-shake .3s ease; }
+.nox-apikey-hint { margin-top: 8px; font-size: 11px; color: rgba(148,163,184,.65); line-height: 1.65; }
+.nox-apikey-hint strong { color: rgba(226,232,240,.85); }
+.nox-apikey-hint code {
+    background: rgba(59,130,246,.1);
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-family: var(--font-mono, monospace);
+    color: #60a5fa;
+}
+.nox-apikey-footer {
+    padding: 12px 20px;
+    border-top: 1px solid rgba(59,130,246,.1);
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+/* ── Toast ── */
+.nox-toast {
+    position: fixed;
+    bottom: 80px;
+    right: 24px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: #0d1b2a;
+    border: 1px solid rgba(59,130,246,.2);
+    color: #e2e8f0;
+    font-size: 13px;
+    font-weight: 500;
+    z-index: 9998;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all .25s ease;
+    box-shadow: 0 8px 24px rgba(0,0,0,.45);
+    pointer-events: none;
+}
+.nox-toast--show    { transform: translateY(0); opacity: 1; }
+.nox-toast--success { border-color: rgba(16,185,129,.35); color: #34d399; background: rgba(16,185,129,.07); }
+.nox-toast--error   { border-color: rgba(239,68,68,.35);  color: #f87171; background: rgba(239,68,68,.07); }
+
+/* ── SVG icon sizing helpers ── */
+.nox-agent-icon svg        { display:block; width:16px; height:16px; flex-shrink:0; }
+.nox-active-agent-icon     { display:flex; align-items:center; }
+.nox-active-agent-icon svg { display:block; width:13px; height:13px; flex-shrink:0; }
+.nox-ag-tag-icon           { display:inline-flex; align-items:center; margin-right:3px; }
+.nox-ag-tag-icon svg       { width:10px; height:10px; }
+.nox-pill-icon             { display:inline-flex; align-items:center; margin-right:5px; }
+.nox-pill-icon svg         { width:12px; height:12px; }
+.nox-key-btn-icon          { display:inline-flex; align-items:center; }
+.nox-key-btn-icon svg      { width:13px; height:13px; }
+.nox-mention-item-icon svg { width:14px; height:14px; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .nox-agents-panel { display: none !important; }
+    .nox-ag-messages  { padding: 14px 16px; gap: 14px; }
+    .nox-ag-content   { margin-left: 0; border-radius: 4px 12px 12px 12px; }
+    .nox-ag-tags      { margin-left: 0; }
+    .nox-ag-user-text { max-width: 90%; }
+    .nox-ag-header    { padding: 0 12px; }
+    .nox-key-btn      { font-size: 11px; padding: 0 8px; }
+}
+@media (max-width: 480px) {
+    .nox-ag-messages    { padding: 10px 12px; }
+    .nox-ag-input-area  { padding: 8px 12px 12px; }
+}

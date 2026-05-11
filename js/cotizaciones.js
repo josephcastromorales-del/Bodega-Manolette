@@ -45,7 +45,7 @@ function renderCotizaciones() {
             </td>
             <td>${escHtml(c.cliente || '—')}</td>
             <td class="mono">${c.creadoEn ? new Date(c.creadoEn).toLocaleDateString('es-CO') : '—'}</td>
-            <td class="mono" style="font-weight:var(--weight-semibold)">$${Number(c.total || 0).toLocaleString('es-CO')}</td>
+            <td class="mono" style="font-weight:var(--weight-semibold)">${formatCOP(Number(c.total || 0))}</td>
             <td><span class="badge ${estBadge}">${escHtml(c.estado || 'borrador')}</span></td>
             <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();exportarCotizacionPDF('${c.id}')">PDF</button></td>
         </tr>`;
@@ -133,16 +133,16 @@ function renderCotItems() {
                 </div>
                 <div>
                     <label class="form-label" style="font-size:10px;margin-bottom:4px">Costo/P. Unit</label>
-                    <input class="form-input" type="number" min="0" value="${item.precioUnit}" onchange="cotItems[${i}].precioUnit=Number(this.value);renderCotItems()">
+                    <input class="form-input" type="text" value="${item.precioUnit ? new Intl.NumberFormat('es-CO').format(item.precioUnit) : ''}" oninput="maskMoney(this)" onchange="cotItems[${i}].precioUnit=parseCOP(this.value);renderCotItems()">
                 </div>
                 <div>
                     <label class="form-label" style="font-size:10px;margin-bottom:4px">Subtotal</label>
-                    <input class="form-input mono" readonly value="$${subtotal.toLocaleString('es-CO')}">
+                    <input class="form-input mono" readonly value="${formatCOP(subtotal)}">
                 </div>
             </div>
         </div>`;
     }).join('');
-    document.getElementById('cot-total-display').textContent = '$' + total.toLocaleString('es-CO');
+    document.getElementById('cot-total-display').textContent = formatCOP(total);
 }
 
 function agregarItemCot() { cotItems.push({ producto: '', proveedor: '', ubicacion: 'Piso 1', estadoLogistica: 'En espera', fechaEntrega: '', cantidad: 1, precioUnit: 0 }); renderCotItems(); }
@@ -172,7 +172,7 @@ function verCotizacion(id) {
             <div class="contract-detail-item"><strong>Cliente</strong><span>${escHtml(c.cliente || '—')}</span></div>
             <div class="contract-detail-item"><strong>Fecha</strong><span class="mono">${c.creadoEn ? new Date(c.creadoEn).toLocaleDateString('es-CO') : '—'}</span></div>
             <div class="contract-detail-item"><strong>Estado</strong><span>${escHtml(c.estado || 'borrador')}</span></div>
-            <div class="contract-detail-item"><strong>Total</strong><span class="mono" style="font-size:var(--fz-lg);font-weight:var(--weight-bold)">$${Number(c.total || 0).toLocaleString('es-CO')}</span></div>
+            <div class="contract-detail-item"><strong>Total</strong><span class="mono" style="font-size:var(--fz-lg);font-weight:var(--weight-bold)">${formatCOP(Number(c.total || 0))}</span></div>
         </div>
         <table class="data-table"><thead><tr><th>Detalle del Producto</th><th>Estado Logística</th><th>Costo/Unit</th><th>Subtotal</th></tr></thead>
         <tbody>${items.map(i => {
@@ -187,8 +187,8 @@ function verCotizacion(id) {
                 <span class="badge badge-gray">${escHtml(i.estadoLogistica || 'En espera')}</span>
                 ${etaBadge}
             </td>
-            <td class="mono">$${Number(i.precioUnit).toLocaleString('es-CO')}</td>
-            <td class="mono">$${(i.cantidad * i.precioUnit).toLocaleString('es-CO')}</td>
+            <td class="mono">${formatCOP(Number(i.precioUnit))}</td>
+            <td class="mono">${formatCOP(i.cantidad * i.precioUnit)}</td>
         </tr>`;
         }).join('')}</tbody></table>
         ${c.notas ? `<div class="alert-strip info" style="margin-top:1rem"><p>${escHtml(c.notas)}</p></div>` : ''}

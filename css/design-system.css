@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    DESIGN SYSTEM — Manolette Business Platform
    Linear / Vercel / Stripe aesthetic
    Tokens, reset, tipografía, utilidades
@@ -43,7 +43,7 @@
     --warning-subtle: rgba(245, 158, 11, 0.1);
     --danger:         #ef4444;
     --danger-subtle:  rgba(239, 68, 68, 0.1);
-    --info:           #3b82f6;
+    --info:           #315640;
     --info-subtle:    rgba(59, 130, 246, 0.1);
 
     /* ── Aliases de compatibilidad (JS / HTML inline usan estos) ── */

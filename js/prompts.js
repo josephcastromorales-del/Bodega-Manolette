@@ -1,5 +1,11 @@
 // Master Prompt Logic - Persona especializada en Ingeniería de Prompts
-const PROMPT_AI_URL = `https://api.groq.com/openai/v1/chat/completions`;
+// En local (localhost) usa la clave de config.js directamente.
+// En producción (Netlify/GitHub Pages) usa el proxy seguro — la clave nunca llega al browser.
+const _promptIsLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+const PROMPT_AI_URL  = _promptIsLocal
+    ? 'https://api.groq.com/openai/v1/chat/completions'
+    : '/.netlify/functions/groq';
+const PROMPT_API_KEY = _promptIsLocal ? (window.APP_CONFIG?.GROQ_API_KEY || '') : null;
 
 const MASTER_PROMPT_SYSTEM = `Eres el Ingeniero de Prompts Maestro de Manolette AI, conocido como "Image Master Prompt IA". Tu especialidad es transformar ideas simples en prompts técnicos de nivel legendario.
 

@@ -203,3 +203,9 @@ window.formatCOP = function(value) {
 };
 
 window.parseCOP = function(str) { return parseInt(String(str).replace(/\D/g,'')) || 0; };
+
+window.maskMoney = function(input) {
+    let val = input.value.replace(/\D/g, '');
+    if (!val) { input.value = ''; return; }
+    input.value = new Intl.NumberFormat('es-CO').format(val);
+};

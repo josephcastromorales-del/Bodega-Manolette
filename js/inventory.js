@@ -42,7 +42,7 @@ function renderInventarioTable(busqueda = '') {
             <td style="font-family:monospace;font-size:.8rem">${escHtml(item.sku || '—')}</td>
             <td>${escHtml(item.categoria || '—')}</td>
             <td>${stock} <small>${escHtml(item.unidad || '')}</small> ${stockBadge}</td>
-            <td>${min}</td>
+            <td>${formatCOP(item.precioVenta || 0)}</td>
             <td>${escHtml(item.ubicacion || '—')}</td>
             <td>
                 <div class="table-actions">
@@ -58,6 +58,7 @@ function renderInventarioTable(busqueda = '') {
 function nuevoItem() {
     document.getElementById('f-item-id').value      = '';
     document.getElementById('form-inventario').reset();
+    populateMaterialList();
     document.getElementById('modal-inventario-title').textContent = 'Agregar Producto';
     openModal('modal-inventario');
 }
@@ -65,16 +66,27 @@ function nuevoItem() {
 function editarItem(id) {
     const item = inventarioData[id];
     if (!item) return;
+    populateMaterialList();
     document.getElementById('f-item-id').value          = id;
     document.getElementById('f-item-nombre').value      = item.nombre   || '';
+    document.getElementById('f-item-material').value    = item.material || '';
     document.getElementById('f-item-sku').value         = item.sku      || '';
     document.getElementById('f-item-categoria').value   = item.categoria|| '';
     document.getElementById('f-item-stock').value       = item.stockActual || 0;
     document.getElementById('f-item-minimo').value      = item.stockMinimo || 0;
+    document.getElementById('f-item-costo').value       = item.costoProduccion ? formatCOP(item.costoProduccion).replace('$ ','') : '0';
+    document.getElementById('f-item-venta').value       = item.precioVenta ? formatCOP(item.precioVenta).replace('$ ','') : '0';
     document.getElementById('f-item-unidad').value      = item.unidad   || '';
     document.getElementById('f-item-ubicacion').value   = item.ubicacion|| '';
     document.getElementById('modal-inventario-title').textContent = 'Editar Producto';
     openModal('modal-inventario');
+}
+
+function populateMaterialList() {
+    const dl = document.getElementById('list-materiales-inv');
+    if (!dl) return;
+    const mats = typeof materialesData !== 'undefined' ? Object.values(materialesData) : [];
+    dl.innerHTML = mats.map(m => `<option value="${m.nombre}">`).join('');
 }
 
 async function guardarItem(e) {
@@ -82,10 +94,13 @@ async function guardarItem(e) {
     const id = document.getElementById('f-item-id').value;
     const datos = {
         nombre:       document.getElementById('f-item-nombre').value.trim(),
+        material:     document.getElementById('f-item-material').value.trim(),
         sku:          document.getElementById('f-item-sku').value.trim(),
         categoria:    document.getElementById('f-item-categoria').value.trim(),
         stockActual:  Number(document.getElementById('f-item-stock').value) || 0,
         stockMinimo:  Number(document.getElementById('f-item-minimo').value) || 0,
+        costoProduccion: parseCOP(document.getElementById('f-item-costo')?.value),
+        precioVenta:     parseCOP(document.getElementById('f-item-venta')?.value),
         unidad:       document.getElementById('f-item-unidad').value.trim(),
         ubicacion:    document.getElementById('f-item-ubicacion').value.trim(),
         ultimaActualizacion: Date.now(),

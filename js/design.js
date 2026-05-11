@@ -215,7 +215,7 @@ function _renderTemplateCards() {
     if (!grid) return;
     grid.innerHTML = TEMPLATES.map((t, i) => `
         <div class="canva-template-card" onclick="applyTemplate2(${i})" style="background:${t.bg}">
-            <div style="display:flex;align-items:center;justify-content:center;height:100%;padding:12px;text-align:center;color:${t.textColor};font-size:10px;font-weight:600;white-space:pre-line">${t.text}</div>
+            <div class="canva-template-inner" style="color:${t.textColor}">${t.text}</div>
             <div class="canva-template-label">${t.name}</div>
         </div>`).join('');
 }
@@ -319,13 +319,6 @@ function initDeseno() {
     if (designInitialized) return;
     designInitialized = true;
 
-    // Poblar select de fuentes
-    const fontSel = document.getElementById('prop-font-family');
-    if (fontSel) {
-        fontSel.innerHTML = DESIGN_FONTS.map(f =>
-            `<option value="${f}" style="font-family:${f}">${f}</option>`).join('');
-    }
-
     // Inicializar canvas
     canvas = new fabric.Canvas('design-canvas', {
         backgroundColor: '#ffffff',
@@ -334,26 +327,31 @@ function initDeseno() {
     });
 
     applyCanvasPreset('square');
-    
-    // Listeners
+
+    // Listeners de selección
     canvas.on('selection:created', updateFloatingToolbar);
     canvas.on('selection:updated', updateFloatingToolbar);
-    canvas.on('selection:cleared', () => {
-        const tb = document.getElementById('cv-element-toolbar');
-        if (tb) tb.style.display = 'none';
-    });
+    canvas.on('selection:cleared', () => { _updateRightPanel(); });
 
-    canvas.on('object:modified', () => { saveUndoState(); autoSaveDesign(); });
-    canvas.on('object:added',    () => { saveUndoState(); autoSaveDesign(); });
-    canvas.on('object:removed',  () => { saveUndoState(); autoSaveDesign(); });
+    canvas.on('object:modified', () => { saveUndoState(); autoSaveDesign(); _updateSaveStatus(); });
+    canvas.on('object:added',    () => { saveUndoState(); autoSaveDesign(); _updateSaveStatus(); });
+    canvas.on('object:removed',  () => { saveUndoState(); autoSaveDesign(); _updateSaveStatus(); });
 
     canvas.on('selection:created', _updateRightPanel);
     canvas.on('selection:updated', _updateRightPanel);
     canvas.on('selection:cleared', _updateRightPanel);
     canvas.on('object:modified', _updateRightPanel);
-    _initCanvaUI();
 
+    _initCanvaUI();
+    _renderVideoTemplates();
     loadAutoSavedDesign();
+}
+
+function _updateSaveStatus() {
+    const el = document.getElementById('canva-save-status');
+    if (!el) return;
+    el.textContent = 'Guardando...';
+    setTimeout(() => { if (el) el.textContent = 'Guardado'; }, 800);
 }
 
 /* ── Gestión de Páginas ── */
@@ -406,49 +404,15 @@ function switchPage(index) {
 
 /* ── UI Contextual ── */
 function switchCanvasPanel(panelId) {
-    // Nav rail
-    document.querySelectorAll('.cv-rail-item').forEach(btn => {
-        const isTarget = btn.getAttribute('onclick').includes(panelId);
-        btn.classList.toggle('active', isTarget);
-    });
-
-    // Content
-    document.querySelectorAll('.cv-panel-content').forEach(p => {
-        p.classList.toggle('active', p.id === `cv-panel-${panelId}`);
-    });
+    // Delegate to the tab-based system
+    const tabName = panelId === 'templates' ? 'plantillas' : panelId;
+    const btn = document.querySelector(`.canva-ptab[onclick*="${tabName}"]`);
+    switchDesignTab(tabName, btn);
 }
 
 function updateFloatingToolbar() {
-    const activeObj = canvas.getActiveObject();
-    const toolbar = document.getElementById('cv-element-toolbar');
-    const textTools = document.getElementById('cv-text-tools');
-    const shapeTools = document.getElementById('cv-shape-tools');
-
-    if (!activeObj) {
-        toolbar.style.display = 'none';
-        return;
-    }
-
-    toolbar.style.display = 'flex';
-    
-    // Posicionar toolbar cerca del objeto
-    const bound = activeObj.getBoundingRect();
-    toolbar.style.top = `${bound.top - 60}px`;
-    
-    if (activeObj.type === 'textbox' || activeObj.type === 'i-text') {
-        textTools.style.display = 'flex';
-        shapeTools.style.display = 'none';
-        
-        // Sincronizar valores
-        document.getElementById('prop-font-family').value = activeObj.fontFamily;
-        document.getElementById('prop-font-size').value = Math.round(activeObj.fontSize);
-        document.getElementById('prop-text-color').value = activeObj.fill;
-    } else {
-        textTools.style.display = 'none';
-        shapeTools.style.display = 'flex';
-        
-        document.getElementById('prop-fill-color').value = activeObj.fill || '#000000';
-    }
+    // Right panel is the properties panel — just sync it
+    _updateRightPanel();
 }
 
 /* ── Presets de tamaño ── */
@@ -669,8 +633,6 @@ function autoSaveDesign() {
     if (!canvas) return;
     const json = JSON.stringify(canvas);
     localStorage.setItem('cv_design_autosave', json);
-    const saveStatus = document.querySelector('.cv-save-status');
-    if (saveStatus) saveStatus.innerText = 'Cambios guardados';
 }
 
 function loadAutoSavedDesign() {
@@ -882,4 +844,183 @@ document.addEventListener('keydown', e => {
     if (e.ctrlKey && e.key === 'y') { redoDesign(); e.preventDefault(); }
 });
 
-window.onSection_diseno = initDeseno;
+/* ── Navigation: Home ↔ Editor ── */
+
+let currentDesignMode = 'plantillas';
+let videoPlaying = false;
+let videoTimer = null;
+let videoSeconds = 0;
+
+function showDesignHome() {
+    const home = document.getElementById('design-home');
+    const editor = document.getElementById('design-editor');
+    if (home) home.style.display = '';
+    if (editor) editor.style.display = 'none';
+    renderRecentDesigns();
+}
+
+function openDesignEditor(mode) {
+    currentDesignMode = mode || 'plantillas';
+    const home = document.getElementById('design-home');
+    const editor = document.getElementById('design-editor');
+    if (home) home.style.display = 'none';
+    if (editor) editor.style.display = 'flex';
+
+    // Ensure canvas is initialized
+    if (!designInitialized) initDeseno();
+    else { setTimeout(() => applyCanvasPreset('square'), 50); }
+
+    // Show/hide video timeline
+    const timeline = document.getElementById('canva-timeline');
+    const modeTag = document.getElementById('canva-mode-tag');
+    const isVideo = mode === 'video';
+    if (timeline) timeline.style.display = isVideo ? 'flex' : 'none';
+    if (modeTag) modeTag.textContent = isVideo ? 'Video' : 'Diseño';
+
+    // Switch to right panel tab
+    if (mode === 'video') {
+        switchDesignTab('plantillas', document.querySelector('.canva-ptab'));
+        _renderVideoTemplates();
+    } else if (mode === 'texto') {
+        const txtBtn = document.querySelectorAll('.canva-ptab')[2];
+        if (txtBtn) switchDesignTab('texto', txtBtn);
+    } else if (mode === 'redes' || mode === 'plantillas' || mode === 'presentacion' || mode === 'impresion' || mode === 'documento' || mode === 'pizarra' || mode === 'mas') {
+        switchDesignTab('plantillas', document.querySelector('.canva-ptab'));
+    }
+
+    // Update title
+    const titleInput = document.getElementById('design-canvas-name');
+    const labels = {
+        plantillas: 'Diseño sin título',
+        presentacion: 'Presentación',
+        redes: 'Post para redes',
+        video: 'Video sin título',
+        impresion: 'Diseño de impresión',
+        documento: 'Documento',
+        pizarra: 'Pizarra',
+    };
+    if (titleInput) titleInput.value = labels[mode] || 'Diseño sin título';
+
+    // Save recent
+    _saveRecentDesign(labels[mode] || 'Diseño sin título', mode);
+}
+
+function filterRecents(type, btn) {
+    document.querySelectorAll('.design-filter-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderRecentDesigns(type);
+}
+
+function toggleSortMenu() { /* simple placeholder */ }
+
+function renderRecentDesigns(filter) {
+    const grid = document.getElementById('design-recents-grid');
+    if (!grid) return;
+    const recents = _getRecentDesigns();
+    const filtered = filter && filter !== 'todos'
+        ? recents.filter(r => r.type === filter || (filter === 'videos' && r.mode === 'video') || (filter === 'diseños' && r.mode !== 'video'))
+        : recents;
+
+    // Keep the "new" button
+    const newCard = grid.querySelector('.design-recent-new');
+    grid.innerHTML = '';
+    if (newCard) grid.appendChild(newCard);
+
+    filtered.forEach(r => {
+        const card = document.createElement('div');
+        card.className = 'design-recent-card';
+        card.onclick = () => openDesignEditor(r.mode || 'plantillas');
+        const tpl = TEMPLATES.find(t => t.name === r.templateName);
+        const bg = tpl ? tpl.bg : '#1a1a2e';
+        const tc = tpl ? tpl.textColor : '#ffffff';
+        card.innerHTML = `
+            <div class="design-recent-thumb" style="background:${bg};color:${tc}">${r.name}</div>
+            <div class="design-recent-info">
+                <span class="design-recent-name">${r.name}</span>
+                <span class="design-recent-type">${r.mode || 'diseño'}</span>
+            </div>`;
+        grid.appendChild(card);
+    });
+}
+
+function _saveRecentDesign(name, mode) {
+    const recents = _getRecentDesigns();
+    recents.unshift({ name, mode, date: Date.now() });
+    const trimmed = recents.slice(0, 12);
+    localStorage.setItem('cv_recents', JSON.stringify(trimmed));
+}
+
+function _getRecentDesigns() {
+    try { return JSON.parse(localStorage.getItem('cv_recents') || '[]'); } catch { return []; }
+}
+
+/* ── Video template cards ── */
+const VIDEO_TEMPLATES = [
+    { name: 'Spot Producto', bg: '#16213e', textColor: '#f5a623', text: 'Spot\nProducto' },
+    { name: 'Story Vertical', bg: '#0f3460', textColor: '#ffffff', text: 'Story\nVertical' },
+    { name: 'Reels Cuadrado', bg: '#e94560', textColor: '#ffffff', text: 'Reels\n1080×1080' },
+    { name: 'Banner Animado', bg: '#315640', textColor: '#ffffff', text: 'Banner\nAnimado' },
+];
+
+function _renderVideoTemplates() {
+    const grid = document.getElementById('video-templates-grid');
+    if (!grid) return;
+    grid.innerHTML = VIDEO_TEMPLATES.map((t, i) => `
+        <div class="canva-template-card" onclick="applyVideoTemplate(${i})" style="background:${t.bg}">
+            <div class="canva-template-inner" style="color:${t.textColor}">${t.text}</div>
+            <div class="canva-template-label">${t.name}</div>
+        </div>`).join('');
+}
+
+function applyVideoTemplate(idx) {
+    const t = VIDEO_TEMPLATES[idx];
+    if (!t || !canvas) return;
+    canvas.clear();
+    canvas.setBackgroundColor(t.bg, () => {
+        const txt = new fabric.IText(t.name, {
+            left: canvas.width / 2, top: canvas.height / 2,
+            originX: 'center', originY: 'center',
+            fontSize: 36, fontWeight: 'bold',
+            fontFamily: 'Inter', fill: t.textColor
+        });
+        canvas.add(txt);
+        canvas.renderAll();
+    });
+    showToast('Plantilla de video aplicada');
+}
+
+/* ── Video playhead animation ── */
+function toggleVideoPlay() {
+    const btn = document.getElementById('canva-play-btn');
+    const playhead = document.getElementById('canva-tl-playhead');
+    const timeEl = document.getElementById('canva-tl-time');
+    const track = document.getElementById('canva-timeline-track');
+    if (!btn) return;
+
+    videoPlaying = !videoPlaying;
+    if (videoPlaying) {
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+        videoTimer = setInterval(() => {
+            videoSeconds = (videoSeconds + 0.1) % 10;
+            if (timeEl) timeEl.textContent = `${_fmtTime(videoSeconds)} / 0:10`;
+            if (playhead && track) {
+                const pct = (videoSeconds / 10) * 100;
+                playhead.style.left = `calc(12px + ${pct}% * (${track.clientWidth - 24}px / 100))`;
+            }
+        }, 100);
+    } else {
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+        clearInterval(videoTimer);
+    }
+}
+
+function _fmtTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return `${m}:${sec.toString().padStart(2, '0')}`;
+}
+
+window.onSection_diseno = function() {
+    initDeseno();
+    showDesignHome();
+};

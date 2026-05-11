@@ -1,6 +1,6 @@
 :root {
-    --primary: #2563eb;
-    --primary-hover: #1d4ed8;
+    --primary: #315640;
+    --primary-hover: #437658;
     --bg-app: #f1f5f9;
     --bg-card: #ffffff;
     --text-main: #1e293b;
@@ -287,3 +287,4 @@ button.danger {
     font-size: 1.2rem;
     color: var(--text-muted);
 }
+

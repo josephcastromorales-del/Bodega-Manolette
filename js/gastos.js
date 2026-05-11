@@ -18,8 +18,8 @@ function renderGastos() {
     const mesActual = new Date().getMonth();
     const totalMes = entries.filter(g => new Date(g.fecha).getMonth() === mesActual).reduce((s, g) => s + Number(g.monto || 0), 0);
     const totalGeneral = entries.reduce((s, g) => s + Number(g.monto || 0), 0);
-    document.getElementById('gastos-total-mes').textContent = '$' + totalMes.toLocaleString('es-CO');
-    document.getElementById('gastos-total-general').textContent = '$' + totalGeneral.toLocaleString('es-CO');
+    document.getElementById('gastos-total-mes').textContent = formatCOP(totalMes);
+    document.getElementById('gastos-total-general').textContent = formatCOP(totalGeneral);
     document.getElementById('gastos-count').textContent = entries.length;
     if (entries.length === 0) {
         tbody.innerHTML = '<tr><td colspan="6" class="empty-state" style="padding:2rem">Sin gastos registrados</td></tr>';
@@ -31,7 +31,7 @@ function renderGastos() {
             <td class="mono">${g.fecha ? new Date(g.fecha).toLocaleDateString('es-CO') : '—'}</td>
             <td>${escHtml(g.concepto || '—')}</td>
             <td><span class="badge ${catColor}">${escHtml(g.categoria || '—')}</span></td>
-            <td class="mono" style="font-weight:var(--weight-semibold)">$${Number(g.monto || 0).toLocaleString('es-CO')}</td>
+            <td class="mono" style="font-weight:var(--weight-semibold)">${formatCOP(Number(g.monto || 0))}</td>
             <td style="font-size:var(--fz-xs);color:var(--text-tertiary)">${escHtml(g.responsable || '—')}</td>
             <td><button class="btn btn-ghost btn-sm" onclick="eliminarGasto('${g.id}')">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" width="14" height="14"><path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
@@ -52,7 +52,7 @@ async function guardarGasto(e) {
     e.preventDefault();
     const datos = {
         concepto: document.getElementById('f-gasto-concepto')?.value.trim(),
-        monto: Number(document.getElementById('f-gasto-monto')?.value) || 0,
+        monto: parseCOP(document.getElementById('f-gasto-monto')?.value),
         categoria: document.getElementById('f-gasto-categoria')?.value,
         fecha: new Date(document.getElementById('f-gasto-fecha')?.value).getTime(),
         responsable: window.userEmail || '',

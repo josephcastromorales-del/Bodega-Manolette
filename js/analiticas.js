@@ -5,19 +5,21 @@ function initAnaliticas() { loadAnalyticData(); }
 
 async function loadAnalyticData() {
     try {
-        const [contrSnap, ordSnap, gastosSnap] = await Promise.all([
+        const [contrSnap, ordSnap, gastosSnap, invSnap] = await Promise.all([
             db.ref('contratos').once('value'),
             db.ref('ordenes').once('value'),
-            db.ref('gastos').once('value')
+            db.ref('gastos').once('value'),
+            db.ref('inventario').once('value')
         ]);
         const contratos = Object.values(contrSnap.val() || {});
         const ordenes = Object.values(ordSnap.val() || {});
         const gastos = Object.values(gastosSnap.val() || {});
-        renderAnaliticasData(contratos, ordenes, gastos);
+        const inventario = Object.values(invSnap.val() || {});
+        renderAnaliticasData(contratos, ordenes, gastos, inventario);
     } catch (err) { console.warn('[Analiticas]', err.message); }
 }
 
-function renderAnaliticasData(contratos, ordenes, gastos) {
+function renderAnaliticasData(contratos, ordenes, gastos, inventario) {
     const mesActual = new Date().getMonth();
     const anioActual = new Date().getFullYear();
 
@@ -31,6 +33,12 @@ function renderAnaliticasData(contratos, ordenes, gastos) {
         .filter(g => { const d = new Date(g.fecha); return d.getMonth() === mesActual && d.getFullYear() === anioActual; })
         .reduce((s, g) => s + Number(g.monto || 0), 0);
 
+    // Utilidad Potencial Inventario (Precio Venta - Costo Producción) * Stock
+    const utilidadInv = inventario.reduce((s, item) => {
+        const diff = (Number(item.precioVenta || 0) - Number(item.costoProduccion || 0));
+        return s + (diff * Number(item.stockActual || 0));
+    }, 0);
+
     // Margen
     const margen = ingresosMes > 0 ? Math.round(((ingresosMes - gastosMes) / ingresosMes) * 100) : 0;
 
@@ -38,9 +46,11 @@ function renderAnaliticasData(contratos, ordenes, gastos) {
     const elMargen = document.getElementById('analiticas-margen');
     const elIngresos = document.getElementById('analiticas-ingresos');
     const elGastos = document.getElementById('analiticas-gastos');
+    const elUtilidad = document.getElementById('analiticas-utilidad');
     if (elMargen) elMargen.textContent = margen + '%';
-    if (elIngresos) elIngresos.textContent = '$' + ingresosMes.toLocaleString('es-CO');
-    if (elGastos) elGastos.textContent = '$' + gastosMes.toLocaleString('es-CO');
+    if (elIngresos) elIngresos.textContent = formatCOP(ingresosMes);
+    if (elGastos) elGastos.textContent = formatCOP(gastosMes);
+    if (elUtilidad) elUtilidad.textContent = formatCOP(utilidadInv);
 
     // Chart: ordenes por mes (ultimos 6 meses)
     const mesesLabels = [];
