@@ -1,11 +1,80 @@
 // Master Prompt Logic - Persona especializada en Ingeniería de Prompts
-// En local (localhost) usa la clave de config.js directamente.
-// En producción (Netlify/GitHub Pages) usa el proxy seguro — la clave nunca llega al browser.
-const _promptIsLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-const PROMPT_AI_URL  = _promptIsLocal
-    ? 'https://api.groq.com/openai/v1/chat/completions'
-    : '/.netlify/functions/groq';
-const PROMPT_API_KEY = _promptIsLocal ? (window.APP_CONFIG?.GROQ_API_KEY || '') : null;
+
+/* ── Historial de generaciones ── */
+const PROMPTS_HISTORY_KEY = 'manolette_prompts_hist';
+let _promptsHistory = [];
+
+function _promptsLoadHistory() {
+    try { _promptsHistory = JSON.parse(localStorage.getItem(PROMPTS_HISTORY_KEY) || '[]'); }
+    catch { _promptsHistory = []; }
+}
+
+function _promptsSaveHistory() {
+    localStorage.setItem(PROMPTS_HISTORY_KEY, JSON.stringify(_promptsHistory.slice(0, 30)));
+}
+
+function promptsRenderHistory() {
+    const list = document.getElementById('nav-prompts-history-list');
+    if (!list) return;
+    if (_promptsHistory.length === 0) {
+        list.innerHTML = '<div class="nav-chat-empty">Sin generaciones previas</div>';
+        return;
+    }
+    list.innerHTML = _promptsHistory.map(item => `
+        <div class="nav-chat-item" onclick="promptsRestoreItem('${item.id}')">
+            <span class="nav-chat-title">${_escHtmlPrompts(item.title)}</span>
+            <button class="nav-chat-delete" onclick="promptsDeleteItem('${item.id}',event)" title="Eliminar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="11" height="11"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>`).join('');
+}
+
+function _escHtmlPrompts(str) {
+    const d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+}
+
+function _promptsSaveEntry(inputText) {
+    const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 4);
+    _promptsHistory.unshift({
+        id,
+        title: inputText.slice(0, 50) + (inputText.length > 50 ? '…' : ''),
+        ts: Date.now(),
+        input: inputText
+    });
+    _promptsSaveHistory();
+    promptsRenderHistory();
+}
+
+function promptsRestoreItem(id) {
+    const item = _promptsHistory.find(i => i.id === id);
+    if (!item) return;
+    const inputEl = document.getElementById('prompt-raw-input');
+    if (inputEl) { inputEl.value = item.input; inputEl.focus(); }
+    if (typeof navigate === 'function') navigate('prompts');
+}
+
+function promptsDeleteItem(id, e) {
+    if (e) e.stopPropagation();
+    _promptsHistory = _promptsHistory.filter(i => i.id !== id);
+    _promptsSaveHistory();
+    promptsRenderHistory();
+}
+
+function promptsNewGeneration() {
+    const inputEl = document.getElementById('prompt-raw-input');
+    if (inputEl) { inputEl.value = ''; inputEl.focus(); }
+    const resultContainer = document.getElementById('prompt-result-container');
+    const welcomeEl = document.getElementById('prompt-welcome');
+    if (resultContainer) resultContainer.style.display = 'none';
+    if (welcomeEl) welcomeEl.style.display = 'flex';
+    if (typeof navigate === 'function') navigate('prompts');
+}
+
+// Inicializar historial al cargar
+_promptsLoadHistory();
+window.onSection_prompts = function() { promptsRenderHistory(); };
 
 const MASTER_PROMPT_SYSTEM = `Eres el Ingeniero de Prompts Maestro de Manolette AI, conocido como "Image Master Prompt IA". Tu especialidad es transformar ideas simples en prompts técnicos de nivel legendario.
 
@@ -33,10 +102,9 @@ async function generateMasterPrompt() {
     const text = inputEl?.value.trim();
     if (!text) return;
 
-    const apiKey = window.APP_CONFIG?.groq?.apiKey;
-    if (!apiKey) { 
-        showToast('API key de Groq no configurada. Por favor, revísala en config.js', 'error'); 
-        return; 
+    if (!window.ApiKeyManager?.hasActiveProvider('prompts')) {
+        showToast('Configura un proveedor de IA en API Keys para usar esta función', 'error');
+        return;
     }
 
     const resultContainer = document.getElementById('prompt-result-container');
@@ -49,32 +117,16 @@ async function generateMasterPrompt() {
     welcomeEl.style.display = 'none';
     resultContainer.style.display = 'block';
     if (btnText) btnText.textContent = 'Analizando...';
-    
+
     finalPromptEl.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
     analysisEl.innerHTML = 'Calculando parámetros de iluminación global y trazado de rayos...';
 
     try {
-        const res = await fetch(PROMPT_AI_URL, {
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
-            },
-            body: JSON.stringify({
-                model: 'llama-3.3-70b-versatile',
-                messages: [
-                    { role: 'system', content: MASTER_PROMPT_SYSTEM },
-                    { role: 'user', content: `Genera la ingeniería de prompt definitiva para: ${text}. RECUERDA: Máximo detalle, miles de palabras, usa los marcadores [[PROMPT]], [[ANALYSIS]] y [[REFINEMENTS]].` }
-                ],
-                temperature: 0.85,
-                max_tokens: 8000,
-                top_p: 0.9
-            })
+        const reply = await window.ApiKeyManager.callLLM('prompts', {
+            system: MASTER_PROMPT_SYSTEM,
+            messages: [{ role: 'user', content: `Genera la ingeniería de prompt definitiva para: ${text}. RECUERDA: Máximo detalle, miles de palabras, usa los marcadores [[PROMPT]], [[ANALYSIS]] y [[REFINEMENTS]].` }],
+            maxTokens: 8000
         });
-
-        if (!res.ok) throw new Error(`Error de conexión con la IA (HTTP ${res.status})`);
-        const data = await res.json();
-        const reply = data.choices?.[0]?.message?.content || '';
 
         if (!reply) throw new Error('La IA devolvió una respuesta vacía');
 
@@ -115,6 +167,7 @@ async function generateMasterPrompt() {
         renderRefinements(refinementsText);
 
         if (btnText) btnText.textContent = 'Ingeniería de Prompt';
+        _promptsSaveEntry(text);
         showToast('Prompt optimizado con éxito');
 
     } catch (err) {

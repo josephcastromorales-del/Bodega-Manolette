@@ -226,6 +226,110 @@
     color: var(--sidebar-active);
 }
 
+/* ── Nav Group (collapsible folder) ── */
+.nav-group { width: 100%; }
+
+.nav-group-trigger {
+    display: flex;
+    align-items: center;
+}
+
+.nav-chevron {
+    flex-shrink: 0;
+    opacity: 0.5;
+    transition: transform 0.2s ease, opacity 0.2s;
+}
+
+/* Rotar chevron cuando el grupo está abierto */
+.nav-group:has(.nav-group-body.open) .nav-chevron {
+    transform: rotate(180deg);
+    opacity: 0.8;
+}
+
+
+.nav-group-body {
+    display: none;
+    flex-direction: column;
+    padding: 2px 0 4px 10px;
+    border-left: 1px solid rgba(255,255,255,0.06);
+    margin: 0 4px 0 17px;
+}
+
+.nav-group-body.open { display: flex; }
+
+.nav-new-chat-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    padding: 5px 8px;
+    border-radius: var(--r-sm);
+    background: none;
+    border: 1px dashed rgba(255,255,255,0.12);
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    margin-bottom: 4px;
+}
+
+.nav-new-chat-btn:hover {
+    background: var(--sidebar-hover);
+    border-color: rgba(255,255,255,0.22);
+    color: var(--text-primary);
+}
+
+.nav-chat-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 6px;
+    border-radius: var(--r-sm);
+    cursor: pointer;
+    transition: background 0.15s ease;
+    min-width: 0;
+}
+
+.nav-chat-item:hover { background: var(--sidebar-hover); }
+
+.nav-chat-item.active { background: var(--sidebar-active-bg); }
+
+.nav-chat-title {
+    flex: 1;
+    min-width: 0;
+    font-size: 11px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.nav-chat-item.active .nav-chat-title { color: var(--sidebar-active); }
+
+.nav-chat-delete {
+    flex-shrink: 0;
+    display: none;
+    padding: 2px;
+    border: none;
+    background: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 3px;
+    line-height: 0;
+    transition: color 0.15s;
+}
+
+.nav-chat-item:hover .nav-chat-delete { display: flex; }
+.nav-chat-delete:hover { color: #f87171; }
+
+.nav-chat-empty {
+    padding: 4px 6px;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
 .sidebar-footer {
     padding: 12px;
     border-top: 1px solid var(--sidebar-border);

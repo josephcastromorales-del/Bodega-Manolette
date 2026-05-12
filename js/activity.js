@@ -69,7 +69,7 @@ function initActivityFeed(containerId) {
 }
 
 async function eliminarActividad(id) {
-    const ok = await confirmDialog('¿Eliminar este registro?', 'Esta acción borrará la entrada de la bitácora permanentemente.');
+    const ok = await confirmDelete('Este registro', 'Borrará la entrada de la bitácora permanentemente.');
     if (!ok) return;
     try {
         await db.ref(`actividad/${id}`).remove();

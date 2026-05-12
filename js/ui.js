@@ -33,8 +33,16 @@ function openModal(id) {
     if (!el) return;
     el.classList.add('open');
     document.body.style.overflow = 'hidden';
+    let _mouseDownOnBackdrop = false;
+    el.addEventListener('mousedown', function mdHandler(e) {
+        _mouseDownOnBackdrop = (e.target === el);
+    });
     el.addEventListener('click', function handler(e) {
-        if (e.target === el) { closeModal(id); el.removeEventListener('click', handler); }
+        if (e.target === el && _mouseDownOnBackdrop) {
+            closeModal(id);
+            el.removeEventListener('click', handler);
+        }
+        _mouseDownOnBackdrop = false;
     });
 }
 
@@ -107,6 +115,61 @@ function confirmDialog(message, subtitle = '') {
         function cleanup() { box.classList.remove('open'); ok.replaceWith(ok.cloneNode(true)); cancel.replaceWith(cancel.cloneNode(true)); }
         document.getElementById('confirm-ok').onclick     = () => { cleanup(); resolve(true); };
         document.getElementById('confirm-cancel').onclick = () => { cleanup(); resolve(false); };
+    });
+}
+
+/* ── Delete Confirm Dialog ── */
+function confirmDelete(itemName, subtitle = '') {
+    return new Promise(resolve => {
+        let box = document.getElementById('delete-confirm-overlay');
+        if (!box) {
+            box = document.createElement('div');
+            box.id = 'delete-confirm-overlay';
+            box.className = 'confirm-overlay';
+            box.innerHTML = `
+                <div class="confirm-box delete-confirm-box">
+                    <div class="delete-confirm-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+                            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            <line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/>
+                        </svg>
+                    </div>
+                    <h3 class="delete-confirm-title">¿Eliminar este elemento?</h3>
+                    <p class="delete-confirm-name" id="delete-confirm-name"></p>
+                    <p class="delete-confirm-sub" id="delete-confirm-sub"></p>
+                    <div class="confirm-actions">
+                        <button class="btn btn-secondary" id="delete-confirm-cancel">Cancelar</button>
+                        <button class="btn btn-danger"    id="delete-confirm-ok">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;margin-right:6px">
+                                <path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+                                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            </svg>
+                            Eliminar definitivamente
+                        </button>
+                    </div>
+                </div>`;
+            document.body.appendChild(box);
+            box.addEventListener('mousedown', function(e) { box._md = (e.target === box); });
+            box.addEventListener('click', function(e) { if (e.target === box && box._md) { cleanup(); resolve(false); } box._md = false; });
+        }
+        const nameEl = document.getElementById('delete-confirm-name');
+        const subEl  = document.getElementById('delete-confirm-sub');
+        nameEl.textContent = itemName || '';
+        nameEl.style.display = itemName ? '' : 'none';
+        subEl.textContent  = subtitle || 'Esta acción no se puede deshacer.';
+        box.classList.add('open');
+
+        const ok     = document.getElementById('delete-confirm-ok');
+        const cancel = document.getElementById('delete-confirm-cancel');
+
+        function cleanup() {
+            box.classList.remove('open');
+            ok.replaceWith(ok.cloneNode(true));
+            cancel.replaceWith(cancel.cloneNode(true));
+        }
+        document.getElementById('delete-confirm-ok').onclick     = () => { cleanup(); resolve(true); };
+        document.getElementById('delete-confirm-cancel').onclick = () => { cleanup(); resolve(false); };
     });
 }
 

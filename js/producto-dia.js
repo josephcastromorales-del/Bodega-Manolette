@@ -43,34 +43,23 @@ async function renderProductoDia() {
             return;
         }
 
-        // 3. Pedir a Groq que elija el ganador
-        const apiKey = window.APP_CONFIG?.groq?.apiKey;
-        if (!apiKey) { container.innerHTML = '<p style="color:var(--text-sm)">Sin clave de API de Groq configurada.</p>'; return; }
+        // 3. Pedir a la IA activa que elija el ganador
+        if (!window.ApiKeyManager?.hasActiveProvider('productoDia')) {
+            container.innerHTML = `<div class="pd-empty">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="36" height="36"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>
+                <h4>Proveedor de IA no configurado</h4>
+                <p>Ve a <strong>API Keys</strong> y conecta un proveedor para activar esta función.</p>
+                <button class="btn btn-sm btn-primary" onclick="document.getElementById('nav-apikeys')?.click()">Ir a API Keys</button>
+            </div>`;
+            return;
+        }
 
         const prompt = _buildGeminiPrompt(analisis);
-        const res = await fetch(
-            `https://api.groq.com/openai/v1/chat/completions`,
-            {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiKey}`
-                },
-                body: JSON.stringify({
-                    model: 'llama-3.3-70b-versatile',
-                    messages: [
-                        { role: 'system', content: `Eres un analista de negocios experto en productos de consumo masivo colombiano. Analiza datos reales de una empresa de empaque y despacho llamada Manolette que trabaja con Cafam. Tu respuesta DEBE ser JSON válido, sin texto adicional, sin markdown.` },
-                        { role: 'user', content: prompt }
-                    ],
-                    temperature: 0.4,
-                    response_format: { type: 'json_object' }
-                })
-            }
-        );
-
-        if (!res.ok) throw new Error(`Groq API error ${res.status}`);
-        const data = await res.json();
-        let texto = data.choices?.[0]?.message?.content || '';
+        let texto = await window.ApiKeyManager.callLLM('productoDia', {
+            system: 'Eres un analista de negocios experto en productos de consumo masivo colombiano. Analiza datos reales de una empresa de empaque y despacho llamada Manolette que trabaja con Cafam. Tu respuesta DEBE ser JSON válido, sin texto adicional, sin markdown.',
+            messages: [{ role: 'user', content: prompt }],
+            maxTokens: 1000
+        });
 
         // Limpiar markdown si viene
         texto = texto.replace(/```json\n?/gi, '').replace(/```\n?/gi, '').trim();

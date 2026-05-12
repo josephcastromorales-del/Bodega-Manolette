@@ -51,16 +51,27 @@ function navigate(section) {
         if (section === 'diseno' || section === 'hojaCalc' || section === 'gemini') {
             contentArea.style.padding = '0';
             contentArea.style.maxWidth = 'none';
+            contentArea.style.width = '100%';
+            contentArea.style.overflow = 'hidden';
             contentArea.style.background = section === 'gemini' ? '#0a0a0a' : '';
         } else {
             contentArea.style.padding = '';
             contentArea.style.maxWidth = '';
+            contentArea.style.width = '';
+            contentArea.style.overflow = '';
             contentArea.style.background = '';
         }
     }
 
     const navEl = document.getElementById(target.nav);
-    if (navEl) navEl.classList.add('active');
+    if (navEl) {
+        navEl.classList.add('active');
+        // Si es un nav-group, abrir su cuerpo
+        if (navEl.classList.contains('nav-group-trigger')) {
+            const body = navEl.closest('.nav-group')?.querySelector('.nav-group-body');
+            if (body) body.classList.add('open');
+        }
+    }
 
     // Actualizar título en topbar
     const titleEl = document.getElementById('page-title');
@@ -82,7 +93,16 @@ function initRouter() {
     // Bind nav items
     Object.keys(SECTIONS).forEach(key => {
         const nav = document.getElementById(SECTIONS[key].nav);
-        if (nav) nav.addEventListener('click', () => navigate(key));
+        if (!nav) return;
+        if (nav.classList.contains('nav-group-trigger')) {
+            // Solo expandir/colapsar — la navegación la hacen los ítems hijos
+            nav.addEventListener('click', () => {
+                const body = nav.closest('.nav-group')?.querySelector('.nav-group-body');
+                if (body) body.classList.toggle('open');
+            });
+        } else {
+            nav.addEventListener('click', () => navigate(key));
+        }
     });
 
     // Leer hash inicial

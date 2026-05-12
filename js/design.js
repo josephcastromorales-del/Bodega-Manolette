@@ -224,15 +224,33 @@ function applyTemplate2(idx) {
     if (!canvas) return;
     const t = TEMPLATES[idx];
     if (!t) return;
-    canvas.setWidth(t.size[0]);
-    canvas.setHeight(t.size[1]);
+
+    // If no design is open, create one
+    if (!_currentDesignId) {
+        _currentDesignId = Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+        window._ndDPI = 72;
+        window._ndBG  = t.bg;
+        const ti = document.getElementById('design-canvas-name');
+        if (ti) ti.value = t.name;
+    }
+
+    const area  = document.getElementById('design-canvas-wrap') || document.getElementById('design-canvas-area');
+    const maxW  = (area?.clientWidth  || 720) - 64;
+    const maxH  = (area?.clientHeight || 560) - 64;
+    const scale = Math.min(1, maxW / t.size[0], maxH / t.size[1]);
+
+    canvas.setDimensions({ width: t.size[0] * scale, height: t.size[1] * scale });
+    canvas.setZoom(scale);
+    canvas._realWidth  = t.size[0];
+    canvas._realHeight = t.size[1];
     canvas.clear();
+
     canvas.setBackgroundColor(t.bg, () => {
         const lines = t.text.split('\n');
         lines.forEach((line, i) => {
             const txt = new fabric.IText(line, {
                 left: t.size[0] / 2,
-                top:  (t.size[1] / 2) + (i - (lines.length-1)/2) * 60,
+                top:  (t.size[1] / 2) + (i - (lines.length - 1) / 2) * 60,
                 originX: 'center', originY: 'center',
                 fontSize: i === 0 ? 48 : 28,
                 fontWeight: i === 0 ? 'bold' : 'normal',
@@ -241,6 +259,7 @@ function applyTemplate2(idx) {
             canvas.add(txt);
         });
         canvas.renderAll();
+        saveCurrentDesign();
     });
 }
 
@@ -629,10 +648,59 @@ function redo() {
 }
 
 /* ── Persistencia ── */
+
+const CV_DESIGNS_KEY = 'cv_designs_v2';
+let _currentDesignId = null;
+let _designSortOrder = 'recent';
+
+function _getDesigns() {
+    try { return JSON.parse(localStorage.getItem(CV_DESIGNS_KEY) || '[]'); } catch { return []; }
+}
+function _saveDesigns(arr) {
+    localStorage.setItem(CV_DESIGNS_KEY, JSON.stringify(arr));
+}
+function _captureThumb() {
+    if (!canvas) return null;
+    try {
+        const maxDim = 280;
+        const rw = canvas._realWidth  || canvas.width;
+        const rh = canvas._realHeight || canvas.height;
+        const mult = Math.min(maxDim / rw, maxDim / rh, 1);
+        return canvas.toDataURL({ format: 'jpeg', quality: 0.65, multiplier: mult });
+    } catch { return null; }
+}
+
+function saveCurrentDesign() {
+    if (!canvas || !_currentDesignId) return;
+    const designs = _getDesigns();
+    const idx = designs.findIndex(d => d.id === _currentDesignId);
+    const name = document.getElementById('design-canvas-name')?.value || 'Diseño sin título';
+    const entry = {
+        ...(idx >= 0 ? designs[idx] : { createdAt: Date.now() }),
+        id: _currentDesignId,
+        name,
+        mode: currentDesignMode || 'plantillas',
+        w:   canvas._realWidth  || canvas.width,
+        h:   canvas._realHeight || canvas.height,
+        dpi: window._ndDPI || 72,
+        bg:  window._ndBG  || '#ffffff',
+        thumbnail: _captureThumb(),
+        canvasJSON: JSON.stringify(canvas),
+        updatedAt: Date.now()
+    };
+    if (idx >= 0) designs[idx] = entry;
+    else designs.unshift(entry);
+    _saveDesigns(designs);
+    localStorage.setItem('cv_design_autosave', entry.canvasJSON);
+}
+
 function autoSaveDesign() {
     if (!canvas) return;
-    const json = JSON.stringify(canvas);
-    localStorage.setItem('cv_design_autosave', json);
+    // Immediate lightweight save for undo/autosave compatibility
+    localStorage.setItem('cv_design_autosave', JSON.stringify(canvas));
+    // Debounced full save with thumbnail
+    clearTimeout(window._designSaveTimer);
+    window._designSaveTimer = setTimeout(saveCurrentDesign, 800);
 }
 
 function loadAutoSavedDesign() {
@@ -859,50 +927,35 @@ function showDesignHome() {
     renderRecentDesigns();
 }
 
-function openDesignEditor(mode) {
+// _openingFromConfig: true when called from createFromModal/openSavedDesign
+// In that case we skip the default preset so the caller can apply its own dimensions
+function openDesignEditor(mode, _fromConfig) {
     currentDesignMode = mode || 'plantillas';
     const home = document.getElementById('design-home');
     const editor = document.getElementById('design-editor');
     if (home) home.style.display = 'none';
     if (editor) editor.style.display = 'flex';
 
-    // Ensure canvas is initialized
-    if (!designInitialized) initDeseno();
-    else { setTimeout(() => applyCanvasPreset('square'), 50); }
+    if (!designInitialized) {
+        initDeseno();
+    } else if (!_fromConfig) {
+        setTimeout(() => applyCanvasPreset('square'), 50);
+    }
 
     // Show/hide video timeline
     const timeline = document.getElementById('canva-timeline');
-    const modeTag = document.getElementById('canva-mode-tag');
-    const isVideo = mode === 'video';
+    const modeTag  = document.getElementById('canva-mode-tag');
+    const isVideo  = mode === 'video';
     if (timeline) timeline.style.display = isVideo ? 'flex' : 'none';
-    if (modeTag) modeTag.textContent = isVideo ? 'Video' : 'Diseño';
+    if (modeTag)  modeTag.textContent    = isVideo ? 'Video' : 'Diseño';
 
-    // Switch to right panel tab
+    // Switch left panel tab
     if (mode === 'video') {
         switchDesignTab('plantillas', document.querySelector('.canva-ptab'));
         _renderVideoTemplates();
-    } else if (mode === 'texto') {
-        const txtBtn = document.querySelectorAll('.canva-ptab')[2];
-        if (txtBtn) switchDesignTab('texto', txtBtn);
-    } else if (mode === 'redes' || mode === 'plantillas' || mode === 'presentacion' || mode === 'impresion' || mode === 'documento' || mode === 'pizarra' || mode === 'mas') {
+    } else {
         switchDesignTab('plantillas', document.querySelector('.canva-ptab'));
     }
-
-    // Update title
-    const titleInput = document.getElementById('design-canvas-name');
-    const labels = {
-        plantillas: 'Diseño sin título',
-        presentacion: 'Presentación',
-        redes: 'Post para redes',
-        video: 'Video sin título',
-        impresion: 'Diseño de impresión',
-        documento: 'Documento',
-        pizarra: 'Pizarra',
-    };
-    if (titleInput) titleInput.value = labels[mode] || 'Diseño sin título';
-
-    // Save recent
-    _saveRecentDesign(labels[mode] || 'Diseño sin título', mode);
 }
 
 function filterRecents(type, btn) {
@@ -911,47 +964,62 @@ function filterRecents(type, btn) {
     renderRecentDesigns(type);
 }
 
-function toggleSortMenu() { /* simple placeholder */ }
-
 function renderRecentDesigns(filter) {
     const grid = document.getElementById('design-recents-grid');
     if (!grid) return;
-    const recents = _getRecentDesigns();
-    const filtered = filter && filter !== 'todos'
-        ? recents.filter(r => r.type === filter || (filter === 'videos' && r.mode === 'video') || (filter === 'diseños' && r.mode !== 'video'))
-        : recents;
 
-    // Keep the "new" button
+    let designs = _getDesigns();
+    if (filter && filter !== 'todos') {
+        designs = designs.filter(d =>
+            filter === 'videos' ? d.mode === 'video' : d.mode !== 'video'
+        );
+    }
+    if (_designSortOrder === 'name') {
+        designs.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+    } else {
+        designs.sort((a, b) => (b.updatedAt || b.createdAt || 0) - (a.updatedAt || a.createdAt || 0));
+    }
+
     const newCard = grid.querySelector('.design-recent-new');
     grid.innerHTML = '';
     if (newCard) grid.appendChild(newCard);
 
-    filtered.forEach(r => {
+    if (designs.length === 0) {
+        const empty = document.createElement('div');
+        empty.style.cssText = 'grid-column:1/-1;text-align:center;padding:48px 24px;color:var(--text-tertiary);font-size:13px';
+        empty.textContent = 'Aún no hay diseños guardados. ¡Crea tu primer diseño!';
+        grid.appendChild(empty);
+        return;
+    }
+
+    designs.slice(0, 16).forEach(d => {
         const card = document.createElement('div');
         card.className = 'design-recent-card';
-        card.onclick = () => openDesignEditor(r.mode || 'plantillas');
-        const tpl = TEMPLATES.find(t => t.name === r.templateName);
-        const bg = tpl ? tpl.bg : '#1a1a2e';
-        const tc = tpl ? tpl.textColor : '#ffffff';
+        const thumbContent = d.thumbnail
+            ? `<img class="design-recent-thumb-img" src="${d.thumbnail}" alt="${d.name}">`
+            : `<div class="design-recent-thumb-placeholder" style="background:${d.bg || '#1a1a2e'}"><span>${d.name || 'Diseño'}</span></div>`;
+
+        const modeLabel = { plantillas:'Diseño', presentacion:'Presentación', redes:'Redes', video:'Video', impresion:'Impresión', documento:'Documento', pizarra:'Pizarra' }[d.mode] || (d.mode || 'Diseño');
+        const sizeLabel = d.w && d.h ? `${d.w}×${d.h}` : '';
+
         card.innerHTML = `
-            <div class="design-recent-thumb" style="background:${bg};color:${tc}">${r.name}</div>
+            <div class="design-recent-thumb" onclick="openSavedDesign('${d.id}')">${thumbContent}</div>
             <div class="design-recent-info">
-                <span class="design-recent-name">${r.name}</span>
-                <span class="design-recent-type">${r.mode || 'diseño'}</span>
+                <span class="design-recent-name" onclick="openSavedDesign('${d.id}')" title="${d.name}">${d.name || 'Sin título'}</span>
+                <span class="design-recent-meta">${sizeLabel ? sizeLabel + ' · ' : ''}${modeLabel}</span>
+                <button class="design-recent-delete" onclick="deleteDesign('${d.id}',event)" title="Eliminar diseño">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="11" height="11"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                </button>
             </div>`;
         grid.appendChild(card);
     });
 }
 
 function _saveRecentDesign(name, mode) {
-    const recents = _getRecentDesigns();
-    recents.unshift({ name, mode, date: Date.now() });
-    const trimmed = recents.slice(0, 12);
-    localStorage.setItem('cv_recents', JSON.stringify(trimmed));
+    // Legacy — kept for compatibility; real saving is done via saveCurrentDesign()
 }
-
 function _getRecentDesigns() {
-    try { return JSON.parse(localStorage.getItem('cv_recents') || '[]'); } catch { return []; }
+    return _getDesigns();
 }
 
 /* ── Video template cards ── */
@@ -1019,6 +1087,132 @@ function _fmtTime(s) {
     const sec = Math.floor(s % 60);
     return `${m}:${sec.toString().padStart(2, '0')}`;
 }
+
+/* ── New Design Modal ─────────────────────────────────────────────── */
+
+const ND_PRESETS = {
+    square:    [800, 800],   instagram: [1080, 1080], story:   [1080, 1920],
+    termo:     [600, 400],   banner:    [1200, 400],  a4v:     [794,  1123],
+    a4h:       [1123, 794],  portada:   [1000, 1000], tarjeta: [1050, 600]
+};
+const ND_MODE_LABELS = {
+    plantillas: 'Diseño', presentacion: 'Presentación', redes: 'Post para redes',
+    video: 'Video', impresion: 'Diseño de impresión', documento: 'Documento',
+    pizarra: 'Pizarra', mas: 'Diseño personalizado'
+};
+
+function openNewDesignModal(mode) {
+    window._ndMode = mode || 'plantillas';
+    const nameEl = document.getElementById('nd-name');
+    if (nameEl) nameEl.value = ND_MODE_LABELS[mode] || 'Diseño sin título';
+    const presetEl = document.getElementById('nd-preset');
+    if (presetEl) { presetEl.value = 'square'; updateNDPreset('square'); }
+    const dpiEl = document.getElementById('nd-dpi');
+    if (dpiEl) dpiEl.value = '72';
+    const bgEl = document.getElementById('nd-bg-color');
+    if (bgEl) bgEl.value = '#ffffff';
+    _initNDSwatches();
+    openModal('modal-new-design');
+}
+
+function _initNDSwatches() {
+    const el = document.getElementById('nd-bg-swatches');
+    if (!el) return;
+    const colors = ['#ffffff','#000000','#1a1a2e','#0f3460','#f5f5f0','#f5a623','#315640','#533483'];
+    el.innerHTML = colors.map(c =>
+        `<div title="${c}" onclick="document.getElementById('nd-bg-color').value='${c}'" style="width:24px;height:24px;border-radius:50%;background:${c};border:2px solid rgba(128,128,128,.3);cursor:pointer;transition:transform .15s;flex-shrink:0" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform=''"></div>`
+    ).join('');
+}
+
+function updateNDPreset(value) {
+    const p = ND_PRESETS[value];
+    if (!p) return;
+    const w = document.getElementById('nd-width');
+    const h = document.getElementById('nd-height');
+    if (w) w.value = p[0];
+    if (h) h.value = p[1];
+}
+
+function createFromModal() {
+    const name = document.getElementById('nd-name')?.value.trim()   || 'Diseño sin título';
+    const w    = Math.max(50, parseInt(document.getElementById('nd-width')?.value)  || 800);
+    const h    = Math.max(50, parseInt(document.getElementById('nd-height')?.value) || 800);
+    const dpi  = parseInt(document.getElementById('nd-dpi')?.value) || 72;
+    const bg   = document.getElementById('nd-bg-color')?.value || '#ffffff';
+    const mode = window._ndMode || 'plantillas';
+
+    _currentDesignId = Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+    window._ndDPI    = dpi;
+    window._ndBG     = bg;
+
+    closeModal('modal-new-design');
+    openDesignEditor(mode, true);
+
+    setTimeout(() => {
+        if (!canvas) return;
+        const area  = document.getElementById('design-canvas-wrap') || document.getElementById('design-canvas-area');
+        const maxW  = (area?.clientWidth  || 720) - 64;
+        const maxH  = (area?.clientHeight || 560) - 64;
+        const scale = Math.min(1, maxW / w, maxH / h);
+
+        canvas.setDimensions({ width: w * scale, height: h * scale });
+        canvas.setZoom(scale);
+        canvas._realWidth    = w;
+        canvas._realHeight   = h;
+        canvas._currentScale = scale;
+        canvas.clear();
+        canvas.setBackgroundColor(bg, canvas.renderAll.bind(canvas));
+
+        const zoomLabel = document.getElementById('cv-zoom-label');
+        if (zoomLabel) zoomLabel.innerText = Math.round(scale * 100) + '%';
+
+        const ti = document.getElementById('design-canvas-name');
+        if (ti) ti.value = name;
+
+        saveCurrentDesign();
+    }, 80);
+}
+
+/* ── Open & delete saved designs ────────────────────────────────────── */
+
+function openSavedDesign(id) {
+    const d = _getDesigns().find(x => x.id === id);
+    if (!d) return;
+    _currentDesignId = id;
+    window._ndDPI    = d.dpi  || 72;
+    window._ndBG     = d.bg   || '#ffffff';
+    openDesignEditor(d.mode || 'plantillas', true);
+    setTimeout(() => {
+        if (!canvas || !d.canvasJSON) return;
+        canvas.loadFromJSON(d.canvasJSON, () => {
+            canvas.renderAll();
+            const ti = document.getElementById('design-canvas-name');
+            if (ti) ti.value = d.name || 'Sin título';
+        });
+    }, 120);
+}
+
+async function deleteDesign(id, e) {
+    if (e) e.stopPropagation();
+    const designs = _getDesigns();
+    const design = designs.find(d => d.id === id);
+    const ok = await confirmDelete(design?.name || 'Este diseño');
+    if (!ok) return;
+    _saveDesigns(designs.filter(d => d.id !== id));
+    if (_currentDesignId === id) _currentDesignId = null;
+    renderRecentDesigns();
+    showToast('Diseño eliminado');
+}
+
+/* ── Sort toggle ─────────────────────────────────────────────────────── */
+
+function toggleSortMenu() {
+    _designSortOrder = _designSortOrder === 'recent' ? 'name' : 'recent';
+    renderRecentDesigns();
+    showToast(_designSortOrder === 'name' ? 'Ordenado por nombre' : 'Ordenado por reciente');
+}
+
+/* ── Section entry ────────────────────────────────────────────────────── */
 
 window.onSection_diseno = function() {
     initDeseno();

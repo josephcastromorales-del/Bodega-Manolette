@@ -16,9 +16,9 @@ function renderUsersList() {
     const container = document.getElementById('users-list');
     if (!container) return;
 
-    const all     = Object.entries(usersData).map(([uid, u]) => ({ uid, ...u }));
+    const all = Object.entries(usersData).map(([uid, u]) => ({ uid, ...u }));
     const pending = all.filter(u => u.pendiente === true);
-    const active  = all.filter(u => !u.pendiente);
+    const active = all.filter(u => !u.pendiente);
 
     let html = '';
 
@@ -69,7 +69,7 @@ function renderUsersList() {
         ${active.length === 0
             ? '<p style="color:var(--text-tertiary);font-size:13px">Sin usuarios activos aún.</p>'
             : active.map(u => `
-        <div class="user-row">
+        <div class="user-row" style="display:flex !important; flex-direction:row !important; border:1px solid #1f1f1f; padding: 10px; border-radius: var(--r-lg);margin-bottom:10px; justify-content: space-between;">
             <div class="user-row-left">
                 <div class="user-row-avatar">${getInitial(u.email)}</div>
                 <div>
@@ -81,9 +81,9 @@ function renderUsersList() {
                 ${u.uid !== window.currentUser?.uid ? `
                 <select class="form-select" style="width:auto;font-size:12px;padding:4px 8px;height:28px"
                         onchange="cambiarRol('${u.uid}', this.value)">
-                    <option value="empleado"   ${u.rol==='empleado'   ? 'selected':''}>Empleado</option>
-                    <option value="supervisor" ${u.rol==='supervisor' ? 'selected':''}>Supervisor</option>
-                    <option value="dueño"      ${u.rol==='dueño'      ? 'selected':''}>Dueño</option>
+                    <option value="empleado"   ${u.rol === 'empleado' ? 'selected' : ''}>Empleado</option>
+                    <option value="supervisor" ${u.rol === 'supervisor' ? 'selected' : ''}>Supervisor</option>
+                    <option value="dueño"      ${u.rol === 'dueño' ? 'selected' : ''}>Dueño</option>
                 </select>
                 <button class="btn btn-sm btn-ghost" style="color:var(--danger)"
                         onclick="desactivarUsuario('${u.uid}', '${escHtml(u.nombre || u.email)}')">
@@ -104,9 +104,9 @@ async function aprobarUsuario(uid) {
     try {
         await db.ref(`usuarios/${uid}`).update({
             pendiente: false,
-            activo:    true,
+            activo: true,
             rol,
-            aprobadoEn:  Date.now(),
+            aprobadoEn: Date.now(),
             aprobadoPor: window.currentUser?.uid || 'desconocido'
         });
         showToast(`Usuario aprobado como ${rol}`, 'success');
@@ -124,10 +124,10 @@ async function rechazarUsuario(uid, nombre) {
     if (!ok) return;
     try {
         await db.ref(`usuarios/${uid}`).update({
-            pendiente:    false,
-            activo:       false,
-            rechazado:    true,
-            rechazadoEn:  Date.now()
+            pendiente: false,
+            activo: false,
+            rechazado: true,
+            rechazadoEn: Date.now()
         });
         showToast('Solicitud rechazada', 'warning');
     } catch (err) {
@@ -166,13 +166,13 @@ async function loadCompanyInfo() {
     const data = snap.val() || {};
     const nameEl = document.getElementById('f-empresa-nombre');
     const contEl = document.getElementById('f-empresa-contacto');
-    if (nameEl) nameEl.value = data.empresa  || '';
+    if (nameEl) nameEl.value = data.empresa || '';
     if (contEl) contEl.value = data.contacto || '';
 }
 
 async function guardarEmpresa(e) {
     e.preventDefault();
-    const nombre   = document.getElementById('f-empresa-nombre').value.trim();
+    const nombre = document.getElementById('f-empresa-nombre').value.trim();
     const contacto = document.getElementById('f-empresa-contacto').value.trim();
     try {
         await db.ref('configuracion').update({ empresa: nombre, contacto });

@@ -7,9 +7,11 @@
     <title>Manolette — Plataforma Empresarial</title>
     <link rel="icon" type="image/png" href="manolette-2.png">
     <!-- External Fonts & Libraries -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Oswald:wght@400;600&family=Pacifico&family=Montserrat:wght@400;600;700&family=Raleway:wght@400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Oswald:wght@400;600&family=Pacifico&family=Montserrat:wght@400;600;700&family=Raleway:wght@400;600&display=swap"
+        rel="stylesheet">
     <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
-    
+
     <!-- Luckysheet CSS -->
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/luckysheet@latest/dist/plugins/css/pluginsCss.css' />
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/luckysheet@latest/dist/plugins/plugins.css' />
@@ -18,10 +20,10 @@
 
     <!-- Manolette Core Styles (Must load LAST to override library styles) -->
     <link rel="stylesheet" href="css/design-system.css?v=3">
-    <link rel="stylesheet" href="css/layout.css?v=3">
-    <link rel="stylesheet" href="css/components.css?v=3">
-    <link rel="stylesheet" href="css/pages.css?v=3">
-    <link rel="stylesheet" href="css/nox-agents.css?v=2">
+    <link rel="stylesheet" href="css/layout.css?v=5">
+    <link rel="stylesheet" href="css/components.css?v=4">
+    <link rel="stylesheet" href="css/pages.css?v=4">
+    <link rel="stylesheet" href="css/nox-agents.css?v=6">
     <link rel="stylesheet" href="css/api-keys.css?v=1">
 </head>
 
@@ -97,7 +99,8 @@
 
                 <button class="nav-item" id="nav-materiales">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3m18 0v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8m18 0-9 6-9-6" />
+                        <path
+                            d="M21 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v3m18 0v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8m18 0-9 6-9-6" />
                     </svg>
                     Materiales
                 </button>
@@ -164,19 +167,37 @@
                     Producto del Día
                 </button>
 
-                <button class="nav-item" id="nav-gemini">
-                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 3c-1 2.5-3.5 4-3.5 4S11 8.5 12 12c1-3.5 3.5-5 3.5-5S13 5.5 12 3z" />
-                        <path d="M12 12c-1 2.5-3.5 4-3.5 4S11 17.5 12 21c1-3.5 3.5-5 3.5-5S13 14.5 12 12z" />
-                        <path d="M3 12c2.5-1 4-3.5 4-3.5S8.5 11 12 12c-3.5 1-5 3.5-5 3.5S5.5 13 3 12z" />
-                        <path d="M21 12c-2.5-1-4-3.5-4-3.5S15.5 11 12 12c3.5 1 5 3.5 5 3.5S18.5 13 21 12z" />
-                    </svg>
-                    Asistente Nox
-                </button>
+                <div class="nav-group" id="nav-group-gemini">
+                    <button class="nav-item nav-group-trigger" id="nav-gemini">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 3c-1 2.5-3.5 4-3.5 4S11 8.5 12 12c1-3.5 3.5-5 3.5-5S13 5.5 12 3z" />
+                            <path d="M12 12c-1 2.5-3.5 4-3.5 4S11 17.5 12 21c1-3.5 3.5-5 3.5-5S13 14.5 12 12z" />
+                            <path d="M3 12c2.5-1 4-3.5 4-3.5S8.5 11 12 12c-3.5 1-5 3.5-5 3.5S5.5 13 3 12z" />
+                            <path d="M21 12c-2.5-1-4-3.5-4-3.5S15.5 11 12 12c3.5 1 5 3.5 5 3.5S18.5 13 21 12z" />
+                        </svg>
+                        <span style="flex:1;text-align:left">Asistente Nox</span>
+                        <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            width="13" height="13">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </button>
+                    <div class="nav-group-body" id="nav-gemini-body">
+                        <button class="nav-new-chat-btn" onclick="noxNewChat()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13"
+                                height="13">
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
+                            Nuevo chat
+                        </button>
+                        <div id="nav-nox-chat-list"></div>
+                    </div>
+                </div>
 
                 <button class="nav-item" id="nav-apikeys">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
+                        <path
+                            d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
                     </svg>
                     API Keys
                 </button>
@@ -190,12 +211,30 @@
                     Analíticas
                 </button>
 
-                <button class="nav-item" id="nav-prompts">
-                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-                    </svg>
-                    Image Master Prompt IA
-                </button>
+                <div class="nav-group" id="nav-group-prompts">
+                    <button class="nav-item nav-group-trigger" id="nav-prompts">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                        </svg>
+                        <span style="flex:1;text-align:left">Image Master Prompt</span>
+                        <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            width="13" height="13">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </button>
+                    <div class="nav-group-body" id="nav-prompts-body">
+                        <button class="nav-new-chat-btn" onclick="promptsNewGeneration()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13"
+                                height="13">
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
+                            Nueva generación
+                        </button>
+                        <div id="nav-prompts-history-list"></div>
+                    </div>
+                </div>
 
                 <button class="nav-item" id="nav-diseno">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -229,17 +268,17 @@
 
                 <button class="nav-item" id="nav-hojaCalc">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect width="18" height="18" x="3" y="3" rx="1"/>
-                        <path d="M3 9h18M3 15h18M9 3v18M15 3v18"/>
+                        <rect width="18" height="18" x="3" y="3" rx="1" />
+                        <path d="M3 9h18M3 15h18M9 3v18M15 3v18" />
                     </svg>
                     Hoja de Cálculo
                 </button>
 
                 <button class="nav-item" id="nav-documento">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                        <path d="M16 13H8M16 17H8M10 9H8"/>
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <path d="M16 13H8M16 17H8M10 9H8" />
                     </svg>
                     Documentos
                 </button>
@@ -326,8 +365,9 @@
                             <div class="notif-dropdown-header">
                                 <span>Alertas</span>
                                 <div style="display:flex;gap:.5rem;align-items:center">
-                                    <button class="btn btn-ghost btn-xs" onclick="borrarTodasNotificaciones()" 
-                                        style="font-size:10px;padding:2px 6px;color:var(--text-tertiary)">Borrar todas</button>
+                                    <button class="btn btn-ghost btn-xs" onclick="borrarTodasNotificaciones()"
+                                        style="font-size:10px;padding:2px 6px;color:var(--text-tertiary)">Borrar
+                                        todas</button>
                                     <button class="btn btn-ghost btn-sm" onclick="_closeNotifDropdown()"
                                         style="padding:.2rem .4rem"><svg viewBox="0 0 24 24" fill="none"
                                             stroke="currentColor" stroke-width="2" width="14" height="14">
@@ -393,7 +433,7 @@
                         <div class="kpi-card">
                             <div class="kpi-header">
                                 <span class="kpi-label">Pendientes Recepción</span>
-                                <div class="kpi-icon purple">
+                                <div style="background-color: rgba(128, 0, 128, 0.144);" class="kpi-icon purple">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                         width="20" height="20">
                                         <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
@@ -451,20 +491,31 @@
                 <section id="promptsSection" class="section">
                     <div class="section-header">
                         <h2 class="section-title">Image Master Prompt IA</h2>
-                        <p class="section-subtitle">Ingeniería de Prompts de nivel experto para generación de imágenes</p>
+                        <p class="section-subtitle">Ingeniería de Prompts de nivel experto para generación de imágenes
+                        </p>
                     </div>
 
                     <div class="prompt-master-grid">
                         <div class="prompt-sidebar">
-                            <div class="config-section" style="border:none;background:rgba(255,255,255,0.02);border-radius:var(--r-xl);padding:1.5rem">
-                                <h3 style="font-size:var(--fz-md);margin-bottom:1rem;color:var(--accent)">Estratega de Prompts</h3>
-                                <p style="font-size:var(--fz-xs);color:var(--text-tertiary);line-height:1.5;margin-bottom:1.5rem">
-                                    Describe tu idea de forma simple. Nuestro agente la transformará en un prompt técnico optimizado para Midjourney, Flux o DALL-E.
+                            <div class="config-section"
+                                style="border:none;background:rgba(255,255,255,0.02);border-radius:var(--r-xl);padding:1.5rem">
+                                <h3 style="font-size:var(--fz-md);margin-bottom:1rem;color:var(--accent)">Estratega de
+                                    Prompts</h3>
+                                <p
+                                    style="font-size:var(--fz-xs);color:var(--text-tertiary);line-height:1.5;margin-bottom:1.5rem">
+                                    Describe tu idea de forma simple. Nuestro agente la transformará en un prompt
+                                    técnico optimizado para Midjourney, Flux o DALL-E.
                                 </p>
-                                <textarea id="prompt-raw-input" class="form-input" style="height:120px;resize:none;margin-bottom:1rem" placeholder="Ej: Un gato detective en un callejón lluvioso de neón..."></textarea>
+                                <textarea id="prompt-raw-input" class="form-input"
+                                    style="height:120px;resize:none;margin-bottom:1rem"
+                                    placeholder="Ej: Un gato detective en un callejón lluvioso de neón..."></textarea>
                                 <button class="btn btn-primary" style="width:100%" onclick="generateMasterPrompt()">
                                     <span>Ingeniería de Prompt</span>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        width="16" height="16">
+                                        <path
+                                            d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z" />
+                                    </svg>
                                 </button>
                             </div>
                         </div>
@@ -474,8 +525,14 @@
                                 <div class="prompt-result-card">
                                     <div class="prompt-result-header">
                                         <span class="badge">PROMPT OPTIMIZADO</span>
-                                        <button class="btn-icon" onclick="copyToClipboard('prompt-final-text')">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                                        <button
+                                            style="background-color: #000; color: #fff; border: none; border-radius: 5px;"
+                                            class="btn-icon" onclick="copyToClipboard('prompt-final-text')">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                width="16" height="16">
+                                                <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                                                <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                                            </svg>
                                         </button>
                                     </div>
                                     <div id="prompt-final-text" class="prompt-text"></div>
@@ -483,21 +540,37 @@
                                         <h4>Análisis del Artista</h4>
                                         <div id="prompt-analysis" class="prompt-analysis-content"></div>
                                     </div>
-                                    <div id="prompt-questions-container" style="margin-top:24px; display:none; padding:1.25rem; background:rgba(var(--accent-rgb), 0.05); border-radius:var(--r-md); border:1px solid var(--accent-border)">
-                                        <h4 style="font-size:var(--fz-xs);color:var(--accent);margin-bottom:12px;text-transform:uppercase;display:flex;align-items:center;gap:8px">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                    <div id="prompt-questions-container"
+                                        style="margin-top:24px; display:none; padding:1.25rem; background:rgba(var(--accent-rgb), 0.05); border-radius:var(--r-md); border:1px solid var(--accent-border)">
+                                        <h4
+                                            style="font-size:var(--fz-xs);color:var(--accent);margin-bottom:12px;text-transform:uppercase;display:flex;align-items:center;gap:8px">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                width="14" height="14">
+                                                <circle cx="12" cy="12" r="10" />
+                                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                                                <line x1="12" y1="17" x2="12.01" y2="17" />
+                                            </svg>
                                             Preguntas del Agente
                                         </h4>
                                         <div id="prompt-questions" class="chip-grid"></div>
                                     </div>
                                     <div id="prompt-refinements-container" style="margin-top:24px; display:none;">
-                                        <h4 style="font-size:var(--fz-xs);color:var(--accent);margin-bottom:12px;text-transform:uppercase">Variaciones de Estilo</h4>
+                                        <h4
+                                            style="font-size:var(--fz-xs);color:var(--accent);margin-bottom:12px;text-transform:uppercase">
+                                            Variaciones de Estilo</h4>
                                         <div id="prompt-chips" class="chip-grid"></div>
                                     </div>
                                 </div>
                             </div>
-                            <div id="prompt-welcome" class="dprop-hint" style="height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column">
-                                <div style="opacity:0.35;margin-bottom:1rem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="52" height="52"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2M9 2v2M15 20v2M9 20v2M2 15h2M2 9h2M20 15h2M20 9h2"/></svg></div>
+                            <div id="prompt-welcome" class="dprop-hint"
+                                style="height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column">
+                                <div style="opacity:0.35;margin-bottom:1rem"><svg viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" width="52" height="52">
+                                        <rect x="4" y="4" width="16" height="16" rx="2" />
+                                        <rect x="9" y="9" width="6" height="6" />
+                                        <path d="M15 2v2M9 2v2M15 20v2M9 20v2M2 15h2M2 9h2M20 15h2M20 9h2" />
+                                    </svg></div>
                                 <p>Ingresa una idea básica para comenzar la ingeniería de prompts</p>
                             </div>
                         </div>
@@ -641,7 +714,10 @@
                             <p class="section-subtitle">Gestiona tus insumos y costos base</p>
                         </div>
                         <button class="btn btn-primary" onclick="nuevoMaterial()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                height="16">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
                             Agregar Material
                         </button>
                     </div>
@@ -869,7 +945,8 @@
                     <div class="section-header">
                         <div>
                             <h2 class="section-title">Producto del Día</h2>
-                            <p class="section-subtitle">NOX analiza tus datos reales y elige el producto con mayor potencial hoy</p>
+                            <p class="section-subtitle">NOX analiza tus datos reales y elige el producto con mayor
+                                potencial hoy</p>
                         </div>
                     </div>
 
@@ -941,23 +1018,6 @@
                         <!-- ── ÁREA PRINCIPAL DE CHAT ── -->
                         <div class="nox-ag-main">
 
-                            <!-- Header mínimo -->
-                            <div class="nox-ag-header">
-                                <div class="nox-ag-header-left">
-                                    <button class="nox-icon-btn" id="nox-toggle-panel-btn" title="Mostrar/ocultar agentes" aria-expanded="true">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-                                    </button>
-                                </div>
-                                <div class="nox-ag-header-right">
-                                    <button class="nox-icon-btn" id="nox-agents-key-btn" title="Configurar proveedor de IA">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>
-                                    </button>
-                                    <button class="nox-icon-btn" id="nox-agents-clear" title="Limpiar chat">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                                    </button>
-                                </div>
-                            </div>
-
                             <!-- Barra de agentes activos -->
                             <div class="nox-active-bar" id="nox-active-bar" style="display:none"></div>
 
@@ -967,17 +1027,21 @@
                                     <div class="nox-ag-welcome-avatar">N</div>
                                     <h3>Sistema de Agentes NOX</h3>
                                     <p>12 agentes especializados coordinados por NOX para respuestas integrales.<br>
-                                       Usa <code>@agente</code> para invocar uno específico.</p>
+                                        Usa <code>@agente</code> para invocar uno específico.</p>
                                     <div class="nox-welcome-agents-grid" id="nox-welcome-grid"></div>
                                 </div>
                             </div>
 
                             <!-- Barra de sugerencias -->
                             <div class="nox-suggestions-bar" id="nox-suggestions-bar">
-                                <button class="nox-suggestion-chip" onclick="noxUseSuggestion(this)">¿Cómo vender más termos en Instagram?</button>
-                                <button class="nox-suggestion-chip" onclick="noxUseSuggestion(this)">Crea un post para el día de la madre</button>
-                                <button class="nox-suggestion-chip" onclick="noxUseSuggestion(this)">Analiza el margen de mis productos</button>
-                                <button class="nox-suggestion-chip" onclick="noxUseSuggestion(this)">¿Cómo posicionar mi tienda en Google?</button>
+                                <button class="nox-suggestion-chip" onclick="noxUseSuggestion(this)">¿Cómo vender más
+                                    termos en Instagram?</button>
+                                <button class="nox-suggestion-chip" onclick="noxUseSuggestion(this)">Crea un post para
+                                    el día de la madre</button>
+                                <button class="nox-suggestion-chip" onclick="noxUseSuggestion(this)">Analiza el margen
+                                    de mis productos</button>
+                                <button class="nox-suggestion-chip" onclick="noxUseSuggestion(this)">¿Cómo posicionar mi
+                                    tienda en Google?</button>
                             </div>
 
                             <!-- Input -->
@@ -989,12 +1053,17 @@
                                 <div class="nox-ag-input-wrap">
                                     <textarea id="nox-agents-input" class="nox-ag-textarea" rows="1"
                                         placeholder="Configura un proveedor de IA para activar los agentes →"></textarea>
-                                    <button class="nox-ag-send-btn" id="nox-agents-send" disabled title="Enviar (Enter)">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                                    <button class="nox-ag-send-btn" id="nox-agents-send" title="Enviar (Enter)">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                            width="18" height="18">
+                                            <path d="m22 2-7 20-4-9-9-4Z" />
+                                            <path d="M22 2 11 13" />
+                                        </svg>
                                     </button>
                                 </div>
                                 <div class="nox-ag-input-hint">
-                                    <span>Enter para enviar · Shift+Enter nueva línea · <code>@agente</code> para invocar</span>
+                                    <span>Enter para enviar · Shift+Enter nueva línea · <code>@agente</code> para
+                                        invocar</span>
                                 </div>
                             </div>
                         </div>
@@ -1116,59 +1185,111 @@
                             <div class="design-home-hero">
                                 <h1 class="design-home-title">¿Qué vamos a diseñar hoy?</h1>
                                 <div class="design-home-search-wrap">
-                                    <svg class="design-home-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                                    <input type="text" class="design-home-search" placeholder="Busca plantillas, documentos, videos...">
+                                    <svg class="design-home-search-icon" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" width="18" height="18">
+                                        <circle cx="11" cy="11" r="8" />
+                                        <path d="m21 21-4.35-4.35" />
+                                    </svg>
+                                    <input type="text" class="design-home-search"
+                                        placeholder="Busca plantillas, documentos, videos...">
                                 </div>
                             </div>
 
                             <!-- Quick access row -->
                             <div class="design-quick-section">
                                 <div class="design-quick-row">
-                                    <button class="design-quick-item" onclick="openDesignEditor('plantillas')">
-                                        <div class="design-quick-icon" style="background:linear-gradient(135deg,#315640,#437658)">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" width="24" height="24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+                                    <button class="design-quick-item" onclick="openNewDesignModal('plantillas')">
+                                        <div class="design-quick-icon"
+                                            style="background:linear-gradient(135deg,#315640,#437658)">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="1.75" width="24" height="24">
+                                                <rect width="7" height="9" x="3" y="3" rx="1" />
+                                                <rect width="7" height="5" x="14" y="3" rx="1" />
+                                                <rect width="7" height="9" x="14" y="12" rx="1" />
+                                                <rect width="7" height="5" x="3" y="16" rx="1" />
+                                            </svg>
                                         </div>
                                         <span>Plantillas</span>
                                     </button>
-                                    <button class="design-quick-item" onclick="openDesignEditor('presentacion')">
-                                        <div class="design-quick-icon" style="background:linear-gradient(135deg,#4f46e5,#7c3aed)">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" width="24" height="24"><rect width="18" height="14" x="3" y="5" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                                    <button class="design-quick-item" onclick="openNewDesignModal('presentacion')">
+                                        <div class="design-quick-icon"
+                                            style="background:linear-gradient(135deg,#4f46e5,#7c3aed)">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="1.75" width="24" height="24">
+                                                <rect width="18" height="14" x="3" y="5" rx="2" />
+                                                <path d="M8 21h8M12 17v4" />
+                                            </svg>
                                         </div>
                                         <span>Presentación</span>
                                     </button>
-                                    <button class="design-quick-item" onclick="openDesignEditor('redes')">
-                                        <div class="design-quick-icon" style="background:linear-gradient(135deg,#e94560,#f5a623)">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" width="24" height="24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                                    <button class="design-quick-item" onclick="openNewDesignModal('redes')">
+                                        <div class="design-quick-icon"
+                                            style="background:linear-gradient(135deg,#e94560,#f5a623)">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="1.75" width="24" height="24">
+                                                <path
+                                                    d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                                            </svg>
                                         </div>
                                         <span>Redes</span>
                                     </button>
-                                    <button class="design-quick-item" onclick="openDesignEditor('video')">
-                                        <div class="design-quick-icon" style="background:linear-gradient(135deg,#dc2626,#ef4444)">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" width="24" height="24"><polygon points="23 7 16 12 23 17 23 7"/><rect width="15" height="14" x="1" y="5" rx="2"/></svg>
+                                    <button class="design-quick-item" onclick="openNewDesignModal('video')">
+                                        <div class="design-quick-icon"
+                                            style="background:linear-gradient(135deg,#dc2626,#ef4444)">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="1.75" width="24" height="24">
+                                                <polygon points="23 7 16 12 23 17 23 7" />
+                                                <rect width="15" height="14" x="1" y="5" rx="2" />
+                                            </svg>
                                         </div>
                                         <span>Video</span>
                                     </button>
-                                    <button class="design-quick-item" onclick="openDesignEditor('impresion')">
-                                        <div class="design-quick-icon" style="background:linear-gradient(135deg,#0891b2,#06b6d4)">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" width="24" height="24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                                    <button class="design-quick-item" onclick="openNewDesignModal('impresion')">
+                                        <div class="design-quick-icon"
+                                            style="background:linear-gradient(135deg,#0891b2,#06b6d4)">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="1.75" width="24" height="24">
+                                                <polyline points="6 9 6 2 18 2 18 9" />
+                                                <path
+                                                    d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                                                <rect width="12" height="8" x="6" y="14" />
+                                            </svg>
                                         </div>
                                         <span>Impresión</span>
                                     </button>
-                                    <button class="design-quick-item" onclick="openDesignEditor('documento')">
-                                        <div class="design-quick-icon" style="background:linear-gradient(135deg,#16a34a,#22c55e)">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" width="24" height="24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                                    <button class="design-quick-item" onclick="openNewDesignModal('documento')">
+                                        <div class="design-quick-icon"
+                                            style="background:linear-gradient(135deg,#16a34a,#22c55e)">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="1.75" width="24" height="24">
+                                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                                <polyline points="14 2 14 8 20 8" />
+                                                <line x1="16" y1="13" x2="8" y2="13" />
+                                                <line x1="16" y1="17" x2="8" y2="17" />
+                                            </svg>
                                         </div>
                                         <span>Documento</span>
                                     </button>
-                                    <button class="design-quick-item" onclick="openDesignEditor('pizarra')">
-                                        <div class="design-quick-icon" style="background:linear-gradient(135deg,#d97706,#f59e0b)">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" width="24" height="24"><rect width="18" height="14" x="3" y="3" rx="2"/><path d="m17 21-5-5-5 5"/></svg>
+                                    <button class="design-quick-item" onclick="openNewDesignModal('pizarra')">
+                                        <div class="design-quick-icon"
+                                            style="background:linear-gradient(135deg,#d97706,#f59e0b)">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="1.75" width="24" height="24">
+                                                <rect width="18" height="14" x="3" y="3" rx="2" />
+                                                <path d="m17 21-5-5-5 5" />
+                                            </svg>
                                         </div>
                                         <span>Pizarra</span>
                                     </button>
-                                    <button class="design-quick-item" onclick="openDesignEditor('mas')">
-                                        <div class="design-quick-icon" style="background:var(--bg-overlay);border:1px solid var(--border-default)">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" width="24" height="24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                                    <button class="design-quick-item" onclick="openNewDesignModal('mas')">
+                                        <div class="design-quick-icon"
+                                            style="background:var(--bg-overlay);border:1px solid var(--border-default)">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="1.75" width="24" height="24">
+                                                <circle cx="12" cy="12" r="1" />
+                                                <circle cx="19" cy="12" r="1" />
+                                                <circle cx="5" cy="12" r="1" />
+                                            </svg>
                                         </div>
                                         <span>Más</span>
                                     </button>
@@ -1180,19 +1301,29 @@
                                 <div class="design-recents-header">
                                     <h2 class="design-recents-title">Recientes</h2>
                                     <div class="design-recents-actions">
-                                        <button class="design-filter-btn active" onclick="filterRecents('todos', this)">Todos</button>
-                                        <button class="design-filter-btn" onclick="filterRecents('diseños', this)">Diseños</button>
-                                        <button class="design-filter-btn" onclick="filterRecents('videos', this)">Videos</button>
+                                        <button class="design-filter-btn active"
+                                            onclick="filterRecents('todos', this)">Todos</button>
+                                        <button class="design-filter-btn"
+                                            onclick="filterRecents('diseños', this)">Diseños</button>
+                                        <button class="design-filter-btn"
+                                            onclick="filterRecents('videos', this)">Videos</button>
                                         <div class="design-sort-btn" onclick="toggleSortMenu(this)">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M3 6h18M7 12h10M11 18h2"/></svg>
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                width="14" height="14">
+                                                <path d="M3 6h18M7 12h10M11 18h2" />
+                                            </svg>
                                             Ordenar
                                         </div>
                                     </div>
                                 </div>
                                 <div class="design-recents-grid" id="design-recents-grid">
                                     <!-- New design card -->
-                                    <div class="design-recent-new" onclick="openDesignEditor('plantillas')">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    <div class="design-recent-new" onclick="openNewDesignModal('plantillas')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                            width="28" height="28">
+                                            <line x1="12" y1="5" x2="12" y2="19" />
+                                            <line x1="5" y1="12" x2="19" y2="12" />
+                                        </svg>
                                         <span>Nuevo diseño</span>
                                     </div>
                                     <!-- Recent items populated by JS -->
@@ -1206,15 +1337,27 @@
                         <!-- Top toolbar -->
                         <div class="canva-topbar">
                             <button class="canva-back-btn" onclick="showDesignHome()" title="Inicio">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                                    height="16">
+                                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                                </svg>
                             </button>
-                            <input type="text" id="design-canvas-name" class="canva-title-input" value="Diseño sin título">
+                            <input type="text" id="design-canvas-name" class="canva-title-input"
+                                value="Diseño sin título">
                             <div class="canva-topbar-center">
                                 <button class="canva-tbtn" onclick="undoDesign()" title="Deshacer (Ctrl+Z)">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        width="16" height="16">
+                                        <path d="M3 7v6h6" />
+                                        <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
+                                    </svg>
                                 </button>
                                 <button class="canva-tbtn" onclick="redoDesign()" title="Rehacer (Ctrl+Y)">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        width="16" height="16">
+                                        <path d="M21 7v6h-6" />
+                                        <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13" />
+                                    </svg>
                                 </button>
                                 <span class="canva-save-status" id="canva-save-status">Guardado</span>
                             </div>
@@ -1229,7 +1372,12 @@
                                     <option value="tarjeta">Tarjeta</option>
                                 </select>
                                 <button class="canva-tbtn canva-tbtn-download" onclick="exportDesign('png')">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        width="15" height="15">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                        <polyline points="7 10 12 15 17 10" />
+                                        <line x1="12" y1="15" x2="12" y2="3" />
+                                    </svg>
                                     Descargar
                                 </button>
                             </div>
@@ -1242,23 +1390,48 @@
                             <div class="canva-left-panel">
                                 <div class="canva-panel-tabs">
                                     <button class="canva-ptab active" onclick="switchDesignTab('plantillas', this)">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            width="16" height="16">
+                                            <rect width="7" height="9" x="3" y="3" rx="1" />
+                                            <rect width="7" height="5" x="14" y="3" rx="1" />
+                                            <rect width="7" height="9" x="14" y="12" rx="1" />
+                                            <rect width="7" height="5" x="3" y="16" rx="1" />
+                                        </svg>
                                         <span>Plantillas</span>
                                     </button>
                                     <button class="canva-ptab" onclick="switchDesignTab('elementos', this)">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            width="16" height="16">
+                                            <circle cx="12" cy="12" r="3" />
+                                            <path
+                                                d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
+                                        </svg>
                                         <span>Elementos</span>
                                     </button>
                                     <button class="canva-ptab" onclick="switchDesignTab('texto', this)">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            width="16" height="16">
+                                            <path d="M4 7V4h16v3" />
+                                            <path d="M9 20h6" />
+                                            <path d="M12 4v16" />
+                                        </svg>
                                         <span>Texto</span>
                                     </button>
                                     <button class="canva-ptab" onclick="switchDesignTab('fondo', this)">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            width="16" height="16">
+                                            <rect width="18" height="18" x="3" y="3" rx="2" />
+                                            <path d="M3 9h18M9 21V9" />
+                                        </svg>
                                         <span>Fondo</span>
                                     </button>
                                     <button class="canva-ptab" onclick="switchDesignTab('subir', this)">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            width="16" height="16">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                            <polyline points="17 8 12 3 7 8" />
+                                            <line x1="12" y1="3" x2="12" y2="15" />
+                                        </svg>
                                         <span>Subir</span>
                                     </button>
                                 </div>
@@ -1268,8 +1441,13 @@
                                     <!-- Plantillas -->
                                     <div id="dtab-plantillas" class="canva-tab-pane active">
                                         <div class="canva-panel-search">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                                            <input type="text" placeholder="Buscar plantillas..." class="canva-search-input">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                width="14" height="14">
+                                                <circle cx="11" cy="11" r="8" />
+                                                <path d="m21 21-4.35-4.35" />
+                                            </svg>
+                                            <input type="text" placeholder="Buscar plantillas..."
+                                                class="canva-search-input">
                                         </div>
                                         <div class="canva-section-label">Manolette</div>
                                         <div class="canva-templates-grid" id="templates-grid"></div>
@@ -1280,43 +1458,83 @@
                                     <!-- Elementos -->
                                     <div id="dtab-elementos" class="canva-tab-pane">
                                         <div class="canva-panel-search">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                                            <input type="text" placeholder="Buscar elementos..." class="canva-search-input">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                width="14" height="14">
+                                                <circle cx="11" cy="11" r="8" />
+                                                <path d="m21 21-4.35-4.35" />
+                                            </svg>
+                                            <input type="text" placeholder="Buscar elementos..."
+                                                class="canva-search-input">
                                         </div>
                                         <div class="canva-section-label">Formas básicas</div>
                                         <div class="canva-shapes-grid">
                                             <div class="canva-shape-item" onclick="addShape('rect')" title="Rectángulo">
-                                                <svg viewBox="0 0 40 40" width="36" height="36"><rect x="4" y="8" width="32" height="24" rx="2" fill="currentColor"/></svg>
+                                                <svg viewBox="0 0 40 40" width="36" height="36">
+                                                    <rect x="4" y="8" width="32" height="24" rx="2"
+                                                        fill="currentColor" />
+                                                </svg>
                                             </div>
                                             <div class="canva-shape-item" onclick="addShape('circle')" title="Círculo">
-                                                <svg viewBox="0 0 40 40" width="36" height="36"><circle cx="20" cy="20" r="16" fill="currentColor"/></svg>
+                                                <svg viewBox="0 0 40 40" width="36" height="36">
+                                                    <circle cx="20" cy="20" r="16" fill="currentColor" />
+                                                </svg>
                                             </div>
-                                            <div class="canva-shape-item" onclick="addShape('triangle')" title="Triángulo">
-                                                <svg viewBox="0 0 40 40" width="36" height="36"><polygon points="20,4 36,36 4,36" fill="currentColor"/></svg>
+                                            <div class="canva-shape-item" onclick="addShape('triangle')"
+                                                title="Triángulo">
+                                                <svg viewBox="0 0 40 40" width="36" height="36">
+                                                    <polygon points="20,4 36,36 4,36" fill="currentColor" />
+                                                </svg>
                                             </div>
                                             <div class="canva-shape-item" onclick="addShape('line')" title="Línea">
-                                                <svg viewBox="0 0 40 40" width="36" height="36"><line x1="4" y1="20" x2="36" y2="20" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+                                                <svg viewBox="0 0 40 40" width="36" height="36">
+                                                    <line x1="4" y1="20" x2="36" y2="20" stroke="currentColor"
+                                                        stroke-width="3" stroke-linecap="round" />
+                                                </svg>
                                             </div>
                                             <div class="canva-shape-item" onclick="addShape('star')" title="Estrella">
-                                                <svg viewBox="0 0 40 40" width="36" height="36"><polygon points="20,2 25,15 39,15 28,24 32,38 20,30 8,38 12,24 1,15 15,15" fill="currentColor"/></svg>
+                                                <svg viewBox="0 0 40 40" width="36" height="36">
+                                                    <polygon
+                                                        points="20,2 25,15 39,15 28,24 32,38 20,30 8,38 12,24 1,15 15,15"
+                                                        fill="currentColor" />
+                                                </svg>
                                             </div>
                                             <div class="canva-shape-item" onclick="addShape('arrow')" title="Flecha">
-                                                <svg viewBox="0 0 40 40" width="36" height="36"><path d="M4 20h28M24 10l12 10-12 10" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                                <svg viewBox="0 0 40 40" width="36" height="36">
+                                                    <path d="M4 20h28M24 10l12 10-12 10" stroke="currentColor"
+                                                        stroke-width="3" fill="none" stroke-linecap="round"
+                                                        stroke-linejoin="round" />
+                                                </svg>
                                             </div>
                                             <div class="canva-shape-item" onclick="addShape('heart')" title="Corazón">
-                                                <svg viewBox="0 0 40 40" width="36" height="36"><path d="M20 34s-16-10-16-20a8 8 0 0 1 16 0 8 8 0 0 1 16 0c0 10-16 20-16 20z" fill="currentColor"/></svg>
+                                                <svg viewBox="0 0 40 40" width="36" height="36">
+                                                    <path
+                                                        d="M20 34s-16-10-16-20a8 8 0 0 1 16 0 8 8 0 0 1 16 0c0 10-16 20-16 20z"
+                                                        fill="currentColor" />
+                                                </svg>
                                             </div>
-                                            <div class="canva-shape-item" onclick="addShape('rounded-rect')" title="Rect. redondeado">
-                                                <svg viewBox="0 0 40 40" width="36" height="36"><rect x="4" y="8" width="32" height="24" rx="8" fill="currentColor"/></svg>
+                                            <div class="canva-shape-item" onclick="addShape('rounded-rect')"
+                                                title="Rect. redondeado">
+                                                <svg viewBox="0 0 40 40" width="36" height="36">
+                                                    <rect x="4" y="8" width="32" height="24" rx="8"
+                                                        fill="currentColor" />
+                                                </svg>
                                             </div>
                                         </div>
                                         <div class="canva-section-label" style="margin-top:16px">Marcos</div>
                                         <div class="canva-shapes-grid">
-                                            <div class="canva-shape-item" onclick="addFrame('rect-frame')" title="Marco rectángulo">
-                                                <svg viewBox="0 0 40 40" width="36" height="36"><rect x="4" y="6" width="32" height="28" rx="2" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+                                            <div class="canva-shape-item" onclick="addFrame('rect-frame')"
+                                                title="Marco rectángulo">
+                                                <svg viewBox="0 0 40 40" width="36" height="36">
+                                                    <rect x="4" y="6" width="32" height="28" rx="2" fill="none"
+                                                        stroke="currentColor" stroke-width="3" />
+                                                </svg>
                                             </div>
-                                            <div class="canva-shape-item" onclick="addFrame('circle-frame')" title="Marco círculo">
-                                                <svg viewBox="0 0 40 40" width="36" height="36"><circle cx="20" cy="20" r="16" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+                                            <div class="canva-shape-item" onclick="addFrame('circle-frame')"
+                                                title="Marco círculo">
+                                                <svg viewBox="0 0 40 40" width="36" height="36">
+                                                    <circle cx="20" cy="20" r="16" fill="none" stroke="currentColor"
+                                                        stroke-width="3" />
+                                                </svg>
                                             </div>
                                         </div>
                                     </div>
@@ -1324,15 +1542,26 @@
                                     <!-- Texto -->
                                     <div id="dtab-texto" class="canva-tab-pane">
                                         <div class="canva-section-label">Agregar texto</div>
-                                        <button class="canva-text-preset canva-text-h1" onclick="addText('heading')">Agregar un título</button>
-                                        <button class="canva-text-preset canva-text-h2" onclick="addText('subheading')">Agregar un subtítulo</button>
-                                        <button class="canva-text-preset canva-text-body" onclick="addText('body')">Agregar texto de cuerpo</button>
+                                        <button class="canva-text-preset canva-text-h1"
+                                            onclick="addText('heading')">Agregar un título</button>
+                                        <button class="canva-text-preset canva-text-h2"
+                                            onclick="addText('subheading')">Agregar un subtítulo</button>
+                                        <button class="canva-text-preset canva-text-body"
+                                            onclick="addText('body')">Agregar texto de cuerpo</button>
                                         <div class="canva-section-label" style="margin-top:20px">Fuentes</div>
                                         <div class="canva-font-list">
-                                            <div class="canva-font-item" onclick="addText('heading')" style="font-family:'Inter',sans-serif;font-weight:700;font-size:18px">Inter Bold</div>
-                                            <div class="canva-font-item" onclick="addText('heading')" style="font-family:'Georgia',serif;font-weight:700;font-size:18px">Georgia Serif</div>
-                                            <div class="canva-font-item" onclick="addText('heading')" style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:16px">Montserrat</div>
-                                            <div class="canva-font-item" onclick="addText('heading')" style="font-family:'Oswald',sans-serif;font-weight:500;font-size:17px">OSWALD</div>
+                                            <div class="canva-font-item" onclick="addText('heading')"
+                                                style="font-family:'Inter',sans-serif;font-weight:700;font-size:18px">
+                                                Inter Bold</div>
+                                            <div class="canva-font-item" onclick="addText('heading')"
+                                                style="font-family:'Georgia',serif;font-weight:700;font-size:18px">
+                                                Georgia Serif</div>
+                                            <div class="canva-font-item" onclick="addText('heading')"
+                                                style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:16px">
+                                                Montserrat</div>
+                                            <div class="canva-font-item" onclick="addText('heading')"
+                                                style="font-family:'Oswald',sans-serif;font-weight:500;font-size:17px">
+                                                OSWALD</div>
                                         </div>
                                     </div>
 
@@ -1341,7 +1570,8 @@
                                         <div class="canva-section-label">Color sólido</div>
                                         <div class="canva-bg-colors" id="bg-colors-grid"></div>
                                         <div class="canva-section-label" style="margin-top:16px">Personalizado</div>
-                                        <input type="color" id="bg-custom-color" value="#ffffff" class="canva-color-full" onchange="setCanvasBackground(this.value)">
+                                        <input type="color" id="bg-custom-color" value="#ffffff"
+                                            class="canva-color-full" onchange="setCanvasBackground(this.value)">
                                         <div class="canva-section-label" style="margin-top:16px">Gradientes</div>
                                         <div class="canva-gradients-grid" id="gradients-grid"></div>
                                     </div>
@@ -1350,7 +1580,12 @@
                                     <div id="dtab-subir" class="canva-tab-pane">
                                         <div class="canva-section-label">Tus imágenes</div>
                                         <div class="canva-upload-zone" onclick="triggerImageUpload()">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="1.5" width="28" height="28">
+                                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                                <polyline points="17 8 12 3 7 8" />
+                                                <line x1="12" y1="3" x2="12" y2="15" />
+                                            </svg>
                                             <p>Haz clic o arrastra aquí</p>
                                             <span>PNG · JPG · SVG · WEBP</span>
                                         </div>
@@ -1370,7 +1605,9 @@
                                 <div class="canva-timeline" id="canva-timeline" style="display:none">
                                     <div class="canva-timeline-controls">
                                         <button class="canva-tl-btn" id="canva-play-btn" onclick="toggleVideoPlay()">
-                                            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                            <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                                                <polygon points="5 3 19 12 5 21 5 3" />
+                                            </svg>
                                         </button>
                                         <span class="canva-tl-time" id="canva-tl-time">0:00 / 0:10</span>
                                         <div class="canva-tl-sep"></div>
@@ -1391,18 +1628,26 @@
                                 <div class="canva-statusbar" id="canva-statusbar">
                                     <div class="canva-status-left">
                                         <button class="canva-status-btn" onclick="zoomCanvas('out')">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                width="13" height="13">
+                                                <line x1="5" y1="12" x2="19" y2="12" />
+                                            </svg>
                                         </button>
                                         <span class="canva-zoom-label" id="cv-zoom-label">100%</span>
                                         <button class="canva-status-btn" onclick="zoomCanvas('in')">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                width="13" height="13">
+                                                <line x1="12" y1="5" x2="12" y2="19" />
+                                                <line x1="5" y1="12" x2="19" y2="12" />
+                                            </svg>
                                         </button>
                                     </div>
                                     <div class="canva-status-center">
                                         <button class="canva-status-btn" onclick="prevPage()">‹</button>
                                         <span id="cv-page-indicator" class="canva-page-label">Página 1 / 1</span>
                                         <button class="canva-status-btn" onclick="nextPage()">›</button>
-                                        <button class="canva-status-btn canva-add-page" onclick="addNewPage()">+ Página</button>
+                                        <button class="canva-status-btn canva-add-page" onclick="addNewPage()">+
+                                            Página</button>
                                     </div>
                                     <div class="canva-status-right">
                                         <span class="canva-mode-tag" id="canva-mode-tag">Diseño</span>
@@ -1413,7 +1658,11 @@
                             <!-- Right properties panel -->
                             <div class="canva-right-panel" id="canva-right-panel">
                                 <div id="canva-no-sel" class="canva-no-sel">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="m13 13 6 6"/></svg>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                        width="32" height="32">
+                                        <path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z" />
+                                        <path d="m13 13 6 6" />
+                                    </svg>
                                     <p>Selecciona un elemento<br>para editar sus propiedades</p>
                                 </div>
                                 <div id="canva-props" style="display:none">
@@ -1421,17 +1670,34 @@
                                     <div class="canva-prop-group">
                                         <div class="canva-prop-label">Posición y tamaño</div>
                                         <div class="canva-prop-grid4">
-                                            <div><div class="canva-prop-sublabel">X</div><input type="number" id="prop-x" class="canva-prop-input" onchange="updateObjPosition('left', this.value)"></div>
-                                            <div><div class="canva-prop-sublabel">Y</div><input type="number" id="prop-y" class="canva-prop-input" onchange="updateObjPosition('top', this.value)"></div>
-                                            <div><div class="canva-prop-sublabel">Ancho</div><input type="number" id="prop-w" class="canva-prop-input" onchange="updateObjSize('width', this.value)"></div>
-                                            <div><div class="canva-prop-sublabel">Alto</div><input type="number" id="prop-h" class="canva-prop-input" onchange="updateObjSize('height', this.value)"></div>
+                                            <div>
+                                                <div class="canva-prop-sublabel">X</div><input type="number" id="prop-x"
+                                                    class="canva-prop-input"
+                                                    onchange="updateObjPosition('left', this.value)">
+                                            </div>
+                                            <div>
+                                                <div class="canva-prop-sublabel">Y</div><input type="number" id="prop-y"
+                                                    class="canva-prop-input"
+                                                    onchange="updateObjPosition('top', this.value)">
+                                            </div>
+                                            <div>
+                                                <div class="canva-prop-sublabel">Ancho</div><input type="number"
+                                                    id="prop-w" class="canva-prop-input"
+                                                    onchange="updateObjSize('width', this.value)">
+                                            </div>
+                                            <div>
+                                                <div class="canva-prop-sublabel">Alto</div><input type="number"
+                                                    id="prop-h" class="canva-prop-input"
+                                                    onchange="updateObjSize('height', this.value)">
+                                            </div>
                                         </div>
                                     </div>
                                     <!-- Opacity -->
                                     <div class="canva-prop-group">
                                         <div class="canva-prop-label">Opacidad</div>
                                         <div class="canva-prop-slider-row">
-                                            <input type="range" id="prop-opacity" min="0" max="100" value="100" oninput="updateCommonProp('opacity', this.value/100); document.getElementById('prop-opacity-val').textContent=this.value+'%'">
+                                            <input type="range" id="prop-opacity" min="0" max="100" value="100"
+                                                oninput="updateCommonProp('opacity', this.value/100); document.getElementById('prop-opacity-val').textContent=this.value+'%'">
                                             <span id="prop-opacity-val" class="canva-prop-val">100%</span>
                                         </div>
                                     </div>
@@ -1439,14 +1705,16 @@
                                     <div class="canva-prop-group">
                                         <div class="canva-prop-label">Rotación</div>
                                         <div class="canva-prop-slider-row">
-                                            <input type="range" id="prop-rotation" min="-180" max="180" value="0" oninput="updateCommonProp('angle', parseInt(this.value)); document.getElementById('prop-rotation-val').textContent=this.value+'°'">
+                                            <input type="range" id="prop-rotation" min="-180" max="180" value="0"
+                                                oninput="updateCommonProp('angle', parseInt(this.value)); document.getElementById('prop-rotation-val').textContent=this.value+'°'">
                                             <span id="prop-rotation-val" class="canva-prop-val">0°</span>
                                         </div>
                                     </div>
                                     <!-- Text props -->
                                     <div id="canva-text-props" class="canva-prop-group" style="display:none">
                                         <div class="canva-prop-label">Texto</div>
-                                        <select id="prop-font" class="canva-prop-select" onchange="updateTextProp('fontFamily', this.value)">
+                                        <select id="prop-font" class="canva-prop-select"
+                                            onchange="updateTextProp('fontFamily', this.value)">
                                             <option value="Inter">Inter</option>
                                             <option value="Arial">Arial</option>
                                             <option value="Georgia">Georgia</option>
@@ -1460,50 +1728,75 @@
                                             <option value="Lato">Lato</option>
                                         </select>
                                         <div class="canva-prop-row" style="margin-top:6px">
-                                            <input type="number" id="prop-fontsize" min="6" max="400" class="canva-prop-input" style="width:56px" onchange="updateTextProp('fontSize', parseInt(this.value))">
+                                            <input type="number" id="prop-fontsize" min="6" max="400"
+                                                class="canva-prop-input" style="width:56px"
+                                                onchange="updateTextProp('fontSize', parseInt(this.value))">
                                             <div class="canva-fmt-group">
-                                                <button class="canva-fmt-btn" id="fmt-bold" onclick="toggleBold()"><b>N</b></button>
-                                                <button class="canva-fmt-btn" id="fmt-italic" onclick="toggleItalic()"><i>K</i></button>
+                                                <button class="canva-fmt-btn" id="fmt-bold"
+                                                    onclick="toggleBold()"><b>N</b></button>
+                                                <button class="canva-fmt-btn" id="fmt-italic"
+                                                    onclick="toggleItalic()"><i>K</i></button>
                                                 <button class="canva-fmt-btn" onclick="setTextAlign('left')">
-                                                    <svg viewBox="0 0 16 16" width="13" height="13" fill="currentColor"><path d="M2 4h12v1.5H2zM2 7h8v1.5H2zM2 10h12v1.5H2zM2 13h8v1.5H2z"/></svg>
+                                                    <svg viewBox="0 0 16 16" width="13" height="13" fill="currentColor">
+                                                        <path
+                                                            d="M2 4h12v1.5H2zM2 7h8v1.5H2zM2 10h12v1.5H2zM2 13h8v1.5H2z" />
+                                                    </svg>
                                                 </button>
                                                 <button class="canva-fmt-btn" onclick="setTextAlign('center')">
-                                                    <svg viewBox="0 0 16 16" width="13" height="13" fill="currentColor"><path d="M2 4h12v1.5H2zM4 7h8v1.5H4zM2 10h12v1.5H2zM4 13h8v1.5H4z"/></svg>
+                                                    <svg viewBox="0 0 16 16" width="13" height="13" fill="currentColor">
+                                                        <path
+                                                            d="M2 4h12v1.5H2zM4 7h8v1.5H4zM2 10h12v1.5H2zM4 13h8v1.5H4z" />
+                                                    </svg>
                                                 </button>
                                                 <button class="canva-fmt-btn" onclick="setTextAlign('right')">
-                                                    <svg viewBox="0 0 16 16" width="13" height="13" fill="currentColor"><path d="M2 4h12v1.5H2zM6 7h8v1.5H6zM2 10h12v1.5H2zM6 13h8v1.5H6z"/></svg>
+                                                    <svg viewBox="0 0 16 16" width="13" height="13" fill="currentColor">
+                                                        <path
+                                                            d="M2 4h12v1.5H2zM6 7h8v1.5H6zM2 10h12v1.5H2zM6 13h8v1.5H6z" />
+                                                    </svg>
                                                 </button>
                                             </div>
                                         </div>
                                         <div class="canva-prop-sublabel" style="margin-top:8px">Color del texto</div>
-                                        <input type="color" id="prop-text-color" value="#000000" class="canva-color-full" oninput="updateTextProp('fill', this.value)">
+                                        <input type="color" id="prop-text-color" value="#000000"
+                                            class="canva-color-full" oninput="updateTextProp('fill', this.value)">
                                     </div>
                                     <!-- Shape props -->
                                     <div id="canva-shape-props" class="canva-prop-group" style="display:none">
                                         <div class="canva-prop-label">Relleno</div>
-                                        <input type="color" id="prop-fill-color" value="#315640" class="canva-color-full" oninput="updateShapeProp('fill', this.value)">
+                                        <input type="color" id="prop-fill-color" value="#315640"
+                                            class="canva-color-full" oninput="updateShapeProp('fill', this.value)">
                                         <div class="canva-prop-sublabel" style="margin-top:8px">Borde</div>
                                         <div class="canva-prop-row">
-                                            <input type="color" id="prop-stroke-color" value="#000000" style="width:36px;height:32px;flex-shrink:0;border:1px solid var(--border-default);border-radius:var(--r-md);cursor:pointer;background:none" oninput="updateShapeProp('stroke', this.value)">
-                                            <input type="number" id="prop-stroke-w" min="0" max="30" value="0" class="canva-prop-input" placeholder="Grosor px" oninput="updateShapeProp('strokeWidth', parseInt(this.value)||0)">
+                                            <input type="color" id="prop-stroke-color" value="#000000"
+                                                style="width:36px;height:32px;flex-shrink:0;border:1px solid var(--border-default);border-radius:var(--r-md);cursor:pointer;background:none"
+                                                oninput="updateShapeProp('stroke', this.value)">
+                                            <input type="number" id="prop-stroke-w" min="0" max="30" value="0"
+                                                class="canva-prop-input" placeholder="Grosor px"
+                                                oninput="updateShapeProp('strokeWidth', parseInt(this.value)||0)">
                                         </div>
                                     </div>
                                     <!-- Layer actions -->
                                     <div class="canva-prop-group">
                                         <div class="canva-prop-label">Capas</div>
                                         <div class="canva-prop-grid2">
-                                            <button class="btn btn-secondary btn-sm" onclick="bringForward()">Al frente</button>
-                                            <button class="btn btn-secondary btn-sm" onclick="sendBackward()">Al fondo</button>
-                                            <button class="btn btn-secondary btn-sm" onclick="duplicateSelected()">Duplicar</button>
-                                            <button class="btn btn-danger btn-sm" onclick="deleteSelected()">Eliminar</button>
+                                            <button class="btn btn-secondary btn-sm" onclick="bringForward()">Al
+                                                frente</button>
+                                            <button class="btn btn-secondary btn-sm" onclick="sendBackward()">Al
+                                                fondo</button>
+                                            <button class="btn btn-secondary btn-sm"
+                                                onclick="duplicateSelected()">Duplicar</button>
+                                            <button class="btn btn-danger btn-sm"
+                                                onclick="deleteSelected()">Eliminar</button>
                                         </div>
                                     </div>
                                     <!-- AI helper -->
                                     <div class="canva-prop-group">
                                         <div class="canva-prop-label">Asistente IA</div>
                                         <div id="design-ai-messages" class="canva-ai-msgs"></div>
-                                        <textarea id="design-ai-input" placeholder="Pide colores, ideas, slogans..." class="canva-ai-input"></textarea>
-                                        <button class="btn btn-primary w-full btn-sm" style="margin-top:6px" onclick="askDesignAI()">Preguntar a la IA</button>
+                                        <textarea id="design-ai-input" placeholder="Pide colores, ideas, slogans..."
+                                            class="canva-ai-input"></textarea>
+                                        <button class="btn btn-primary w-full btn-sm" style="margin-top:6px"
+                                            onclick="askDesignAI()">Preguntar a la IA</button>
                                     </div>
                                 </div>
                             </div>
@@ -1618,11 +1911,20 @@
                         </div>
                         <div style="display:flex;gap:.5rem">
                             <button class="btn btn-secondary btn-sm" onclick="docExportPDF()">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13"
+                                    height="13">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                    <polyline points="14 2 14 8 20 8" />
+                                </svg>
                                 Exportar PDF
                             </button>
                             <button class="btn btn-secondary btn-sm" onclick="docExportDOCX()">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13"
+                                    height="13">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <polyline points="7 10 12 15 17 10" />
+                                    <line x1="12" y1="15" x2="12" y2="3" />
+                                </svg>
                                 Descargar
                             </button>
                         </div>
@@ -1634,9 +1936,13 @@
                     </div>
 
                     <!-- Page simulation -->
-                    <div style="display:flex;justify-content:center;background:var(--bg-base);min-height:70vh;padding:32px 16px;border-radius:var(--r-lg);border:1px solid var(--border-subtle)">
-                        <div style="width:100%;max-width:816px;background:#ffffff;min-height:1056px;box-shadow:0 4px 24px rgba(0,0,0,0.3);border-radius:2px;padding:96px 96px;box-sizing:border-box">
-                            <div id="doc-editor" style="min-height:864px;color:#09090b;font-family:'Times New Roman',serif;font-size:12pt"></div>
+                    <div
+                        style="display:flex;justify-content:center;background:var(--bg-base);min-height:70vh;padding:32px 16px;border-radius:var(--r-lg);border:1px solid var(--border-subtle)">
+                        <div
+                            style="width:100%;max-width:816px;background:#ffffff;min-height:1056px;box-shadow:0 4px 24px rgba(0,0,0,0.3);border-radius:2px;padding:96px 96px;box-sizing:border-box">
+                            <div id="doc-editor"
+                                style="min-height:864px;color:#09090b;font-family:'Times New Roman',serif;font-size:12pt">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1887,7 +2193,8 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">Material Principal</label>
-                        <input class="form-input" id="f-item-material" list="list-materiales-inv" placeholder="Selecciona un material...">
+                        <input class="form-input" id="f-item-material" list="list-materiales-inv"
+                            placeholder="Selecciona un material...">
                         <datalist id="list-materiales-inv"></datalist>
                     </div>
                     <div class="form-row">
@@ -1903,11 +2210,13 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label class="form-label">Costo de Producción <span class="required">*</span></label>
-                            <input class="form-input" type="text" id="f-item-costo" placeholder="$ 0" oninput="maskMoney(this)">
+                            <input class="form-input" type="text" id="f-item-costo" placeholder="$ 0"
+                                oninput="maskMoney(this)">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Precio de Venta <span class="required">*</span></label>
-                            <input class="form-input" type="text" id="f-item-venta" placeholder="$ 0" oninput="maskMoney(this)">
+                            <input class="form-input" type="text" id="f-item-venta" placeholder="$ 0"
+                                oninput="maskMoney(this)">
                         </div>
                     </div>
                     <div class="form-row">
@@ -1954,18 +2263,26 @@
             <form id="form-material" onsubmit="guardarMaterial(event)">
                 <div class="modal-body">
                     <input type="hidden" id="f-material-id">
-                    
+
                     <div style="display: flex; gap: 16px; margin-bottom: 20px; align-items: center;">
-                        <div style="width: 80px; height: 80px; border-radius: var(--r-md); background: var(--bg-raised); overflow: hidden; border: 1px dashed var(--border-subtle); cursor: pointer;" onclick="document.getElementById('f-material-img').click()">
-                            <img id="f-material-img-preview" style="width:100%; height:100%; object-fit:cover; display:none;">
-                            <div id="f-material-img-placeholder" style="display:flex; align-items:center; justify-content:center; height:100%; color:var(--text-tertiary);">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M12 5v14M5 12h14"/></svg>
+                        <div style="width: 80px; height: 80px; border-radius: var(--r-md); background: var(--bg-raised); overflow: hidden; border: 1px dashed var(--border-subtle); cursor: pointer;"
+                            onclick="document.getElementById('f-material-img').click()">
+                            <img id="f-material-img-preview"
+                                style="width:100%; height:100%; object-fit:cover; display:none;">
+                            <div id="f-material-img-placeholder"
+                                style="display:flex; align-items:center; justify-content:center; height:100%; color:var(--text-tertiary);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24"
+                                    height="24">
+                                    <path d="M12 5v14M5 12h14" />
+                                </svg>
                             </div>
                         </div>
                         <div style="flex:1">
                             <label class="form-label">Imagen del material</label>
-                            <input type="file" id="f-material-img" hidden accept="image/*" onchange="handleMaterialImage(this)">
-                            <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('f-material-img').click()">Subir foto</button>
+                            <input type="file" id="f-material-img" hidden accept="image/*"
+                                onchange="handleMaterialImage(this)">
+                            <button type="button" class="btn btn-ghost btn-sm"
+                                onclick="document.getElementById('f-material-img').click()">Subir foto</button>
                         </div>
                     </div>
 
@@ -1976,7 +2293,8 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label class="form-label">Costo Unitario <span class="required">*</span></label>
-                            <input class="form-input" type="text" id="f-material-costo" placeholder="$ 0" oninput="maskMoney(this)" required>
+                            <input class="form-input" type="text" id="f-material-costo" placeholder="$ 0"
+                                oninput="maskMoney(this)" required>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Proveedor</label>
@@ -1985,7 +2303,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('modal-material')">Cancelar</button>
+                    <button type="button" class="btn btn-secondary"
+                        onclick="closeModal('modal-material')">Cancelar</button>
                     <button type="submit" class="btn btn-primary">Guardar Material</button>
                 </div>
             </form>
@@ -2250,9 +2569,11 @@
                     <div class="form-group">
                         <label class="form-label" style="display:flex;justify-content:space-between;align-items:center">
                             <span>Productos a gestionar</span>
-                            <button type="button" class="btn btn-ghost btn-sm" onclick="agregarItemCot()" style="font-size:11px;padding:2px 8px;height:24px">+ Agregar producto</button>
+                            <button type="button" class="btn btn-ghost btn-sm" onclick="agregarItemCot()"
+                                style="font-size:11px;padding:2px 8px;height:24px">+ Agregar producto</button>
                         </label>
-                        <div id="cot-items-list" style="display:flex;flex-direction:column;gap:12px;margin-top:8px"></div>
+                        <div id="cot-items-list" style="display:flex;flex-direction:column;gap:12px;margin-top:8px">
+                        </div>
                     </div>
                     <div
                         style="text-align:right;font-size:var(--fz-lg);font-weight:var(--weight-bold);font-family:var(--font-mono);margin:12px 0">
@@ -2317,14 +2638,26 @@
 
     <!-- ══ Modal: Generador HF Studio (Reemplazo completo) ══ -->
     <div class="modal-overlay" id="modal-hf-generator">
-        <div class="modal-box modal-xl" style="width:98vw; height:95vh; max-width:1600px; display:flex; flex-direction:column; padding:0; overflow:hidden; border-radius:16px">
+        <div class="modal-box modal-xl"
+            style="width:98vw; height:95vh; max-width:1600px; display:flex; flex-direction:column; padding:0; overflow:hidden; border-radius:16px">
             <div class="modal-header" style="padding:20px 32px; background:#ffffff; border-bottom:1px solid #f1f5f9">
                 <div style="display:flex;align-items:center;gap:16px">
-                    <div style="width:48px;height:48px;background:linear-gradient(135deg, #315640, #437658);color:#fff;border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 16px rgba(49,86,64,0.3)">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="24" height="24"><path d="M12 2v8"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m8 22 4-10 4 10"/></svg>
+                    <div
+                        style="width:48px;height:48px;background:linear-gradient(135deg, #315640, #437658);color:#fff;border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 16px rgba(49,86,64,0.3)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="24"
+                            height="24">
+                            <path d="M12 2v8" />
+                            <path d="m4.93 10.93 1.41 1.41" />
+                            <path d="M2 18h2" />
+                            <path d="M20 18h2" />
+                            <path d="m19.07 10.93-1.41 1.41" />
+                            <path d="M22 22H2" />
+                            <path d="m8 22 4-10 4 10" />
+                        </svg>
                     </div>
                     <div>
-                        <h2 style="margin:0; font-size:1.5rem; font-weight:800; letter-spacing:-0.03em; color:#0f172a">Creative Asset Studio AI</h2>
+                        <h2 style="margin:0; font-size:1.5rem; font-weight:800; letter-spacing:-0.03em; color:#0f172a">
+                            Creative Asset Studio AI</h2>
                         <div style="display:flex;align-items:center;gap:8px;margin-top:2px">
                             <span class="badge badge-blue">Pro Edition</span>
                             <span style="font-size:12px;color:#64748b">Generación multimodelo de alta resolución</span>
@@ -2334,20 +2667,27 @@
                 <div style="display:flex;align-items:center;gap:12px">
                     <button class="btn btn-secondary btn-sm" onclick="clearHFChat()">Limpiar historial</button>
                     <button class="modal-close" onclick="closeModal('modal-hf-generator')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><path d="M18 6 6 18M6 6l12 12" /></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20"
+                            height="20">
+                            <path d="M18 6 6 18M6 6l12 12" />
+                        </svg>
                     </button>
                 </div>
             </div>
 
             <div class="hf-studio-container" style="background:#f8fafc">
                 <!-- Columna Izquierda: Parámetros Técnicos -->
-                <aside class="hf-sidebar-left" style="width:340px; background:#ffffff; padding:24px; border-right:1px solid #e2e8f0">
+                <aside class="hf-sidebar-left"
+                    style="width:340px; background:#ffffff; padding:24px; border-right:1px solid #e2e8f0">
                     <div style="margin-bottom:32px">
-                        <h3 class="hf-section-title" style="color:#0f172a; font-size:14px; margin-bottom:16px">Arquitectura del Modelo</h3>
+                        <h3 class="hf-section-title" style="color:#0f172a; font-size:14px; margin-bottom:16px">
+                            Arquitectura del Modelo</h3>
                         <div class="form-group">
                             <select class="form-select" id="hf-model" style="height:44px; border-radius:10px">
-                                <option value="black-forest-labs/FLUX.1-schnell">FLUX.1 Schnell (Calidad Extrema)</option>
-                                <option value="stabilityai/stable-diffusion-xl-base-1.0">Stable Diffusion XL 1.0</option>
+                                <option value="black-forest-labs/FLUX.1-schnell">FLUX.1 Schnell (Calidad Extrema)
+                                </option>
+                                <option value="stabilityai/stable-diffusion-xl-base-1.0">Stable Diffusion XL 1.0
+                                </option>
                                 <option value="runwayml/stable-diffusion-v1-5">SD v1.5 (Rápido)</option>
                                 <option value="prompthero/openjourney">OpenJourney v4</option>
                             </select>
@@ -2355,35 +2695,47 @@
                     </div>
 
                     <div style="margin-bottom:32px">
-                        <h3 class="hf-section-title" style="color:#0f172a; font-size:14px; margin-bottom:16px">Configuración de Lienzo</h3>
+                        <h3 class="hf-section-title" style="color:#0f172a; font-size:14px; margin-bottom:16px">
+                            Configuración de Lienzo</h3>
                         <div class="hf-aspect-grid" style="grid-template-columns: repeat(2, 1fr); gap:12px">
-                            <label class="aspect-chip"><input type="radio" name="hf-aspect" value="1:1" checked hidden><span>1:1 Cuadrado</span></label>
-                            <label class="aspect-chip"><input type="radio" name="hf-aspect" value="16:9" hidden><span>16:9 Wide</span></label>
-                            <label class="aspect-chip"><input type="radio" name="hf-aspect" value="9:16" hidden><span>9:16 Portrait</span></label>
-                            <label class="aspect-chip"><input type="radio" name="hf-aspect" value="4:5" hidden><span>4:5 Social</span></label>
+                            <label class="aspect-chip"><input type="radio" name="hf-aspect" value="1:1" checked
+                                    hidden><span>1:1 Cuadrado</span></label>
+                            <label class="aspect-chip"><input type="radio" name="hf-aspect" value="16:9"
+                                    hidden><span>16:9 Wide</span></label>
+                            <label class="aspect-chip"><input type="radio" name="hf-aspect" value="9:16"
+                                    hidden><span>9:16 Portrait</span></label>
+                            <label class="aspect-chip"><input type="radio" name="hf-aspect" value="4:5" hidden><span>4:5
+                                    Social</span></label>
                         </div>
                     </div>
 
                     <div style="margin-bottom:32px">
-                        <h3 class="hf-section-title" style="color:#0f172a; font-size:14px; margin-bottom:16px">Estilo y Composición</h3>
+                        <h3 class="hf-section-title" style="color:#0f172a; font-size:14px; margin-bottom:16px">Estilo y
+                            Composición</h3>
                         <div style="display:flex; flex-direction:column; gap:12px">
                             <select class="form-select" id="hf-style" style="height:40px">
                                 <option value="">Estilo Libre</option>
-                                <option value=", cinematic lighting, 8k, highly detailed, photorealistic">Fotografía Cinematográfica</option>
-                                <option value=", digital art, colorful, sharp focus, masterpiece">Ilustración Digital</option>
-                                <option value=", minimalist, clean, flat design, vector style">Branding Minimalista</option>
+                                <option value=", cinematic lighting, 8k, highly detailed, photorealistic">Fotografía
+                                    Cinematográfica</option>
+                                <option value=", digital art, colorful, sharp focus, masterpiece">Ilustración Digital
+                                </option>
+                                <option value=", minimalist, clean, flat design, vector style">Branding Minimalista
+                                </option>
                                 <option value=", vintage photography, film grain, retro style">Retro / Vintage</option>
                             </select>
                             <div class="form-group">
                                 <label class="form-label">Guía de detalle (Prompt Negativo)</label>
-                                <textarea class="form-textarea" id="hf-negative" rows="3" style="font-size:12px" placeholder="Evitar: deformidades, texto, baja calidad..."></textarea>
+                                <textarea class="form-textarea" id="hf-negative" rows="3" style="font-size:12px"
+                                    placeholder="Evitar: deformidades, texto, baja calidad..."></textarea>
                             </div>
                         </div>
                     </div>
 
                     <div style="margin-top:auto">
-                        <div style="padding:16px; background:#f1f5f9; border-radius:12px; font-size:12px; color:#475569">
-                            <strong>Tip:</strong> Sé específico con la iluminación y la textura para resultados profesionales.
+                        <div
+                            style="padding:16px; background:#f1f5f9; border-radius:12px; font-size:12px; color:#475569">
+                            <strong>Tip:</strong> Sé específico con la iluminación y la textura para resultados
+                            profesionales.
                         </div>
                     </div>
                 </aside>
@@ -2392,21 +2744,29 @@
                 <main class="hf-main-content" style="background:#ffffff; border-right:1px solid #e2e8f0">
                     <div id="hf-chat-history" class="hf-chat-area" style="padding:32px; scroll-behavior: smooth">
                         <div class="hf-welcome" style="margin-top:60px">
-                            <h1 style="font-size:2.5rem; font-weight:900; letter-spacing:-0.05em; color:#0f172a">Imagina. Crea.<br><span style="color:var(--accent)">Manolette AI.</span></h1>
-                            <p style="font-size:16px; color:#64748b; max-width:400px; margin:20px auto 0">Describe con precisión técnica lo que necesitas. El Agente de Diseño generará una propuesta visual de alto nivel.</p>
+                            <h1 style="font-size:2.5rem; font-weight:900; letter-spacing:-0.05em; color:#0f172a">
+                                Imagina. Crea.<br><span style="color:var(--accent)">Manolette AI.</span></h1>
+                            <p style="font-size:16px; color:#64748b; max-width:400px; margin:20px auto 0">Describe con
+                                precisión técnica lo que necesitas. El Agente de Diseño generará una propuesta visual de
+                                alto nivel.</p>
                         </div>
                     </div>
 
                     <!-- Input Console -->
-                    <div class="hf-input-container" style="background:linear-gradient(transparent, #ffffff 40%); padding:32px">
-                        <div class="hf-input-wrapper" style="max-width:850px; background:#ffffff; border-radius:20px; border:1px solid #e2e8f0; box-shadow:0 10px 40px rgba(0,0,0,0.06); padding:8px">
-                            <textarea id="hf-prompt" class="form-textarea hf-prompt-area" style="border:none; box-shadow:none; padding:16px 20px; font-size:15px; min-height:100px" 
+                    <div class="hf-input-container"
+                        style="background:linear-gradient(transparent, #ffffff 40%); padding:32px">
+                        <div class="hf-input-wrapper"
+                            style="max-width:850px; background:#ffffff; border-radius:20px; border:1px solid #e2e8f0; box-shadow:0 10px 40px rgba(0,0,0,0.06); padding:8px">
+                            <textarea id="hf-prompt" class="form-textarea hf-prompt-area"
+                                style="border:none; box-shadow:none; padding:16px 20px; font-size:15px; min-height:100px"
                                 placeholder="Ej: Un empaque de regalo premium para Manolette, fondo minimalista, iluminación de estudio, resolución 8k..."></textarea>
-                            <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; border-top:1px solid #f1f5f9">
+                            <div
+                                style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; border-top:1px solid #f1f5f9">
                                 <div style="display:flex; gap:8px">
                                     <span class="badge badge-gray">Auto-Enrich activo</span>
                                 </div>
-                                <button id="btn-generate-hf" onclick="executeHFGeneration()" class="btn btn-primary" style="height:44px; padding:0 24px; border-radius:12px; font-weight:700">
+                                <button id="btn-generate-hf" onclick="executeHFGeneration()" class="btn btn-primary"
+                                    style="height:44px; padding:0 24px; border-radius:12px; font-weight:700">
                                     Generar Activo
                                 </button>
                             </div>
@@ -2420,9 +2780,14 @@
                         <h3 class="hf-section-title" style="margin:0">Biblioteca del Proyecto</h3>
                         <span id="hf-gal-count" class="badge badge-gray">0 items</span>
                     </div>
-                    <div id="hf-gallery" class="hf-gallery-grid" style="grid-template-columns: repeat(1, 1fr); gap:16px">
+                    <div id="hf-gallery" class="hf-gallery-grid"
+                        style="grid-template-columns: repeat(1, 1fr); gap:16px">
                         <div class="empty-state" style="padding:40px 20px">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40" style="opacity:0.2; margin-bottom:12px"><path d="m2 8 2 2 4-4"/><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40"
+                                height="40" style="opacity:0.2; margin-bottom:12px">
+                                <path d="m2 8 2 2 4-4" />
+                                <rect width="18" height="18" x="3" y="3" rx="2" />
+                            </svg>
                             <p style="font-size:12px; color:#94a3b8">No hay imágenes generadas en esta sesión.</p>
                         </div>
                     </div>
@@ -2755,10 +3120,17 @@
                 </div>
                 <div class="nox-actions">
                     <button class="nox-btn-icon" onclick="clearChat()" title="Limpiar chat">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16"
+                            height="16">
+                            <path
+                                d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                        </svg>
                     </button>
                     <button class="nox-btn-icon" onclick="toggleNox()" title="Cerrar">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18"
+                            height="18">
+                            <path d="M18 6 6 18M6 6l12 12" />
+                        </svg>
                     </button>
                 </div>
             </div>
@@ -2773,7 +3145,11 @@
                 <div class="nox-input-container">
                     <textarea id="nox-input" placeholder="Escribe un comando..." rows="1"></textarea>
                     <button id="nox-send" class="nox-send-btn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18"
+                            height="18">
+                            <path d="m22 2-7 20-4-9-9-4Z" />
+                            <path d="M22 2 11 13" />
+                        </svg>
                     </button>
                 </div>
             </div>
@@ -2782,6 +3158,80 @@
             <span class="nox-fab-icon">N</span>
             <div class="nox-fab-ring"></div>
         </button>
+    </div>
+
+    <!-- ══ Modal: Nuevo Diseño ══ -->
+    <div class="modal-overlay" id="modal-new-design">
+        <div class="modal-box" style="max-width:490px">
+            <div class="modal-header">
+                <h3>Nuevo diseño</h3>
+                <button class="modal-close" onclick="closeModal('modal-new-design')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M18 6 6 18M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Nombre del diseño</label>
+                    <input class="form-input" id="nd-name" placeholder="Diseño sin título" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tamaño predefinido</label>
+                    <select class="form-input" id="nd-preset" onchange="updateNDPreset(this.value)">
+                        <option value="custom">Personalizado</option>
+                        <option value="square" selected>Cuadrado — 800 × 800 px</option>
+                        <option value="instagram">Instagram — 1080 × 1080 px</option>
+                        <option value="story">Instagram Story — 1080 × 1920 px</option>
+                        <option value="termo">Etiqueta Termo — 600 × 400 px</option>
+                        <option value="banner">Banner Web — 1200 × 400 px</option>
+                        <option value="a4v">A4 Vertical — 794 × 1123 px</option>
+                        <option value="a4h">A4 Horizontal — 1123 × 794 px</option>
+                        <option value="portada">Portada Producto — 1000 × 1000 px</option>
+                        <option value="tarjeta">Tarjeta Presentación — 1050 × 600 px</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Ancho (px)</label>
+                        <input class="form-input" id="nd-width" type="number" value="800" min="50" max="8000"
+                            oninput="document.getElementById('nd-preset').value='custom'">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Alto (px)</label>
+                        <input class="form-input" id="nd-height" type="number" value="800" min="50" max="8000"
+                            oninput="document.getElementById('nd-preset').value='custom'">
+                    </div>
+                    <div class="form-group" style="flex:0 0 100px">
+                        <label class="form-label">Resolución</label>
+                        <select class="form-input" id="nd-dpi" title="DPI afecta la calidad al exportar para impresión">
+                            <option value="72" selected>72 dpi</option>
+                            <option value="150">150 dpi</option>
+                            <option value="300">300 dpi</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Color de fondo</label>
+                    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                        <input type="color" id="nd-bg-color" value="#ffffff"
+                            style="width:40px;height:36px;border-radius:8px;border:1px solid var(--border-default);cursor:pointer;padding:2px;background:none">
+                        <div id="nd-bg-swatches" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="closeModal('modal-new-design')">Cancelar</button>
+                <button class="btn btn-primary" onclick="createFromModal()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14"
+                        height="14">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    Crear diseño
+                </button>
+            </div>
+        </div>
     </div>
 
 </body>

@@ -13,8 +13,21 @@ const _NOX_OPENAI_COMPAT = {
 };
 
 function _noxGetActiveBackend() {
+    // Primero: usar ApiKeyManager si está disponible (respeta configuración de routing por sección)
+    if (window.ApiKeyManager) {
+        const cfg = window.ApiKeyManager.getActiveConfig('nox');
+        if (cfg) {
+            const pid = cfg.provider.id;
+            const compat = _NOX_OPENAI_COMPAT[pid];
+            if (compat) {
+                return { key: cfg.key, model: cfg.model, ...compat };
+            }
+            // Proveedor no compatible con OpenAI (Anthropic, Gemini, Cohere) — sin tools
+            return { key: cfg.key, model: cfg.model, url: null, supportsTools: false, _providerDef: cfg.provider };
+        }
+    }
+    // Fallback: leer localStorage directamente
     const stored = JSON.parse(localStorage.getItem('apikm_providers_v2') || '{}');
-    // Prioridad: Groq → OpenAI → cualquier compatible
     const priority = ['groq', 'openai', 'openrouter', 'mistral', 'deepseek', 'together', 'perplexity'];
     for (const pid of priority) {
         const s = stored[pid];
@@ -250,6 +263,18 @@ async function runNoxLoop(messages, maxIter = 8, messagesId) {
         backend = { key: _NOX_LEGACY_KEY, model: 'llama-3.3-70b-versatile', url: 'https://api.groq.com/openai/v1/chat/completions', supportsTools: true };
     }
 
+    // Proveedor no compatible con OpenAI (Gemini, Anthropic, Cohere) — usar ApiKeyManager.callLLM sin tools
+    if (!backend.url && window.ApiKeyManager) {
+        const historyForLLM = messages.filter(m => m.role === 'user' || m.role === 'assistant');
+        const text = await window.ApiKeyManager.callLLM('nox', {
+            system: SYSTEM_INSTRUCTION,
+            messages: historyForLLM,
+            maxTokens: 1500
+        });
+        renderNoxResponse(text, messagesId);
+        return text;
+    }
+
     const tools = NOX_TOOLS.map(t => ({ type: 'function', function: t }));
 
     for (let i = 0; i < maxIter; i++) {
@@ -368,6 +393,142 @@ function clearChat() { noxHistory = []; localStorage.removeItem(STORAGE_KEY); sy
 
 // Global Init
 document.addEventListener('DOMContentLoaded', initNox);
-window.onSection_gemini = initNox;
 window.toggleNox = toggleNox;
 window.clearChat = clearChat;
+
+/* ════════════════════════════════════════════════════
+   FAB DRAGGABLE — arrastrar + snap suave al borde
+   También permite arrastrar desde el header del panel
+   ════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', function () {
+    const widget = document.getElementById('nox-widget');
+    const fab    = document.getElementById('nox-trigger');
+    const panel  = document.getElementById('nox-panel');
+    if (!widget || !fab) return;
+
+    const MARGIN = 16; // px desde el borde al hacer snap
+    let dragging = false;
+    let moved    = false;
+    let ox = 0, oy = 0, startLeft = 0, startTop = 0;
+
+    /* Convierte right/bottom a left/top para poder moverlo libremente */
+    function toAbsolute() {
+        const r = widget.getBoundingClientRect();
+        widget.style.transition = 'none';
+        widget.style.right  = 'auto';
+        widget.style.bottom = 'auto';
+        widget.style.left   = r.left + 'px';
+        widget.style.top    = r.top  + 'px';
+    }
+
+    function _startDrag(pageX, pageY) {
+        toAbsolute();
+        dragging  = true;
+        moved     = false;
+        ox        = pageX;
+        oy        = pageY;
+        startLeft = parseFloat(widget.style.left);
+        startTop  = parseFloat(widget.style.top);
+        widget.style.cursor = 'grabbing';
+    }
+
+    fab.addEventListener('mousedown', function (e) {
+        if (e.button !== 0) return;
+        _startDrag(e.clientX, e.clientY);
+        e.preventDefault(); // evita selección de texto
+    });
+
+    /* Drag desde el header del panel cuando está abierto */
+    const noxHeader = panel ? panel.querySelector('.nox-header') : null;
+    if (noxHeader) {
+        noxHeader.addEventListener('mousedown', function (e) {
+            if (e.button !== 0) return;
+            if (e.target.closest('button, input, select, a')) return; // no interferir con botones internos
+            _startDrag(e.clientX, e.clientY);
+            e.preventDefault();
+        });
+        noxHeader.addEventListener('touchstart', function (e) {
+            if (e.target.closest('button, input, select, a')) return;
+            const t = e.touches[0];
+            _startDrag(t.clientX, t.clientY);
+        }, { passive: true });
+        noxHeader.style.cursor = 'grab';
+    }
+
+    document.addEventListener('mousemove', function (e) {
+        if (!dragging) return;
+        const dx = e.clientX - ox;
+        const dy = e.clientY - oy;
+        if (!moved && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) moved = true;
+        if (!moved) return;
+
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const r  = widget.getBoundingClientRect();
+        widget.style.left = Math.max(MARGIN, Math.min(vw - r.width - MARGIN, startLeft + dx)) + 'px';
+        widget.style.top  = Math.max(MARGIN, Math.min(vh - r.height - MARGIN, startTop  + dy)) + 'px';
+    });
+
+    document.addEventListener('mouseup', function () {
+        if (!dragging) return;
+        dragging = false;
+        widget.style.cursor = '';
+
+        if (!moved) return; // fue solo un clic, no drag
+
+        /* Snap suave al borde izquierdo o derecho más cercano */
+        const r   = widget.getBoundingClientRect();
+        const vw  = window.innerWidth;
+        const mid = r.left + r.width / 2;
+
+        const targetLeft = mid < vw / 2
+            ? MARGIN
+            : vw - r.width - MARGIN;
+
+        widget.style.transition = 'left 0.45s cubic-bezier(0.34,1.56,0.64,1), top 0.45s cubic-bezier(0.34,1.56,0.64,1)';
+        widget.style.left = targetLeft + 'px';
+
+        /* Impide que el mouseup dispare el onclick de toggleNox */
+        const cancelClick = function (ev) {
+            ev.stopImmediatePropagation();
+            fab.removeEventListener('click', cancelClick, true);
+        };
+        fab.addEventListener('click', cancelClick, true);
+    });
+
+    /* Soporte táctil en FAB */
+    fab.addEventListener('touchstart', function (e) {
+        const t = e.touches[0];
+        _startDrag(t.clientX, t.clientY);
+    }, { passive: true });
+
+    document.addEventListener('touchmove', function (e) {
+        if (!dragging) return;
+        const t  = e.touches[0];
+        const dx = t.clientX - ox;
+        const dy = t.clientY - oy;
+        if (!moved && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) moved = true;
+        if (!moved) return;
+
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const r  = widget.getBoundingClientRect();
+        widget.style.left = Math.max(MARGIN, Math.min(vw - r.width - MARGIN, startLeft + dx)) + 'px';
+        widget.style.top  = Math.max(MARGIN, Math.min(vh - r.height - MARGIN, startTop  + dy)) + 'px';
+        e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('touchend', function () {
+        if (!dragging) return;
+        dragging = false;
+        if (!moved) return;
+
+        const r   = widget.getBoundingClientRect();
+        const vw  = window.innerWidth;
+        const mid = r.left + r.width / 2;
+        const targetLeft = mid < vw / 2 ? MARGIN : vw - r.width - MARGIN;
+
+        widget.style.transition = 'left 0.45s cubic-bezier(0.34,1.56,0.64,1), top 0.45s cubic-bezier(0.34,1.56,0.64,1)';
+        widget.style.left = targetLeft + 'px';
+    });
+});

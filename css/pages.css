@@ -654,7 +654,35 @@
 .design-recent-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
 .design-recent-thumb {
     width: 100%;
-    height: calc(100% - 40px);
+    height: calc(100% - 44px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--bg-overlay);
+    position: relative;
+}
+.design-recent-thumb::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0);
+    transition: background .18s;
+    pointer-events: none;
+}
+.design-recent-card:hover .design-recent-thumb::after {
+    background: rgba(0,0,0,.12);
+}
+.design-recent-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.design-recent-thumb-placeholder {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -662,16 +690,17 @@
     font-weight: 600;
     text-align: center;
     padding: 8px;
+    color: rgba(255,255,255,.8);
     white-space: pre-line;
 }
 .design-recent-info {
-    height: 40px;
-    padding: 6px 10px;
+    height: 44px;
+    padding: 5px 8px 5px 10px;
     background: var(--bg-raised);
     border-top: 1px solid var(--border-subtle);
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
 }
 .design-recent-name {
     font-size: 11px;
@@ -681,12 +710,32 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    cursor: pointer;
 }
-.design-recent-type {
-    font-size: 10px;
+.design-recent-name:hover { color: var(--text-primary); }
+.design-recent-meta {
+    font-size: 9px;
     color: var(--text-tertiary);
     flex-shrink: 0;
+    white-space: nowrap;
 }
+.design-recent-delete {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+    border: none;
+    background: transparent;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity .15s, background .15s, color .15s;
+}
+.design-recent-card:hover .design-recent-delete { opacity: 1; }
+.design-recent-delete:hover { background: rgba(239,68,68,.15); color: #ef4444; }
 
 /* ─── EDITOR VIEW ─── */
 .design-editor {

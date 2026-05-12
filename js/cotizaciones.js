@@ -206,7 +206,7 @@ async function cambiarEstadoCot(id, estado) {
     await db.ref(`cotizaciones/${id}/estado`).set(estado); showToast('Estado actualizado'); closeDrawer('drawer-cotizacion');
 }
 async function eliminarCotizacion(id) {
-    const ok = await confirmDialog('Eliminar cotizacion?', 'Se eliminara permanentemente.'); if (!ok) return;
+    const ok = await confirmDelete('Esta cotización'); if (!ok) return;
     await db.ref(`cotizaciones/${id}`).remove(); closeDrawer('drawer-cotizacion'); showToast('Cotizacion eliminada', 'warning');
 }
 function exportarCotizacionPDF(id) { showToast('Funcion PDF disponible en Reportes'); navigate('reportes'); }

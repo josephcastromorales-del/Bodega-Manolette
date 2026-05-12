@@ -729,6 +729,16 @@
 .confirm-box p{font-size:var(--fz-sm);color:var(--text-secondary);margin:0 0 16px}
 .confirm-actions{display:flex;justify-content:flex-end;gap:8px}
 
+/* ── Delete Confirm Dialog ── */
+.delete-confirm-box{text-align:center;padding:32px 28px 28px}
+.delete-confirm-icon{width:64px;height:64px;border-radius:50%;background:#fef2f2;border:2px solid #fecaca;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;color:#ef4444}
+.delete-confirm-icon svg{width:28px;height:28px}
+.delete-confirm-title{font-size:1.05rem;font-weight:700;color:var(--text-primary);margin:0 0 8px}
+.delete-confirm-name{font-size:var(--fz-sm);font-weight:600;color:#ef4444;background:#fef2f2;border:1px solid #fecaca;border-radius:6px;padding:6px 12px;margin:0 0 8px;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.delete-confirm-sub{font-size:var(--fz-xs,12px);color:var(--text-secondary);margin:0 0 24px}
+.delete-confirm-box .confirm-actions{justify-content:center;gap:12px}
+.delete-confirm-box .btn-danger{display:inline-flex;align-items:center}
+
 /* ── Drawers ── */
 .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(2px);z-index:1000;opacity:0;pointer-events:none;transition:opacity .2s}
 .drawer-overlay.active,.drawer-overlay.open{opacity:1;pointer-events:auto}
@@ -921,7 +931,7 @@
     background: #1f1f1f;
     color:rgb(16, 104, 51);
     border: 1px solid rgba(16, 185, 129, 0.2);
-    cursor: pointer;
+    cursor: grab;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -931,6 +941,7 @@
     position: relative;
     transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     overflow: hidden;
+    user-select: none;
 }
 
 .nox-fab:hover {

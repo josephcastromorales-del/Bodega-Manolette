@@ -79,7 +79,7 @@ async function guardarNota(e) {
 async function eliminarNotaActual() {
     const id = document.getElementById('f-nota-id').value;
     if (!id) { closeModal('modal-nota'); return; }
-    const ok = await confirmDialog('Eliminar nota?', 'Esta accion no se puede deshacer.');
+    const ok = await confirmDelete('Esta nota');
     if (!ok) return;
     await db.ref(`notas/${id}`).remove(); closeModal('modal-nota'); showToast('Nota eliminada', 'warning');
 }

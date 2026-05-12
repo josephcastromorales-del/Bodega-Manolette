@@ -91,7 +91,7 @@ async function guardarCliente(e) {
 
 async function eliminarCliente(id) {
     const c = clientesData[id]; if (!c) return;
-    const ok = await confirmDialog('Eliminar cliente?', `${c.nombre} — Esta accion no se puede deshacer.`);
+    const ok = await confirmDelete(c.nombre);
     if (!ok) return; closeDrawer('drawer-cliente');
     await db.ref(`clientes/${id}`).remove(); showToast('Cliente eliminado', 'warning');
 }

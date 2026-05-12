@@ -13,16 +13,16 @@ function initMateriales() {
 function renderMateriales() {
     const container = document.getElementById('materiales-grid');
     if (!container) return;
-    
+
     const entries = Object.entries(materialesData).map(([id, m]) => ({ id, ...m }));
-    
+
     if (entries.length === 0) {
         container.innerHTML = '<div class="empty-state"><h4>Sin materiales registrados</h4><p>Agrega materiales para calcular tus costos de producción</p></div>';
         return;
     }
 
     container.innerHTML = entries.map(m => `
-        <div class="supplier-card" style="display: flex; flex-direction: column;">
+        <div class="supplier-card" style="display: flex; flex-direction: column; padding: 10px">
             <div style="height: 120px; background: var(--bg-raised); border-radius: var(--r-md); overflow: hidden; margin-bottom: 12px; display: flex; align-items: center; justify-content: center;">
                 ${m.imagen ? `<img src="${m.imagen}" style="width: 100%; height: 100%; object-fit: cover;">` : `
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40" style="color: var(--text-tertiary)">
@@ -60,7 +60,7 @@ function editarMaterial(id) {
     document.getElementById('f-material-nombre').value = m.nombre || '';
     document.getElementById('f-material-costo').value = m.costo ? new Intl.NumberFormat('es-CO').format(m.costo) : '0';
     document.getElementById('f-material-proveedor').value = m.proveedor || '';
-    
+
     const preview = document.getElementById('f-material-img-preview');
     if (m.imagen) {
         preview.src = m.imagen;
@@ -68,7 +68,7 @@ function editarMaterial(id) {
     } else {
         preview.style.display = 'none';
     }
-    
+
     openModal('modal-material');
 }
 
@@ -76,7 +76,7 @@ async function guardarMaterial(e) {
     e.preventDefault();
     const id = document.getElementById('f-material-id').value;
     const imgPreview = document.getElementById('f-material-img-preview').src;
-    
+
     const datos = {
         nombre: document.getElementById('f-material-nombre').value.trim(),
         costo: parseCOP(document.getElementById('f-material-costo').value),
@@ -100,7 +100,8 @@ async function guardarMaterial(e) {
 }
 
 async function eliminarMaterial(id) {
-    const ok = await confirmDialog('¿Eliminar material?', 'Esto afectará el cálculo de costos de los productos vinculados.');
+    const m = materialesData[id];
+    const ok = await confirmDelete(m?.nombre || 'Este material', 'Esto afectará el cálculo de costos de los productos vinculados.');
     if (!ok) return;
     await db.ref(`materiales/${id}`).remove();
     showToast('Material eliminado', 'warning');

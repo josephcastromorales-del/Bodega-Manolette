@@ -10,37 +10,22 @@
 
 /* ── Logos de proveedores: filled, estilo marca, misma visual weight ── */
 /* ── Iconos de UI: stroke, estilo Lucide ── */
+/* Logos oficiales vía Simple Icons CDN (simpleicons.org) */
+const _siIcon = (slug, hex, size = 22) =>
+  `<img src="https://cdn.simpleicons.org/${slug}/${hex}" width="${size}" height="${size}" style="display:block;pointer-events:none;flex-shrink:0" alt="${slug}" onerror="this.style.display='none'">`;
+
 const _ICON = {
-  /* LOGOS DE PROVEEDORES — filled, 24×24 */
-  /* Anthropic: "A" triangular — refleja su identidad visual */
-  anthropic:  `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M13.83 4h-3.66L3 20h3.3l1.56-4.16h6.28L15.7 20H19L13.83 4zm-5 9.5L11 8.5l2.17 5H8.83z"/></svg>`,
-
-  /* OpenAI: flor de 6 pétalos geométrica — aproximación a su logo */
-  openai:     `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M21.66 10.37a5.4 5.4 0 0 0-.46-4.43 5.46 5.46 0 0 0-5.87-2.62 5.4 5.4 0 0 0-4.07-1.82 5.46 5.46 0 0 0-5.2 3.78 5.4 5.4 0 0 0-3.6 2.63 5.46 5.46 0 0 0 .67 6.41 5.4 5.4 0 0 0 .46 4.43 5.46 5.46 0 0 0 5.87 2.62 5.4 5.4 0 0 0 4.07 1.82 5.46 5.46 0 0 0 5.2-3.79 5.4 5.4 0 0 0 3.6-2.62 5.46 5.46 0 0 0-.67-6.41zM14.26 19a3.67 3.67 0 0 1-2.76-.96l.07-.04 4.58-2.65a.75.75 0 0 0 .38-.65v-6.46l1.94 1.12a.07.07 0 0 1 .04.05v5.35A3.7 3.7 0 0 1 14.26 19zm-8.63-3.38a3.7 3.7 0 0 1-.44-2.48l.07.04 4.58 2.64a.75.75 0 0 0 .75 0L16 13.2v2.24a.07.07 0 0 1-.03.06l-4.63 2.67a3.7 3.7 0 0 1-5.7-2.54zM4.9 8.6A3.68 3.68 0 0 1 6.8 6.96v5.44a.75.75 0 0 0 .38.65l5.43 3.13-1.94 1.12a.07.07 0 0 1-.07 0L5.97 14.6A3.7 3.7 0 0 1 4.9 8.6zm15.96 3.17-5.43-3.14L17.37 7.5a.07.07 0 0 1 .07 0l4.63 2.67a3.7 3.7 0 0 1-.57 6.67v-5.44a.75.75 0 0 0-.64-.63zm-1.93-2.6-.07-.04-4.58-2.65a.75.75 0 0 0-.75 0L8.1 9.62V7.38a.07.07 0 0 1 .03-.06l4.63-2.67a3.7 3.7 0 0 1 5.5 3.83zm-9.9 3.26-1.94-1.12a.07.07 0 0 1-.04-.05V5.91a3.7 3.7 0 0 1 6.07-2.84l-.07.04-4.58 2.65a.75.75 0 0 0-.38.65v6.46zm1.05-2.27 2.42-1.4 2.42 1.4v2.79l-2.42 1.4-2.42-1.4V10.16z"/></svg>`,
-
-  /* Google Gemini: estrella de 4 puntas — logomark oficial */
-  gemini:     `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C11.39 5.28 9.26 7.85 6 8.5 9.26 9.15 11.39 11.72 12 15c.61-3.28 2.74-5.85 6-6.5-3.26-.65-5.39-3.22-6-6.5zM12 15c-.61 3.28-2.74 5.85-6 6.5 3.26.65 5.39 3.22 6 6.5.61-3.28 2.74-5.85 6-6.5-3.26-.65-5.39-3.22-6-6.5z"/></svg>`,
-
-  /* Groq: "G" estilizada — compacta y reconocible */
-  groq:       `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 3a7 7 0 0 1 6.18 3.72H12.5A3.5 3.5 0 0 0 9 12a3.5 3.5 0 0 0 3.5 3.5h3v1.78A7 7 0 0 1 12 19a7 7 0 0 1-7-7 7 7 0 0 1 7-7zm3.5 8H13v-3h2.5v3z"/></svg>`,
-
-  /* OpenRouter: nodo central con rutas — refleja "routing" */
-  openrouter: `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="2.5"/><circle cx="4" cy="6" r="2"/><circle cx="20" cy="6" r="2"/><circle cx="4" cy="18" r="2"/><circle cx="20" cy="18" r="2"/><path d="M6 6.7 9.6 10M14.4 14l3.6 3.3M6 17.3l3.6-3.3M14.4 10l3.6-3.3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>`,
-
-  /* Mistral: tres barras horizontales degradadas — su identidad visual */
-  mistral:    `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3.5" width="18" height="4" rx="1"/><rect x="3" y="10" width="13" height="4" rx="1"/><rect x="3" y="16.5" width="8" height="4" rx="1"/></svg>`,
-
-  /* Cohere: hexágono con punto central — su logomark */
-  cohere:     `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2 4.5 6.5v11L12 22l7.5-4.5v-11L12 2zm0 3.1 5 3V15.9l-5 3-5-3V8.1l5-3z"/><circle cx="12" cy="12" r="2"/></svg>`,
-
-  /* DeepSeek: lupa con destellos — búsqueda profunda */
-  deepseek:   `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 3a7.5 7.5 0 0 0-5.96 12.04L2 17.59 4.41 20l2.55-2.55A7.5 7.5 0 1 0 10.5 3zm0 2.5a5 5 0 1 1 0 10 5 5 0 0 1 0-10z"/><path d="M10 8h1v2h2v1h-2v2h-1v-2H8v-1h2V8z"/></svg>`,
-
-  /* Together AI: tres nodos interconectados — "together" */
-  together:   `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="4.5" r="2.5"/><circle cx="4.5" cy="18" r="2.5"/><circle cx="19.5" cy="18" r="2.5"/><path d="M12 7 5.5 16M12 7l6.5 9M5.5 18h13" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>`,
-
-  /* Perplexity: "P" con flecha de búsqueda — su identidad */
-  perplexity: `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6 3h7.5C16 3 18 5 18 7.5S16 12 13.5 12H9v9H6V3zm3 2.5v4h4.5c1.1 0 2-.9 2-2s-.9-2-2-2H9z"/><path d="m17 17-1.5-1.5 1-1L18 16l3-3 1 1-5 5-2-2 1-1 1 1z" fill-rule="evenodd"/></svg>`,
+  /* LOGOS DE PROVEEDORES — Simple Icons CDN */
+  anthropic:  _siIcon('anthropic',    'cc785c'),
+  openai:     _siIcon('openai',       '10a37f'),
+  gemini:     _siIcon('googlegemini', '4285f4'),
+  groq:       _siIcon('groq',         'f55036'),
+  openrouter: _siIcon('openrouter',   '7c3aed'),
+  mistral:    _siIcon('mistralai',    'ff7000'),
+  cohere:     _siIcon('cohere',       '39d353'),
+  deepseek:   _siIcon('deepseek',     '1677ff'),
+  together:   _siIcon('togetherai',   '0f6cbd'),
+  perplexity: _siIcon('perplexity',   '20b2aa'),
 
   /* ICONOS DE UI — stroke Lucide */
   key:        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>`,
@@ -491,7 +476,9 @@ function _apikm_openProviderModal(sectionId) {
       </div>
     </div>`;
   document.body.appendChild(modal);
-  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+  let _mdOnBackdrop = false;
+  modal.addEventListener('mousedown', e => { _mdOnBackdrop = (e.target === modal); });
+  modal.addEventListener('click', e => { if (e.target === modal && _mdOnBackdrop) modal.remove(); _mdOnBackdrop = false; });
 }
 
 function _apikm_selectForSection(sectionId, providerId) {
@@ -573,10 +560,12 @@ function apikm_renderProviders() {
     const statusLabel = { ok: 'Conectado', error: 'Error', unconfigured: 'Sin configurar' }[status];
     const dotClass   = { ok: 'apikm-dot--ok', error: 'apikm-dot--error', unconfigured: 'apikm-dot--none' }[status];
 
+    const maskedKey = s.key ? '••••••••' + s.key.slice(-4) : '';
+
     return `
     <div class="apikm-provider-card" id="apikm-card-${def.id}" style="--pc:${def.color}">
       <div class="apikm-card-top">
-        <div class="apikm-card-icon" style="color:${def.color}">${def.icon}</div>
+        <div class="apikm-card-icon">${def.icon}</div>
         <div class="apikm-card-info">
           <div class="apikm-card-name">${def.name}</div>
           <div class="apikm-card-docs">${def.docs}</div>
@@ -586,15 +575,31 @@ function apikm_renderProviders() {
           ${statusLabel}
         </div>
       </div>
-      <div class="apikm-card-input-row">
+
+      ${status === 'ok' ? `
+      <div class="apikm-card-verified-row" id="apikm-verified-${def.id}">
+        <span class="apikm-verified-key">${maskedKey}</span>
+        <button class="apikm-edit-key-btn" onclick="apikm_editProvider('${def.id}')">Editar clave</button>
+      </div>
+      <div class="apikm-card-input-row" id="apikm-input-row-${def.id}" style="display:none">
         <input type="password" class="apikm-key-input" id="apikm-key-${def.id}"
           placeholder="${def.keyPlaceholder}" value="${s.key || ''}"
           autocomplete="off" spellcheck="false">
-        <button class="apikm-verify-btn" onclick="apikm_verifyProvider('${def.id}')"
-          id="apikm-verify-${def.id}" style="--pc:${def.color}">
+        <button class="apikm-verify-btn" onclick="apikm_verifyProvider('${def.id}')" id="apikm-verify-${def.id}">
           Verificar
         </button>
       </div>
+      ` : `
+      <div class="apikm-card-input-row" id="apikm-input-row-${def.id}">
+        <input type="password" class="apikm-key-input" id="apikm-key-${def.id}"
+          placeholder="${def.keyPlaceholder}" value="${s.key || ''}"
+          autocomplete="off" spellcheck="false">
+        <button class="apikm-verify-btn" onclick="apikm_verifyProvider('${def.id}')" id="apikm-verify-${def.id}">
+          Verificar
+        </button>
+      </div>
+      `}
+
       ${status === 'ok' && models.length > 0 ? `
       <div class="apikm-card-model-row">
         <label class="apikm-model-label">Modelo activo:</label>
@@ -655,6 +660,14 @@ async function apikm_verifyProvider(providerId) {
 
   btn.disabled = false;
   btn.textContent = 'Verificar';
+}
+
+function apikm_editProvider(providerId) {
+  const verified = document.getElementById(`apikm-verified-${providerId}`);
+  const inputRow = document.getElementById(`apikm-input-row-${providerId}`);
+  if (verified) verified.style.display = 'none';
+  if (inputRow) inputRow.style.display = '';
+  document.getElementById(`apikm-key-${providerId}`)?.focus();
 }
 
 function apikm_selectModel(providerId, modelId) {

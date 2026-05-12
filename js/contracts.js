@@ -162,7 +162,7 @@ async function guardarContrato(e) {
 async function eliminarContrato(id) {
     const c = contratosData[id];
     if (!c) return;
-    const ok = await confirmDialog('¿Eliminar contrato?', `Contrato ${c.numero} — Esta acción no se puede deshacer.`);
+    const ok = await confirmDelete(`Contrato ${c.numero}`, `Cliente: ${c.cliente || '—'}`);
     if (!ok) return;
     await db.ref(`contratos/${id}`).remove();
     logActivity('contrato_eliminado', `Contrato ${c.numero} eliminado`, 'contrato', id);

@@ -172,7 +172,7 @@ async function guardarProveedor(e) {
 async function eliminarProveedor(id) {
     const p = proveedoresData[id];
     if (!p) return;
-    const ok = await confirmDialog('¿Eliminar proveedor?', `"${p.nombre}" será eliminado del directorio permanentemente.`);
+    const ok = await confirmDelete(p.nombre, 'Será eliminado del directorio de proveedores.');
     if (!ok) return;
     await db.ref(`proveedores/${id}`).remove();
     logActivity('proveedor_eliminado', `Proveedor "${p.nombre}" eliminado`, 'proveedor', id);

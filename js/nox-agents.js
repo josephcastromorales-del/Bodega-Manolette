@@ -8,25 +8,33 @@
    CONSTANTES GLOBALES
    ════════════════════════════════════════════════════ */
 
-const NOX_STORAGE_KEY = 'nox_agent_history';
+const NOX_CHATS_KEY   = 'nox_chats_v2';
+const NOX_LEGACY_KEY  = 'nox_agent_history';
 
 /* ════════════════════════════════════════════════════
    ICONOS SVG DE AGENTES
    ════════════════════════════════════════════════════ */
 
 const _NOX_ICONS = {
-  dev:       `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
-  finance:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
-  excel:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
-  agenda:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
-  image:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><polyline points="21 15 16 10 5 21"/></svg>`,
-  promptImg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8 19 13"/><path d="M15 9h.01"/><path d="M17.8 6.2 19 5"/><path d="m3 21 9-9"/><path d="M12.2 6.2 11 5"/></svg>`,
-  content:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>`,
-  strategy:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`,
-  email:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>`,
-  sales:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>`,
-  seo:       `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>`,
-  social:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>`,
+  dev:        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
+  finance:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
+  excel:      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
+  agenda:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+  image:      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><polyline points="21 15 16 10 5 21"/></svg>`,
+  promptImg:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8 19 13"/><path d="M15 9h.01"/><path d="M17.8 6.2 19 5"/><path d="m3 21 9-9"/><path d="M12.2 6.2 11 5"/></svg>`,
+  content:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>`,
+  strategy:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`,
+  email:      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>`,
+  sales:      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>`,
+  seo:        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>`,
+  social:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>`,
+  // ── Nuevos agentes vitales ──
+  logistics:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>`,
+  legal:      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14 2-1.5 6h-1L10 2"/><path d="M12 2v20"/><path d="M5 12H2a10 10 0 0 0 10 10"/><path d="M19 12h3a10 10 0 0 1-10 10"/><path d="M5 12a7 7 0 0 1 7-7 7 7 0 0 1 7 7"/></svg>`,
+  hr:         `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+  accounting: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/><line x1="14" y1="15" x2="18" y2="15"/></svg>`,
+  support:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 10h8"/><path d="M8 14h4"/></svg>`,
+  wellness:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`,
 };
 
 /* ════════════════════════════════════════════════════
@@ -345,6 +353,200 @@ PROTOCOLO DE RESPUESTA:
 6. Métrica principal a trackear para evaluar el éxito de ese tipo de post
 
 Responde en español. Acciones concretas con ejemplos listos para publicar.`
+  },
+
+  // ══════════════════════════════════════════
+  //  AGENTES VITALES — NUEVOS
+  // ══════════════════════════════════════════
+
+  logistics: {
+    id: 'logistics', label: 'Logística', icon: _NOX_ICONS.logistics, color: '#0891b2',
+    trigger: /\b(logísti|logistic|envío|despacho|bodega|almacén|empaque|embalaje|distribución|transporte|courier|guía.*envío|tracking|lead.*time|picking|packing|fulfillment|merma|rotación.*inventario|proveedor.*entrega|cadena.*suministro|cross.*docking|just.*in.*time|última.*milla)\b/i,
+    system: `Eres LogisticsAgent, experto en logística y operaciones para empresas colombianas de productos físicos con 15 años en cadena de suministro LATAM.
+
+ESPECIALIDADES:
+- Diseño de procesos de empaque y despacho (muy relevante para Manolette)
+- Gestión de bodegas: zonificación, FIFO/FEFO, picking, packing, slotting
+- Operadores logísticos Colombia: Servientrega, Coordinadora, Envia, TCC, Interrapidísimo
+- Tarifas y cotización de fletes: peso volumétrico, zonas, tiempos de entrega
+- Gestión de inventario: EOQ, punto de reorden, stock de seguridad, ABC
+- Proceso de recepción de mercancía: inspección, conteo, registro
+- Control de calidad en despacho: listas de chequeo, trazabilidad, documentación
+
+PARA MANOLETTE (empaque y despacho de productos Cafam):
+- Flujo: Recepción de productos → Inspección → Organización → Empaque → Etiquetado → Despacho
+- Optimizar tiempos de ciclo por contrato
+- Control de mermas y productos no conformes
+- Coordinación con transportadoras para despachos masivos
+
+PROTOCOLO DE RESPUESTA:
+1. Identifica el cuello de botella en el proceso descrito
+2. Propón mejoras concretas con impacto estimado (% de tiempo/costo)
+3. Lista de verificación (checklist) cuando sea aplicable
+4. Menciona herramientas o formatos simples de control
+5. Considera restricciones de PYME (sin grandes inversiones de capital)
+
+Responde en español. Práctico, operativo y aplicable desde hoy.`
+  },
+
+  legal: {
+    id: 'legal', label: 'Legal', icon: _NOX_ICONS.legal, color: '#7c3aed',
+    trigger: /\b(contrato.*legal|jurídic|legal.*empresa|normativa|compliance|regulación|ley.*comercial|decreto|resolución|cámara.*comercio|RUT|NIT|persona.*jurídica|SAS|registro.*mercantil|DIAN.*normativa|Superintendencia|marca.*registrada|propiedad.*intelectual|patente|demanda|litigio|minuta|cláusula|acuerdo.*confidencialidad|NDA|término.*condición|responsabilidad.*legal|multa|sanción|licencia.*funcionamiento)\b/i,
+    system: `Eres LegalAgent, abogado especialista en derecho comercial y empresarial colombiano con 15 años asesorando PYMEs.
+
+ESPECIALIDADES:
+- Constitución y formalización de empresas en Colombia: SAS, LTDA, S.A., E.U.
+- Contratos comerciales: compraventa, prestación de servicios, suministro, distribución
+- Contratos laborales: fijo, indefinido, obra o labor, prestación de servicios
+- DIAN y obligaciones tributarias: responsabilidades del comerciante
+- Protección de marca: registro en SIC, uso exclusivo, acciones por infracción
+- SGDP / Habeas Data: tratamiento de datos personales (Ley 1581)
+- Cámaras de Comercio: renovación matrícula mercantil, libros de comercio
+- Contratos con entidades: CAFAM y empresas similares — cláusulas clave, riesgos
+- Resolución de conflictos: conciliación, amigable composición, arbitraje
+
+PARA MANOLETTE:
+- Revisar cláusulas de contratos con Cafam: penalidades, garantías, exclusividad
+- Responsabilidad por productos no conformes
+- Formalización de relaciones con proveedores y empleados
+
+PROTOCOLO DE RESPUESTA:
+1. Identifica el marco legal colombiano aplicable (artículo, ley o decreto)
+2. Explica en lenguaje claro, sin tecnicismos innecesarios
+3. Señala los riesgos legales principales (semáforo: 🔴 crítico / 🟡 moderado / 🟢 bajo)
+4. Recomendación de acción concreta
+5. SIEMPRE aclara cuando sea imprescindible consultar un abogado presencialmente
+
+Responde en español. Claro, práctico y responsable.`
+  },
+
+  hr: {
+    id: 'hr', label: 'Recursos Humanos', icon: _NOX_ICONS.hr, color: '#059669',
+    trigger: /\b(emplead|trabajador|nómina|contratación|recursos.*humanos|RRHH|vacaciones|incapacidad|liquidación|seguridad.*social|SENA|caja.*compensación|bienestar.*laboral|selección.*personal|onboarding|capacitación|evaluación.*desempeño|clima.*laboral|despido|renuncia|salario|auxilio.*transporte|prima|cesantías|dotación|turno|horario.*trabajo|horas.*extra|accidente.*trabajo|ARL)\b/i,
+    system: `Eres HRAgent, especialista en gestión humana y derecho laboral colombiano con 12 años en empresas de manufactura y logística.
+
+ESPECIALIDADES:
+- Derecho laboral colombiano: Código Sustantivo del Trabajo (CST)
+- Tipos de contrato: término fijo, indefinido, obra o labor, aprendizaje SENA
+- Nómina Colombia 2025: salario mínimo, auxilio de transporte, horas extra, recargos
+- Seguridad social: EPS, ARL, Pensiones, Caja de Compensación — tasas y obligaciones
+- Prestaciones sociales: prima, cesantías, intereses cesantías, vacaciones, dotación
+- Procesos disciplinarios: descargos, suspensión, justa causa de despido
+- Selección y onboarding: perfil de cargo, entrevista por competencias, inducción
+- Clima laboral: encuestas de satisfacción, plan de mejora, reducción de rotación
+- SGSST: Sistema de Gestión de Seguridad y Salud en el Trabajo (básico para PYMEs)
+- Gestión de equipos pequeños: comunicación efectiva, motivación, liderazgo situacional
+
+PARA MANOLETTE:
+- Equipo de empaque/operaciones: turnos, cargas de trabajo, descansos
+- Supervisores de calidad y despacho: responsabilidades y métricas
+- Gestión de personal temporal para picos de producción
+
+PROTOCOLO DE RESPUESTA:
+1. Cita la norma colombiana aplicable (artículo del CST, resolución, decreto)
+2. Da el cálculo exacto cuando haya cifras (nómina, liquidación, etc.)
+3. Señala los errores más comunes que cometen las PYMEs en este tema
+4. Proporciona plantilla o formato simple si aplica
+5. Indica el plazo legal para cada obligación
+
+Responde en español. Preciso con los números, claro con las normas.`
+  },
+
+  accounting: {
+    id: 'accounting', label: 'Contabilidad', icon: _NOX_ICONS.accounting, color: '#d97706',
+    trigger: /\b(contabilidad|factura.*electrónica|DIAN|IVA|retención.*fuente|renta|declaración.*impuesto|balance.*general|estado.*resultado|P&L|depreciación|activo.*fijo|pasivo|patrimonio|PUC|NIIF|cuadre.*caja|conciliación.*bancaria|ingreso.*gravable|régimen.*simple|régimen.*ordinario|obligado.*facturar|sistema.*pos|impuesto.*industria|ICA|tasa.*tributaria|costo.*ventas|margen.*bruto.*contable)\b/i,
+    system: `Eres AccountingAgent, contador público titulado con tarjeta profesional, especialista en tributaria colombiana y contabilidad para PYMEs.
+
+ESPECIALIDADES:
+- Facturación electrónica DIAN: habilitación, contingencia, notas crédito/débito
+- Impuestos nacionales: Renta, IVA, Retención en la Fuente, ICA, Timbre
+- Régimen Simple de Tributación vs. Régimen Ordinario — cuándo conviene cada uno
+- Obligaciones DIAN: declaraciones bimestrales, cuatrimestrales, anuales
+- Plan Único de Cuentas (PUC) Colombia
+- NIIFs para PYMEs: adopción simplificada, diferencias con PCGA
+- Costos y gastos deducibles: qué se puede descontar de la base gravable
+- Conciliación bancaria, cuadre de caja, arqueos
+- Flujo de caja proyectado y control de cartera
+- Indicadores contables: EBITDA, margen neto, rotación cartera, endeudamiento
+
+PARA MANOLETTE:
+- Manejo contable de contratos con Cafam: reconocimiento de ingresos
+- Costos de producción: mano de obra, materiales, CIF
+- Deducibilidad de gastos de empaque y despacho
+- Facturación a entidades (CAFAM requiere factura electrónica)
+
+PROTOCOLO DE RESPUESTA:
+1. Cita el soporte normativo (Estatuto Tributario artículo X, Decreto X)
+2. Calcula con datos concretos si los hay; usa ejemplos numéricos si no
+3. Señala las fechas límite críticas de cumplimiento
+4. Alerta sobre sanciones por incumplimiento (porcentajes DIAN)
+5. Recomienda el tratamiento más favorable dentro de la norma
+
+Responde en español. Riguroso con los números, actualizado a 2025.`
+  },
+
+  support: {
+    id: 'support', label: 'Atención al Cliente', icon: _NOX_ICONS.support, color: '#db2777',
+    trigger: /\b(queja|reclamo|devolución|garantía|cliente.*insatisfecho|postventa|reembolso|atención.*cliente|soporte|CRM|ticket|escalamiento|fidelización|NPS|resolución.*conflicto|protocolo.*atención|script.*cliente|objeción.*cliente|experiencia.*cliente|satisfacción|retención.*cliente|churn|onboarding.*cliente|expectativa.*cliente|comunicación.*cliente|seguimiento.*pedido)\b/i,
+    system: `Eres SupportAgent, especialista en Customer Experience (CX) y atención al cliente con 10 años diseñando protocolos para empresas B2B y B2C en Colombia.
+
+ESPECIALIDADES:
+- Manejo de quejas y reclamos: escuchar, empatizar, resolver, retener
+- Protocolos de atención: WhatsApp Business, email, teléfono, presencial
+- Scripts de atención: bienvenida, manejo de objeciones, cierre, seguimiento
+- Resolución de conflictos: técnica DESC, comunicación no violenta
+- CRM básico: seguimiento de clientes, pipeline de fidelización, recompra
+- Métricas CX: NPS, CSAT, FCR (First Contact Resolution), tiempo de respuesta
+- Escalamiento: cuándo y cómo escalar a un supervisor
+- Recuperación de clientes perdidos: win-back strategies
+- Gestión de reputación: respuestas a Google Reviews, redes sociales
+- Políticas de devolución/garantía: cómo redactarlas para proteger el negocio
+
+PARA MANOLETTE:
+- Clientes corporativos (Cafam): comunicación formal, SLAs de respuesta
+- Gestión de pedidos especiales y personalizaciones: expectativas claras
+- Manejo cuando un producto no cumple especificaciones acordadas
+- Follow-up post-entrega: validar satisfacción y generar recompra
+
+PROTOCOLO DE RESPUESTA:
+1. Entrega el script o protocolo LISTO PARA USAR (copiable)
+2. Adapta el tono: formal para B2B, más cercano para B2C
+3. Incluye variantes para WhatsApp, email y llamada telefónica
+4. Señala qué NO decir (errores frecuentes que dañan la relación)
+5. Propón métricas simples para medir si la solución funcionó
+
+Responde en español. Empático, profesional y orientado a retener clientes.`
+  },
+
+  wellness: {
+    id: 'wellness', label: 'Bienestar Empresarial', icon: _NOX_ICONS.wellness, color: '#10b981',
+    trigger: /\b(estrés|burnout|bienestar.*laboral|salud.*mental.*trabajo|motivación.*equipo|agotamiento|ambiente.*trabajo|descanso|pausas.*activas|ergonomía|productividad.*personal|hábitos.*trabajo|equilibrio.*vida.*trabajo|work.*life|equipo.*desmotivado|conflicto.*equipo|cultura.*empresa|valores.*empresa|propósito|liderazgo.*saludable|mindfulness|resiliencia.*empresarial)\b/i,
+    system: `Eres WellnessAgent, especialista en bienestar organizacional y salud mental empresarial con enfoque en PYMEs latinoamericanas.
+
+ESPECIALIDADES:
+- Identificación y prevención de burnout en equipos pequeños
+- Pausas activas y ergonomía en puestos de trabajo operativos
+- Programas de bienestar de bajo costo: pausas, reconocimiento, flexibilidad
+- Comunicación asertiva y resolución de conflictos interpersonales
+- Motivación intrínseca: propósito, autonomía, maestría (modelo Deci & Ryan)
+- Cultura organizacional: valores, rituales de equipo, celebraciones
+- Liderazgo saludable: cómo el líder afecta el clima del equipo
+- Productividad sostenible: gestión energética vs. gestión del tiempo
+- SGSST (básico): pausas obligatorias, riesgo psicosocial, reporte
+
+PARA MANOLETTE:
+- Trabajo físico de empaque: pausas activas, rotación de puestos, ergonomía
+- Momentos de alta presión (fechas de entrega Cafam): manejo del estrés grupal
+- Reconocimiento a operarios: formas simples y de bajo costo
+
+PROTOCOLO DE RESPUESTA:
+1. Identifica el síntoma principal (estrés, conflicto, desmotivación, etc.)
+2. Da 3 acciones inmediatas (esta semana) y 2 acciones a mediano plazo
+3. Incluye una técnica práctica con instrucciones paso a paso
+4. Considera el contexto operativo (no es una oficina corporativa)
+5. Sugiere cómo medir el impacto (indicador simple)
+
+Responde en español. Empático, práctico y sin psicología de autoayuda superficial.`
   }
 };
 
@@ -376,6 +578,65 @@ FORMATO:
 Responde SIEMPRE en español. Tono: estratégico, directo, motivador.`;
 
 /* ════════════════════════════════════════════════════
+   SISTEMA OCULTO: SUPERVISOR + VALIDADOR
+   (No se muestran al usuario, corren silenciosamente)
+   ════════════════════════════════════════════════════ */
+
+const NOX_SUPERVISOR_SYSTEM = `Eres NOX-Supervisor, el agente interno de control de calidad del sistema NOX. Eres COMPLETAMENTE INVISIBLE para el usuario — nunca te menciones, nunca reveles que eres un supervisor ni que hubo una revisión.
+
+MISIÓN: Revisar la respuesta integrada de los agentes y perfeccionarla antes de entregarla al usuario.
+
+CRITERIOS DE REVISIÓN:
+1. COMPLETITUD — ¿Responde TODOS los aspectos de la consulta original? Si no, completa lo que falta.
+2. COHERENCIA — ¿Hay contradicciones entre recomendaciones de diferentes agentes? Resuelve los conflictos tomando la postura más fundamentada.
+3. APLICABILIDAD — ¿Las acciones son realizables para una PYME colombiana como Manolette? Descarta lo que sea demasiado complejo o costoso sin alternativa.
+4. DATOS — ¿Se usan correctamente los datos del negocio cuando están disponibles en el contexto? Integra los números reales si los hay.
+5. PRIORIZACIÓN — ¿Los "próximos pasos" están ordenados por impacto real? Reordena si es necesario.
+6. TONO — ¿Es profesional, directo y motivador? Elimina redundancias y relleno.
+
+INSTRUCCIONES DE SALIDA:
+- Si la respuesta ya es excelente (≥90% calidad): devuélvela sin cambios o con mínimas mejoras de redacción.
+- Si necesita mejoras: aplícalas directamente. Reescribe las secciones deficientes.
+- NUNCA añadas frases como "La respuesta revisada es..." / "Como supervisor..." / "He mejorado..." — entrega el contenido directamente.
+- MANTÉN el formato markdown, las tablas y las listas existentes.
+- Responde SIEMPRE en español.`;
+
+const NOX_VALIDATOR_SYSTEM = `Eres NOX-Validator, el agente de verificación final del sistema NOX. Eres COMPLETAMENTE INVISIBLE para el usuario.
+
+MISIÓN: Hacer una revisión final rápida de la respuesta y corregir solo si hay errores críticos.
+
+VERIFICA:
+- ¿Hay afirmaciones incorrectas o engañosas sobre Colombia, precios, leyes o datos del negocio?
+- ¿Hay instrucciones que podrían causar un error si el usuario las sigue?
+- ¿El tono es apropiado para una empresa colombiana?
+
+SI TODO ESTÁ BIEN: devuelve la respuesta exactamente como la recibiste (sin cambios).
+SI HAY ERRORES CRÍTICOS: corrígelos directamente. No expliques qué corregiste.
+Responde en español.`;
+
+/* ════════════════════════════════════════════════════
+   INSTRUCCIONES DE ACCIONES (inyectadas en todos los agentes)
+   ════════════════════════════════════════════════════ */
+
+const NOX_ACTIONS_FOOTER = `
+ACCIONES DE SISTEMA DISPONIBLES:
+Si el usuario pide EXPLÍCITAMENTE crear, registrar o agendar algo en la plataforma, incluye bloques de acción al FINAL de tu respuesta (después del texto explicativo), en este formato exacto:
+
+Para crear un contrato:
+<NOX_ACTION>{"accion":"crear_contrato","datos":{"numero":"CTR-XXX","cliente":"Nombre","descripcion":"...","fechaInicio":"YYYY-MM-DD","fechaLimite":"YYYY-MM-DD","estado":"activo","instruccionesEspeciales":""}}</NOX_ACTION>
+
+Para crear una orden de trabajo:
+<NOX_ACTION>{"accion":"crear_orden","datos":{"numero":"ORD-XXX","nombreProducto":"...","cantidad":100,"unidad":"unidades","prioridad":"normal","fechaLimite":"YYYY-MM-DD","contratoId":""}}</NOX_ACTION>
+
+Para registrar un gasto:
+<NOX_ACTION>{"accion":"registrar_gasto","datos":{"concepto":"...","monto":150000,"categoria":"operativo","fecha":"YYYY-MM-DD"}}</NOX_ACTION>
+
+Para agendar una actividad o recordatorio:
+<NOX_ACTION>{"accion":"agendar_actividad","datos":{"descripcion":"...","tipo":"recordatorio","fecha":"YYYY-MM-DD"}}</NOX_ACTION>
+
+REGLAS: Solo incluye bloques <NOX_ACTION> si el usuario lo solicita explícitamente. Para consultas o análisis, responde SOLO con texto. Completa los campos que conozcas; deja vacíos los que no mencionó el usuario. Usa la fecha de hoy si no se especifica. El JSON debe ser válido.`;
+
+/* ════════════════════════════════════════════════════
    GESTIÓN DE PROVEEDOR (delegada a ApiKeyManager)
    ════════════════════════════════════════════════════ */
 
@@ -390,7 +651,7 @@ function _noxUpdateKeyStatus() {
     }
 
     const sendBtn = document.getElementById('nox-agents-send');
-    if (sendBtn) sendBtn.disabled = !hasProvider;
+    if (sendBtn) sendBtn.disabled = false;
 
     const input = document.getElementById('nox-agents-input');
     if (input) {
@@ -404,15 +665,17 @@ function _noxUpdateKeyStatus() {
    LLAMADA AL LLM ACTIVO (vía ApiKeyManager)
    ════════════════════════════════════════════════════ */
 
-async function noxCallLLM(systemPrompt, userMessages) {
+// internal: true → omite acciones footer (para supervisor/validador ocultos)
+async function noxCallLLM(systemPrompt, userMessages, { internal = false, maxTokens = 1800 } = {}) {
     if (!window.ApiKeyManager?.hasActiveProvider('nox')) {
         throw new Error('No hay proveedor de IA configurado. Haz clic en "Configurar IA".');
     }
-    const systemWithLang = `INSTRUCCIÓN CRÍTICA: Responde SIEMPRE en español, sin excepción, independientemente del idioma del usuario.\n\n${systemPrompt}`;
+    const footer = internal ? '' : `\n\n${NOX_ACTIONS_FOOTER}`;
+    const systemWithLang = `INSTRUCCIÓN CRÍTICA: Responde SIEMPRE en español, sin excepción, independientemente del idioma del usuario.\n\n${systemPrompt}${footer}`;
     return window.ApiKeyManager.callLLM('nox', {
         system: systemWithLang,
         messages: userMessages,
-        maxTokens: 1500
+        maxTokens
     });
 }
 
@@ -423,18 +686,25 @@ async function noxCallLLM(systemPrompt, userMessages) {
 function noxParseMessage(rawMessage) {
     // Detecta @menciones: @excel, @dev, @finance, etc.
     const mentionMap = {
-        dev: ['dev', 'código', 'programacion', 'programación'],
-        finance: ['finance', 'finanzas', 'financiero'],
-        excel: ['excel', 'datos', 'data'],
-        agenda: ['agenda', 'calendario', 'productividad'],
-        image: ['image', 'imagen', 'foto', 'vision'],
-        promptImg: ['promptimg', 'prompt', 'midjourney', 'dalle', 'dallee'],
-        content: ['content', 'contenido', 'copy'],
-        strategy: ['strategy', 'estrategia', 'marketing'],
-        email: ['email', 'correo', 'newsletter'],
-        sales: ['sales', 'ventas', 'vender'],
-        seo: ['seo'],
-        social: ['social', 'redes', 'instagram', 'tiktok']
+        dev:        ['dev', 'código', 'programacion', 'programación', 'developer'],
+        finance:    ['finance', 'finanzas', 'financiero', 'financiera'],
+        excel:      ['excel', 'datos', 'data', 'hojas', 'spreadsheet'],
+        agenda:     ['agenda', 'calendario', 'productividad', 'organización'],
+        image:      ['image', 'imagen', 'foto', 'vision', 'fotografía'],
+        promptImg:  ['promptimg', 'prompt', 'midjourney', 'dalle', 'dallee'],
+        content:    ['content', 'contenido', 'copy', 'redactar'],
+        strategy:   ['strategy', 'estrategia', 'marketing'],
+        email:      ['email', 'correo', 'newsletter', 'mailing'],
+        sales:      ['sales', 'ventas', 'vender', 'comercial'],
+        seo:        ['seo', 'posicionamiento', 'google'],
+        social:     ['social', 'redes', 'instagram', 'tiktok', 'facebook'],
+        // Nuevos agentes vitales
+        logistics:  ['logistics', 'logistica', 'logística', 'envio', 'envío', 'despacho', 'empaque', 'bodega'],
+        legal:      ['legal', 'juridico', 'jurídico', 'abogado', 'contrato', 'ley'],
+        hr:         ['hr', 'rrhh', 'recursoshumanos', 'empleado', 'nomina', 'nómina', 'personal'],
+        accounting: ['accounting', 'contabilidad', 'contable', 'factura', 'dian', 'tributaria', 'impuesto'],
+        support:    ['support', 'soporte', 'atencion', 'atención', 'clienteservice', 'quejas'],
+        wellness:   ['wellness', 'bienestar', 'salud', 'burnout', 'estres', 'estrés'],
     };
 
     const mentions = [];
@@ -460,12 +730,11 @@ function noxRouteAgents(message, mentions) {
         if (def.trigger.test(msg)) activated.push(id);
     }
 
-    // Límite de 4 agentes por consulta para evitar sobrecoste
+    // Límite de 5 agentes por consulta
     if (activated.length === 0) {
-        // Fallback inteligente: content es el default para preguntas generales
         activated.push('content');
     }
-    return activated.slice(0, 4);
+    return activated.slice(0, 5);
 }
 
 /* ════════════════════════════════════════════════════
@@ -473,21 +742,22 @@ function noxRouteAgents(message, mentions) {
    ════════════════════════════════════════════════════ */
 
 async function noxRunAgents(agentIds, userMessage, conversationHistory) {
-    // Construir el contexto de conversación para cada agente (últimos 3 turnos)
-    const recentHistory = conversationHistory.slice(-6).map(m => ({
-        role: m.role,
-        content: typeof m.content === 'string' ? m.content : m.content
-    }));
+    const recentHistory = conversationHistory.slice(-6)
+        .filter(m => m.role !== 'system')
+        .map(m => ({ role: m.role, content: m.content }));
+
+    // Nota de colaboración: cada agente sabe que trabaja en equipo
+    const teamNote = agentIds.length > 1
+        ? `\n\n[CONTEXTO DE EQUIPO: Los agentes ${agentIds.map(id => AGENT_DEFS[id]?.label).filter(Boolean).join(', ')} trabajan en paralelo sobre esta consulta. Enfócate exclusivamente en tu especialidad — NOX integrará todas las perspectivas en una respuesta unificada.]`
+        : '';
 
     const agentPromises = agentIds.map(async (id) => {
         const def = AGENT_DEFS[id];
         if (!def) return null;
-
         const messages = [
-            ...recentHistory.filter(m => m.role !== 'system'),
-            { role: 'user', content: userMessage }
+            ...recentHistory,
+            { role: 'user', content: userMessage + teamNote }
         ];
-
         try {
             const response = await noxCallLLM(def.system, messages);
             return { id, label: def.label, icon: def.icon, color: def.color, response };
@@ -500,49 +770,214 @@ async function noxRunAgents(agentIds, userMessage, conversationHistory) {
     return Promise.all(agentPromises);
 }
 
+/* ── Supervisor oculto ───────────────────────────────────────────── */
+
+async function _noxSupervisorPass(text, originalQuery) {
+    const messages = [{
+        role: 'user',
+        content: `CONSULTA ORIGINAL: "${originalQuery}"\n\nRESPUESTA A REVISAR:\n${text}\n\n---\nRevisa y perfecciona esta respuesta según tus criterios. Si ya es excelente, devuélvela tal cual.`
+    }];
+    return noxCallLLM(NOX_SUPERVISOR_SYSTEM, messages, { internal: true, maxTokens: 2000 });
+}
+
+async function _noxValidatorPass(text, originalQuery) {
+    const messages = [{
+        role: 'user',
+        content: `CONSULTA ORIGINAL: "${originalQuery}"\n\nRESPUESTA FINAL:\n${text}\n\n---\nHaz la verificación final. Devuelve la respuesta corregida o exactamente igual si no hay errores críticos.`
+    }];
+    return noxCallLLM(NOX_VALIDATOR_SYSTEM, messages, { internal: true, maxTokens: 2000 });
+}
+
 async function noxSynthesize(agentResults, userMessage, conversationHistory) {
     const successResults = agentResults.filter(r => r && r.response);
     if (successResults.length === 0) throw new Error('Todos los agentes fallaron.');
 
-    // Si solo hay 1 agente, devuelve directamente sin sintetizar
-    if (successResults.length === 1) return { text: successResults[0].response, agents: successResults };
+    let finalText;
 
-    // Construir prompt de síntesis
-    const agentSummaries = successResults.map(r =>
-        `## ${r.label}\n${r.response}`
-    ).join('\n\n---\n\n');
+    if (successResults.length === 1) {
+        // Un solo agente: su respuesta directa
+        finalText = successResults[0].response;
+    } else {
+        // Múltiples agentes: síntesis por el orquestador
+        // El orquestador recibe TODOS los outputs y los cruza
+        const agentSummaries = successResults.map(r =>
+            `## ${r.label} (${r.id})\n${r.response}`
+        ).join('\n\n---\n\n');
 
-    const synthMessages = [
-        {
+        const synthMessages = [{
             role: 'user',
-            content: `CONSULTA ORIGINAL DEL USUARIO: "${userMessage}"\n\n${agentSummaries}\n\n---\nAhora sintetiza estas respuestas en una respuesta unificada, coherente y accionable. No repitas las secciones de cada agente mecánicamente — intégralas fluidamente.`
-        }
-    ];
+            content: `CONSULTA ORIGINAL: "${userMessage}"\n\nAPORTES DE AGENTES ESPECIALIZADOS:\n\n${agentSummaries}\n\n---\nIntegra estas perspectivas en una respuesta unificada, identificando sinergias y resolviendo contradicciones. Prioriza por impacto real para el negocio.`
+        }];
+        finalText = await noxCallLLM(NOX_ORCHESTRATOR_SYSTEM, synthMessages, { maxTokens: 2000 });
+    }
 
-    const synthesized = await noxCallLLM(NOX_ORCHESTRATOR_SYSTEM, synthMessages);
-    return { text: synthesized, agents: successResults };
+    // ── Supervisor oculto: revisa calidad (solo para multi-agente o respuestas largas) ──
+    const runSupervisor = successResults.length > 1 || finalText.length > 600;
+    if (runSupervisor) {
+        try {
+            const supervised = await _noxSupervisorPass(finalText, userMessage);
+            if (supervised && supervised.trim().length > 80) finalText = supervised;
+        } catch (e) { console.warn('[NOX Supervisor] falló silenciosamente:', e.message); }
+    }
+
+    // ── Validador oculto: verificación final rápida ──
+    if (runSupervisor) {
+        try {
+            const validated = await _noxValidatorPass(finalText, userMessage);
+            if (validated && validated.trim().length > 80) finalText = validated;
+        } catch (e) { console.warn('[NOX Validator] falló silenciosamente:', e.message); }
+    }
+
+    return { text: finalText, agents: successResults };
 }
 
 /* ════════════════════════════════════════════════════
-   HISTORIAL
+   MULTI-CHAT — almacenamiento y gestión
    ════════════════════════════════════════════════════ */
 
-let noxAgentHistory = [];
+let noxAgentHistory  = [];   // mensajes del chat activo
+let noxCurrentChatId = null;
+let noxChats         = [];   // [{id, title, ts, msgs, titled}]
+let _noxInitialized  = false;
 
-function noxLoadHistory() {
-    try {
-        noxAgentHistory = JSON.parse(localStorage.getItem(NOX_STORAGE_KEY) || '[]');
-    } catch { noxAgentHistory = []; }
+function noxLoadChats() {
+    try { noxChats = JSON.parse(localStorage.getItem(NOX_CHATS_KEY) || '[]'); }
+    catch { noxChats = []; }
+
+    // Migrar historial antiguo a formato multi-chat
+    const legacy = localStorage.getItem(NOX_LEGACY_KEY);
+    if (legacy) {
+        try {
+            const msgs = JSON.parse(legacy);
+            if (msgs.length > 0) {
+                const firstUser = msgs.find(m => m.role === 'user');
+                noxChats.push({
+                    id: 'legacy_' + Date.now().toString(36),
+                    title: firstUser ? firstUser.content.slice(0, 45) : 'Chat anterior',
+                    ts: Date.now(), msgs: msgs.slice(-40), titled: true
+                });
+            }
+        } catch {}
+        localStorage.removeItem(NOX_LEGACY_KEY);
+        noxSaveChats();
+    }
+
+    // Si no hay chats, crear uno vacío inicial
+    if (noxChats.length === 0) {
+        const id = Date.now().toString(36) + 'init';
+        noxChats.push({ id, title: 'Nuevo chat', ts: Date.now(), msgs: [], titled: false });
+        noxSaveChats();
+    }
+
+    // Cargar el chat más reciente como activo
+    noxCurrentChatId = noxChats[0].id;
+    noxAgentHistory  = [...(noxChats[0].msgs || [])];
 }
 
-function noxSaveHistory() {
-    // Guardar últimos 40 mensajes
-    localStorage.setItem(NOX_STORAGE_KEY, JSON.stringify(noxAgentHistory.slice(-40)));
+function noxSaveChats() {
+    localStorage.setItem(NOX_CHATS_KEY, JSON.stringify(noxChats));
 }
 
-function noxClearHistory() {
-    noxAgentHistory = [];
-    localStorage.removeItem(NOX_STORAGE_KEY);
+function noxSaveCurrentChat() {
+    if (!noxCurrentChatId) return;
+    const chat = noxChats.find(c => c.id === noxCurrentChatId);
+    if (!chat) return;
+    chat.msgs = [...noxAgentHistory].slice(-40);
+    chat.ts   = Date.now();
+    if (!chat.titled) {
+        const firstUser = chat.msgs.find(m => m.role === 'user');
+        if (firstUser) {
+            chat.title  = firstUser.content.slice(0, 45) + (firstUser.content.length > 45 ? '…' : '');
+            chat.titled = true;
+        }
+    }
+    // Mantener el chat activo al tope de la lista
+    const idx = noxChats.findIndex(c => c.id === noxCurrentChatId);
+    if (idx > 0) { noxChats.unshift(noxChats.splice(idx, 1)[0]); }
+    noxSaveChats();
+    noxRenderChatList();
+}
+
+function noxNewChat() {
+    const id   = Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+    const chat = { id, title: 'Nuevo chat', ts: Date.now(), msgs: [], titled: false };
+    noxChats.unshift(chat);
+    noxCurrentChatId = id;
+    noxAgentHistory  = [];
+    noxSaveChats();
+
+    const msgs = document.getElementById('nox-agents-messages');
+    if (msgs) msgs.innerHTML = `<div id="nox-agents-welcome" class="nox-ag-welcome">${_buildWelcomeHTML()}</div>`;
+    noxHideActiveAgents();
+    _noxUpdateSuggestions('default');
+    noxRenderChatList();
+    if (typeof navigate === 'function') navigate('gemini');
+}
+
+function noxLoadChat(id) {
+    const chat = noxChats.find(c => c.id === id);
+    if (!chat) return;
+    noxCurrentChatId = id;
+    noxAgentHistory  = [...(chat.msgs || [])];
+    _noxRestoreCurrentChat();
+    noxRenderChatList();
+    if (typeof navigate === 'function') navigate('gemini');
+}
+
+function noxDeleteChat(id, e) {
+    if (e) e.stopPropagation();
+    noxChats = noxChats.filter(c => c.id !== id);
+    noxSaveChats();
+    if (noxCurrentChatId === id) {
+        if (noxChats.length > 0) {
+            noxCurrentChatId = noxChats[0].id;
+            noxAgentHistory  = [...(noxChats[0].msgs || [])];
+        } else {
+            noxNewChat(); return;
+        }
+        _noxRestoreCurrentChat();
+    }
+    noxRenderChatList();
+}
+
+function noxRenderChatList() {
+    const list = document.getElementById('nav-nox-chat-list');
+    if (!list) return;
+    if (noxChats.length === 0) {
+        list.innerHTML = '<div class="nav-chat-empty">Sin chats anteriores</div>';
+        return;
+    }
+    list.innerHTML = noxChats.map(chat => `
+        <div class="nav-chat-item${chat.id === noxCurrentChatId ? ' active' : ''}" onclick="noxLoadChat('${chat.id}')">
+            <span class="nav-chat-title">${_escHtml(chat.title || 'Sin título')}</span>
+            <button class="nav-chat-delete" onclick="noxDeleteChat('${chat.id}',event)" title="Eliminar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="11" height="11"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>`).join('');
+}
+
+function _noxRestoreCurrentChat() {
+    const msgs = document.getElementById('nox-agents-messages');
+    if (!msgs) return;
+    msgs.innerHTML = '';
+    if (noxAgentHistory.length === 0) {
+        msgs.innerHTML = `<div id="nox-agents-welcome" class="nox-ag-welcome">${_buildWelcomeHTML()}</div>`;
+    } else {
+        const w = document.createElement('div');
+        w.id = 'nox-agents-welcome'; w.className = 'nox-ag-welcome'; w.style.display = 'none';
+        msgs.appendChild(w);
+        noxAgentHistory.forEach(m => {
+            if (m.role === 'user') noxAppendBubble('user', m.content);
+            else noxAppendBubble('ai', noxRenderMarkdown(m.content), []);
+        });
+    }
+}
+
+function _noxOpenNavGroup() {
+    const body    = document.getElementById('nav-gemini-body');
+    const trigger = document.getElementById('nav-gemini');
+    if (body)    body.classList.add('open');
+    if (trigger) trigger.classList.add('nav-group-open');
 }
 
 /* ════════════════════════════════════════════════════
@@ -661,6 +1096,278 @@ function noxShowToast(msg, type = 'info') {
 }
 
 /* ════════════════════════════════════════════════════
+   SISTEMA DE ACCIONES — Firebase write operations
+   ════════════════════════════════════════════════════ */
+
+const _noxPendingActions = {};  // { actionId → { accion, datos } }
+
+const _NOX_ACTION_META = {
+    crear_contrato:       { title: 'Crear Contrato',         icon: '📋', color: '#3b82f6' },
+    crear_orden:          { title: 'Crear Orden',            icon: '📦', color: '#f59e0b' },
+    registrar_gasto:      { title: 'Registrar Gasto',        icon: '💸', color: '#ef4444' },
+    agendar_actividad:    { title: 'Agendar Actividad',      icon: '📅', color: '#10b981' },
+    actualizar_inventario:{ title: 'Actualizar Inventario',  icon: '🏪', color: '#8b5cf6' }
+};
+
+const _NOX_FIELD_LABELS = {
+    numero: 'Número', cliente: 'Cliente', descripcion: 'Descripción',
+    fechaInicio: 'Fecha inicio', fechaLimite: 'Fecha límite', estado: 'Estado',
+    instruccionesEspeciales: 'Instrucciones', responsable: 'Responsable',
+    contratoId: 'Contrato ID', nombreProducto: 'Producto', cantidad: 'Cantidad',
+    unidad: 'Unidad', prioridad: 'Prioridad', asignadoA: 'Asignado a',
+    concepto: 'Concepto', monto: 'Monto (COP)', categoria: 'Categoría', fecha: 'Fecha',
+    tipo: 'Tipo', itemId: 'Item', stockActual: 'Stock actual'
+};
+
+function _noxParseActions(rawText) {
+    const actions = [];
+    const cleaned = rawText.replace(/<NOX_ACTION>([\s\S]*?)<\/NOX_ACTION>/g, (_, json) => {
+        try { actions.push(JSON.parse(json.trim())); } catch (e) { console.warn('[NOX] Acción JSON inválida:', json); }
+        return '';
+    }).replace(/\n{3,}/g, '\n\n').trim();
+    return { text: cleaned, actions };
+}
+
+async function _noxExecuteAction(accion, datos) {
+    if (typeof db === 'undefined') throw new Error('Firebase no está disponible.');
+    const today = new Date().toISOString().split('T')[0];
+    const ts    = Date.now();
+
+    switch (accion) {
+        case 'crear_contrato': {
+            const payload = { ...datos, fechaCreacion: today, creadoPor: 'NOX', timestamp: ts };
+            const ref = await db.ref('contratos').push(payload);
+            if (typeof logActivity === 'function')
+                logActivity('contrato_creado', `Contrato ${datos.numero || ref.key} creado por NOX`, 'contrato', ref.key);
+            return ref.key;
+        }
+        case 'crear_orden': {
+            const payload = {
+                ...datos,
+                estado:    datos.estado    || 'recibido',
+                prioridad: datos.prioridad || 'normal',
+                creadoPor: 'NOX',
+                timestamp: ts,
+                timeline:  { recibido: ts }
+            };
+            const ref = await db.ref('ordenes').push(payload);
+            if (typeof logActivity === 'function')
+                logActivity('orden_creada', `Orden "${datos.nombreProducto || ref.key}" creada por NOX`, 'orden', ref.key);
+            return ref.key;
+        }
+        case 'registrar_gasto': {
+            const payload = { ...datos, fecha: datos.fecha || today, creadoPor: 'NOX', timestamp: ts };
+            const ref = await db.ref('gastos').push(payload);
+            if (typeof logActivity === 'function')
+                logActivity('gasto_registrado', `Gasto "${datos.concepto}" ($${Number(datos.monto).toLocaleString('es-CO')}) registrado por NOX`, 'gasto', ref.key);
+            return ref.key;
+        }
+        case 'agendar_actividad': {
+            const payload = {
+                tipo:        datos.tipo        || 'recordatorio',
+                descripcion: datos.descripcion || '',
+                fecha:       datos.fecha       || today,
+                usuario:     'NOX',
+                timestamp:   ts
+            };
+            const ref = await db.ref('actividad').push(payload);
+            return ref.key;
+        }
+        case 'actualizar_inventario': {
+            if (!datos.itemId) throw new Error('itemId requerido para actualizar inventario.');
+            await db.ref(`inventario/${datos.itemId}`).update({
+                stockActual: datos.stockActual,
+                ultimaActualizacion: today
+            });
+            return datos.itemId;
+        }
+        default:
+            throw new Error(`Acción desconocida: "${accion}"`);
+    }
+}
+
+function _noxRenderActionCard({ accion, datos }, container) {
+    const meta      = _NOX_ACTION_META[accion] || { title: accion, icon: '⚡', color: '#6366f1' };
+    const actionId  = 'nox-act-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+    _noxPendingActions[actionId] = { accion, datos };
+
+    const rows = Object.entries(datos)
+        .filter(([, v]) => v !== undefined && v !== null && v !== '')
+        .map(([k, v]) => {
+            const label = _NOX_FIELD_LABELS[k] || k;
+            const val   = k === 'monto' ? `$${Number(v).toLocaleString('es-CO')} COP` : String(v);
+            return `<div class="nox-action-row"><span class="nox-action-key">${label}</span><span class="nox-action-val">${_escHtml(val)}</span></div>`;
+        }).join('');
+
+    const card = document.createElement('div');
+    card.className = 'nox-action-card';
+    card.id = actionId;
+    card.innerHTML = `
+        <div class="nox-action-header" style="--acolor:${meta.color}">
+            <span class="nox-action-icon">${meta.icon}</span>
+            <div>
+                <div class="nox-action-title">${meta.title}</div>
+                <div class="nox-action-subtitle">NOX quiere ejecutar esta acción</div>
+            </div>
+        </div>
+        <div class="nox-action-fields">${rows || '<em style="opacity:.5;font-size:12px">Sin campos</em>'}</div>
+        <div class="nox-action-footer">
+            <button class="nox-action-btn nox-action-confirm" onclick="noxConfirmAction('${actionId}')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="20 6 9 17 4 12"/></svg>
+                Ejecutar
+            </button>
+            <button class="nox-action-btn nox-action-cancel" onclick="noxCancelAction('${actionId}')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Cancelar
+            </button>
+        </div>`;
+    container.appendChild(card);
+    container.scrollTop = container.scrollHeight;
+}
+
+async function noxConfirmAction(actionId) {
+    const entry = _noxPendingActions[actionId];
+    const card  = document.getElementById(actionId);
+    if (!entry || !card) return;
+
+    const btn = card.querySelector('.nox-action-confirm');
+    if (btn) { btn.disabled = true; btn.textContent = 'Ejecutando…'; }
+
+    try {
+        const resultId = await _noxExecuteAction(entry.accion, entry.datos);
+        delete _noxPendingActions[actionId];
+
+        const meta = _NOX_ACTION_META[entry.accion] || {};
+        card.innerHTML = `
+            <div class="nox-action-success">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>
+                ${meta.title || 'Acción'} ejecutada correctamente
+                <span class="nox-action-id">ID: ${resultId}</span>
+            </div>`;
+        setTimeout(() => card.style.opacity = '0.5', 2000);
+        noxShowToast(`${meta.icon || '✓'} ${meta.title} creado correctamente`, 'success');
+    } catch (err) {
+        if (btn) { btn.disabled = false; btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="20 6 9 17 4 12"/></svg> Reintentar'; }
+        const errDiv = card.querySelector('.nox-action-error') || document.createElement('div');
+        errDiv.className = 'nox-action-error';
+        errDiv.textContent = `Error: ${err.message}`;
+        if (!card.querySelector('.nox-action-error')) card.querySelector('.nox-action-footer').before(errDiv);
+        noxShowToast(`Error: ${err.message}`, 'error');
+    }
+}
+
+function noxCancelAction(actionId) {
+    delete _noxPendingActions[actionId];
+    const card = document.getElementById(actionId);
+    if (card) { card.style.opacity = '0'; setTimeout(() => card.remove(), 250); }
+}
+
+/* ════════════════════════════════════════════════════
+   CONTEXTO DE NEGOCIO DESDE FIREBASE
+   ════════════════════════════════════════════════════ */
+
+async function noxFetchBusinessContext() {
+    if (typeof db === 'undefined') return null;
+    try {
+        const [ordSnap, conSnap, invSnap, gasSnap] = await Promise.all([
+            db.ref('ordenes').once('value'),
+            db.ref('contratos').once('value'),
+            db.ref('inventario').once('value'),
+            db.ref('gastos').once('value')
+        ]);
+
+        const now = Date.now();
+        const lines = ['=== CONTEXTO REAL DEL NEGOCIO (Manolette — datos en vivo) ==='];
+
+        // ── ÓRDENES ──────────────────────────────────────────────
+        const ordenes  = ordSnap.val()  || {};
+        const ordList  = Object.values(ordenes);
+        const byEstado = {};
+        let urgentes   = 0;
+        ordList.forEach(o => {
+            const e = o.estado || 'sin_estado';
+            byEstado[e] = (byEstado[e] || 0) + 1;
+            if (o.prioridad === 'alta' || o.prioridad === 'urgente') urgentes++;
+        });
+        const estadoLabels = {
+            recibido: 'Recibido', empaque: 'En empaque',
+            calidad: 'Control calidad', listo: 'Listo p/envío', enviado: 'Enviado'
+        };
+        lines.push(`\nÓRDENES (${ordList.length} en total):`);
+        if (ordList.length === 0) {
+            lines.push('  Sin órdenes registradas.');
+        } else {
+            Object.entries(byEstado).forEach(([e, n]) =>
+                lines.push(`  - ${estadoLabels[e] || e}: ${n}`)
+            );
+            if (urgentes > 0) lines.push(`  ⚠ Alta prioridad / urgentes: ${urgentes}`);
+        }
+
+        // ── CONTRATOS ────────────────────────────────────────────
+        const contratos = conSnap.val() || {};
+        const contList  = Object.values(contratos);
+        const activos   = contList.filter(c => !c.estado || c.estado === 'activo' || c.estado === 'en_riesgo');
+        lines.push(`\nCONTRATOS (${contList.length} total, ${activos.length} activos):`);
+        if (contList.length === 0) {
+            lines.push('  Sin contratos registrados.');
+        } else {
+            activos.slice(0, 6).forEach(c => {
+                let deadline = '';
+                if (c.fechaLimite) {
+                    const days = Math.ceil((new Date(c.fechaLimite).getTime() - now) / 86400000);
+                    deadline = days >= 0 ? ` — ${days}d restantes` : ` — VENCIDO hace ${Math.abs(days)}d`;
+                }
+                const label = [c.numero, c.cliente, c.descripcion].filter(Boolean).join(' / ');
+                lines.push(`  - ${label || 'Sin título'}${deadline}`);
+            });
+            const enRiesgo = activos.filter(c => c.estado === 'en_riesgo').length;
+            if (enRiesgo > 0) lines.push(`  ⚠ En riesgo: ${enRiesgo}`);
+        }
+
+        // ── INVENTARIO ───────────────────────────────────────────
+        const inventario = invSnap.val() || {};
+        const invList    = Object.values(inventario);
+        const stockBajo  = invList.filter(i =>
+            i.stockActual !== undefined && i.stockMinimo !== undefined &&
+            i.stockActual > 0 && i.stockActual <= i.stockMinimo
+        );
+        const agotados   = invList.filter(i => i.stockActual === 0 || i.stockActual === '0');
+        lines.push(`\nINVENTARIO (${invList.length} ítems):`);
+        if (invList.length === 0) {
+            lines.push('  Sin ítems en inventario.');
+        } else {
+            lines.push(`  - Stock OK: ${invList.length - stockBajo.length - agotados.length}`);
+            lines.push(`  - Stock bajo (≤ mínimo): ${stockBajo.length}`);
+            lines.push(`  - Agotados: ${agotados.length}`);
+            stockBajo.slice(0, 4).forEach(i =>
+                lines.push(`    • ${i.nombre || 'Ítem'}: ${i.stockActual} / mín ${i.stockMinimo} ${i.unidad || ''}`)
+            );
+            agotados.slice(0, 2).forEach(i =>
+                lines.push(`    ✗ AGOTADO: ${i.nombre || 'Ítem'}`)
+            );
+        }
+
+        // ── GASTOS MES ACTUAL ────────────────────────────────────
+        const gastos    = gasSnap.val() || {};
+        const gasList   = Object.values(gastos);
+        const mesActual = new Date().toISOString().slice(0, 7);
+        const gasMes    = gasList.filter(g => g.fecha && String(g.fecha).startsWith(mesActual));
+        const totalMes  = gasMes.reduce((s, g) => s + (parseFloat(g.monto) || 0), 0);
+        const totalAll  = gasList.reduce((s, g) => s + (parseFloat(g.monto) || 0), 0);
+        lines.push(`\nGASTOS:`);
+        lines.push(`  - Mes actual (${mesActual}): $${totalMes.toLocaleString('es-CO')} COP (${gasMes.length} registros)`);
+        lines.push(`  - Total histórico: $${totalAll.toLocaleString('es-CO')} COP`);
+
+        lines.push('\n=== FIN CONTEXTO ===');
+        return lines.join('\n');
+
+    } catch (err) {
+        console.warn('[NOX] Error cargando contexto de negocio:', err.message);
+        return null;
+    }
+}
+
+/* ════════════════════════════════════════════════════
    ENVÍO DE MENSAJES — LÓGICA PRINCIPAL
    ════════════════════════════════════════════════════ */
 
@@ -695,21 +1402,37 @@ async function noxAgentSend() {
     sendBtn.disabled = true;
 
     try {
-        // Ejecutar agentes en paralelo
-        const agentResults = await noxRunAgents(agentIds, message, noxAgentHistory);
+        // Obtener contexto de negocio en tiempo real desde Firebase
+        const businessCtx = await noxFetchBusinessContext();
+        // El mensaje con contexto se envía a los agentes pero NO se guarda en el historial
+        const messageWithCtx = businessCtx
+            ? `${businessCtx}\n\n---\nCONSULTA DEL USUARIO:\n${message}`
+            : message;
+
+        // Ejecutar agentes en paralelo (con contexto de negocio inyectado)
+        const agentResults = await noxRunAgents(agentIds, messageWithCtx, noxAgentHistory);
 
         // Sintetizar si hay múltiples agentes exitosos
-        const { text, agents } = await noxSynthesize(agentResults, message, noxAgentHistory);
+        const { text, agents } = await noxSynthesize(agentResults, messageWithCtx, noxAgentHistory);
 
-        // Guardar en historial
-        noxAgentHistory.push({ role: 'assistant', content: text });
-        noxSaveHistory();
+        // Extraer bloques NOX_ACTION del texto (sin contaminar el historial)
+        const { text: cleanText, actions } = _noxParseActions(text);
+
+        // Guardar texto limpio en historial
+        noxAgentHistory.push({ role: 'assistant', content: cleanText });
+        noxSaveCurrentChat();
 
         // Renderizar respuesta
         noxRemoveTyping();
         noxHideActiveAgents();
-        const rendered = noxRenderMarkdown(text);
+        const rendered = noxRenderMarkdown(cleanText);
         noxAppendBubble('ai', rendered, agents);
+
+        // Mostrar tarjetas de confirmación para cada acción detectada
+        if (actions.length > 0) {
+            const msgs = document.getElementById('nox-agents-messages');
+            if (msgs) actions.forEach(a => _noxRenderActionCard(a, msgs));
+        }
 
         // Actualizar sugerencias según agente activo
         _noxUpdateSuggestions(agentIds[0]);
@@ -735,11 +1458,11 @@ async function noxAgentSend() {
 
 const NOX_SUGGESTIONS = {
     default: [
-        { text: '¿Cómo vender más termos en Instagram?', agents: ['content', 'social', 'sales'] },
+        { text: '¿Cómo optimizar el proceso de empaque y despacho?', agents: ['logistics'] },
+        { text: '¿Cuáles son mis contratos activos y cuánto tiempo me queda?', agents: ['finance', 'agenda'] },
         { text: 'Crea un post para el día de la madre', agents: ['content', 'social'] },
-        { text: 'Analiza el margen de mis productos', agents: ['finance'] },
-        { text: 'Escríbeme un email de bienvenida para clientes', agents: ['email'] },
-        { text: '¿Cómo posicionar mi tienda en Google?', agents: ['seo', 'strategy'] },
+        { text: '¿Qué me dice el agente de logística sobre mis órdenes?', agents: ['logistics'] },
+        { text: 'Analiza el margen de mis productos este mes', agents: ['finance', 'accounting'] },
     ],
     dev: [
         { text: 'Cómo hacer un fetch con async/await en JS', agents: ['dev'] },
@@ -817,17 +1540,7 @@ function noxInvokeAgent(agentId) {
    LIMPIAR CHAT
    ════════════════════════════════════════════════════ */
 
-function noxAgentClear() {
-    noxClearHistory();
-    const msgs = document.getElementById('nox-agents-messages');
-    if (msgs) {
-        msgs.innerHTML = `<div id="nox-agents-welcome" class="nox-ag-welcome">
-            ${_buildWelcomeHTML()}
-        </div>`;
-    }
-    _noxUpdateSuggestions('default');
-    noxHideActiveAgents();
-}
+function noxAgentClear() { noxNewChat(); }
 
 function _buildWelcomeHTML() {
     return `
@@ -952,72 +1665,46 @@ document.addEventListener('click', (e) => {
    ════════════════════════════════════════════════════ */
 
 function initNoxAgents() {
-    noxLoadHistory();
+    // Cargar chats solo la primera vez
+    if (!_noxInitialized) {
+        noxLoadChats();
+        _noxInitialized = true;
+
+        // Auto-resize textarea + @mention dropdown + disabled click
+        const input = document.getElementById('nox-agents-input');
+        if (input) {
+            input.addEventListener('input', () => {
+                input.style.height = 'auto';
+                input.style.height = Math.min(input.scrollHeight, 160) + 'px';
+                _noxHandleMentionInput(input);
+            });
+            input.addEventListener('keydown', (e) => {
+                if (_noxHandleMentionKeydown(e, input)) return;
+                if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); noxAgentSend(); }
+            });
+            input.addEventListener('click', () => {
+                if (!window.ApiKeyManager?.hasActiveProvider('nox')) {
+                    window.ApiKeyManager?.openProviderPicker('nox');
+                }
+            });
+        }
+
+        const sendBtn = document.getElementById('nox-agents-send');
+        if (sendBtn) sendBtn.addEventListener('click', noxAgentSend);
+
+        window.addEventListener('apikm:providerChanged', _noxUpdateKeyStatus);
+        window.addEventListener('apikm:providerAdded', _noxUpdateKeyStatus);
+        window.addEventListener('apikm:providerRemoved', _noxUpdateKeyStatus);
+        window.addEventListener('apikm:modelChanged', _noxUpdateKeyStatus);
+
+        window._navToApiKeys = () => { document.getElementById('nav-apikeys')?.click(); };
+    }
+
     noxRenderAgentsPanel();
     _noxUpdateKeyStatus();
     _noxUpdateSuggestions('default');
-
-    // Auto-resize textarea + @mention dropdown + disabled click
-    const input = document.getElementById('nox-agents-input');
-    if (input) {
-        input.addEventListener('input', () => {
-            input.style.height = 'auto';
-            input.style.height = Math.min(input.scrollHeight, 160) + 'px';
-            _noxHandleMentionInput(input);
-        });
-        input.addEventListener('keydown', (e) => {
-            if (_noxHandleMentionKeydown(e, input)) return;
-            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); noxAgentSend(); }
-        });
-        // Disabled input click → open provider picker
-        input.addEventListener('click', () => {
-            if (!window.ApiKeyManager?.hasActiveProvider('nox')) {
-                window.ApiKeyManager?.openProviderPicker('nox');
-            }
-        });
-    }
-
-    // Enviar con botón
-    const sendBtn = document.getElementById('nox-agents-send');
-    if (sendBtn) sendBtn.addEventListener('click', noxAgentSend);
-
-    // Limpiar
-    const clearBtn = document.getElementById('nox-agents-clear');
-    if (clearBtn) clearBtn.addEventListener('click', noxAgentClear);
-
-    // Toggle panel
-    const toggleBtn = document.getElementById('nox-toggle-panel-btn');
-    if (toggleBtn) toggleBtn.addEventListener('click', noxToggleAgentsPanel);
-
-    // Key button → abre selector de proveedor
-    const keyBtn = document.getElementById('nox-agents-key-btn');
-    if (keyBtn) keyBtn.addEventListener('click', () => window.ApiKeyManager?.openProviderPicker('nox'));
-
-    // Escuchar cambios de proveedor desde ApiKeyManager
-    window.addEventListener('apikm:providerChanged', _noxUpdateKeyStatus);
-    window.addEventListener('apikm:providerAdded', _noxUpdateKeyStatus);
-    window.addEventListener('apikm:providerRemoved', _noxUpdateKeyStatus);
-    window.addEventListener('apikm:modelChanged', _noxUpdateKeyStatus);
-
-    // Función para navegar a API Keys desde modal picker
-    window._navToApiKeys = () => {
-        document.getElementById('nav-apikeys')?.click();
-    };
-
-    // Restaurar historial visual si existe
-    if (noxAgentHistory.length > 0) {
-        const welcome = document.getElementById('nox-agents-welcome');
-        if (welcome) welcome.style.display = 'none';
-        // Solo muestra los últimos 10 mensajes al restaurar (para no saturar el DOM)
-        const recent = noxAgentHistory.slice(-10);
-        recent.forEach(m => {
-            if (m.role === 'user') {
-                noxAppendBubble('user', m.content);
-            } else {
-                noxAppendBubble('ai', noxRenderMarkdown(m.content), []);
-            }
-        });
-    }
+    noxRenderChatList();
+    _noxRestoreCurrentChat();
 }
 
 // Registrar como inicializador de sección

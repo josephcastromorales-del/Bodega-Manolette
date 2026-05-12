@@ -255,7 +255,7 @@ async function guardarOrden(e) {
 async function eliminarOrden(id) {
     const o = ordenesData[id];
     if (!o) return;
-    const ok = await confirmDialog('¿Eliminar orden?', `Orden ${o.numero || o.nombreProducto} — Esta acción no se puede deshacer.`);
+    const ok = await confirmDelete(`Orden: ${o.numero || o.nombreProducto}`);
     if (!ok) return;
     closeDrawer('drawer-orden');
     await db.ref(`ordenes/${id}`).remove();

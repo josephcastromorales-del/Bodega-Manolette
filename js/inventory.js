@@ -133,7 +133,7 @@ async function guardarItem(e) {
 async function eliminarItem(id) {
     const item = inventarioData[id];
     if (!item) return;
-    const ok = await confirmDialog('¿Eliminar producto?', `"${item.nombre}" será eliminado del inventario.`);
+    const ok = await confirmDelete(item.nombre, 'Será eliminado del inventario.');
     if (!ok) return;
     await db.ref(`inventario/${id}`).remove();
     logActivity('inventario_eliminado', `${item.nombre} eliminado del inventario`, 'inventario', id);

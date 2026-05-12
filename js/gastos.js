@@ -64,7 +64,8 @@ async function guardarGasto(e) {
 }
 
 async function eliminarGasto(id) {
-    const ok = await confirmDialog('Eliminar gasto?', 'Esta accion no se puede deshacer.');
+    const g = gastosData[id];
+    const ok = await confirmDelete(g?.concepto || 'Este gasto');
     if (!ok) return;
     await db.ref(`gastos/${id}`).remove(); showToast('Gasto eliminado', 'warning');
 }
